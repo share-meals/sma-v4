@@ -49,7 +49,7 @@ const SignupForm: React.FC = () => {
     password: true,
     name: true
   }).extend({
-    hasCommunityCode: z.boolean()
+    //hasCommunityCode: z.boolean()
   });
   const {
     control,
