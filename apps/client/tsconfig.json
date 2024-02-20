@@ -17,7 +17,8 @@
 	    "@/*": ["./src/*"],
 	    "@/components/*": ["./src/components/*"],
 	    "@/contexts/*": ["./src/contexts/*"],
-	    "@/pages/*": ["./src/pages/*"]
+	    "@/pages/*": ["./src/pages/*"],
+	    "@sma-v4/schema/*": ["./src/components/schema/*"]
 	},
 	"resolveJsonModule": true,
 	"skipLibCheck": true,
