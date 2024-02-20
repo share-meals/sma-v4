@@ -9,7 +9,7 @@ import {
   useContext,
   useState,
 } from 'react';
-import {postSchema} from '@sma-v4/schema';
+import {postSchema} from '@/components/schema';
 import {useCommunities} from '@/contexts/Communities';
 import {
   useFirestore,

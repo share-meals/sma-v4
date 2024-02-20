@@ -11,7 +11,7 @@ import {
   IonLabel,
   IonRow,
 } from '@ionic/react';
-import {postSchema} from '@sma-v4/schema';
+import {postSchema} from '@/components/schema';
 import {z} from 'zod';
 
 type post = z.infer<typeof postSchema>;

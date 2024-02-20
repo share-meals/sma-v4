@@ -12,7 +12,7 @@ import {
 import {useAuth} from 'reactfire';
 import {useForm} from 'react-hook-form';
 import {useState} from 'react';
-import {userSchema} from '@sma-v4/schema';
+import {userSchema} from '@/components/schema';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 

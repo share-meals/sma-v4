@@ -28,7 +28,7 @@ import {
   useFunctions
 } from 'reactfire';
 import {useForm} from 'react-hook-form';
-import {userSchema} from '@sma-v4/schema';
+import {userSchema} from '@/components/schema';
 import {useState} from 'react';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
