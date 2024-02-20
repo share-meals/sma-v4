@@ -39,8 +39,10 @@ export const AuthGuard: React.FC<React.PropsWithChildren<props>> = ({
     return <Redirect to='/' />;    
   }
 
+  console.log(communities);
   if(requiredFeature === 'canSmartPantry'
      && (communities === null
+      || communities === undefined
       || Object.keys((communities.canSmartPantry)).length === 0)){
     return <Redirect to='/' />;    
   }
