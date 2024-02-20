@@ -1,4 +1,17 @@
 import {
+  collection,
+  doc,
+  documentId,
+  where,
+  Firestore,
+  query
+} from 'firebase/firestore';
+import {
+  useFirestore,
+  useFirestoreCollectionData,
+  useFirestoreDocData,
+} from 'reactfire';
+import {
   createContext,
   Dispatch,
   SetStateAction,
@@ -21,17 +34,19 @@ export const useSmartPantry = () => useContext(SmartPantryContext);
 export const SmartPantryProvider: React.FC<React.PropsWithChildren> = ({
   children
 }) => {
-  const {privateData} = useProfile();
+  const {uid} = useProfile();
   const [surveyJSON, setSurveyJSON] = useState<any>();
-  const points = privateData?.smartPantry?.points;
-  const timestamp = privateData?.smartPantry?.timestamp;
+
+  const firestore: Firestore = useFirestore();
+  const ref = doc(firestore, 'users', uid);
+  const {data}  = useFirestoreDocData(ref, {idField: 'id'});
   
   return <SmartPantryContext.Provider
 	   value={{
-	     points: points ?? null,
+	     points: data.private?.smartPantry?.points ?? null,
 	     surveyJSON,
 	     setSurveyJSON,
-	     timestamp: timestamp ?? null
+	     timestamp: data.private?.smartPantry?.timestamp ?? null
 	   }}
 	   children={children}
   />;
