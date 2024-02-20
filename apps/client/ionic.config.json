@@ -1,0 +1,7 @@
+{
+  "name": "Share Meals",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
