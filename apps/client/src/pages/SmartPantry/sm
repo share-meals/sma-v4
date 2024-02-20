@@ -1,0 +1,95 @@
+import {FormattedMessage} from 'react-intl';
+import {httpsCallable} from 'firebase/functions';
+import {
+  IonCol,
+  IonGrid,
+  IonImg,
+  IonRow,
+  IonText,
+} from '@ionic/react';
+import {LoadingIndicator} from '@/components/LoadingIndicator';
+import {SmartPantrySurvey} from './SmartPantrySurvey';
+import {
+  useEffect,
+  useState
+} from 'react';
+import {useFunctions} from 'reactfire';
+import {useParams} from 'react-router-dom';
+import {
+  useSmartPantry,
+  SmartPantryProvider
+} from './SmartPantryContext';
+
+import SmartPantrySVG from '@/assets/svg/sp_logo.svg';
+
+export const SmartPantry: React.FC = () => {
+  return <SmartPantryProvider>
+    <SmartPantryRouter />
+  </SmartPantryProvider>;
+}
+
+const SmartPantryRouter: React.FC = () => {
+  const params: {[key: string]: string} = useParams();
+  if(params.spid){
+    return <SmartPantryProvider>
+      <SmartPantryHandshake />
+    </SmartPantryProvider>;
+  }else{
+    return <SmartPantryInfo />;
+  }
+};
+
+const SmartPantryHandshake: React.FC = () => {
+  // call with id
+  // get error back -> display error
+  // get survey back -> display
+  // get points -> display
+  const params: {[key: string]: string} = useParams();
+  const {machineId, setMachineId} = useSmartPantry();
+  useEffect(() => {
+    if(params.spid){
+      setMachineId(params.spid);
+    }
+  }, [params]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [response, setResponse] = useState<'survey' | 'points' | null>(null);
+  const {surveyJSON, setSurveyJSON} = useSmartPantry();
+  const functions = useFunctions();
+  const handshakeFunction = httpsCallable(functions, 'smartPantry-handshake');
+
+  useEffect(() => {
+    (async () => {
+      const handshakeResponse = await handshakeFunction();
+      setResponse(handshakeResponse.data);
+      if(handshakeResponse.data.step === 'step'){
+	setSurveyJSON(handshakeResponse.data.surveyJSON);
+      }
+      setIsLoading(false);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if(response?.step === 'survey'){
+      setSurveyJSON(response.surveyJSON);
+    }
+  }, [JSON.stringify(response)]);
+  
+  if(isLoading){
+    return <LoadingIndicator />;
+  };
+
+  if(response.step === 'survey'
+     && (surveyJSON === undefined
+     || machineId === undefined)){
+    return <LoadingIndicator />;
+  }
+  
+  switch(response.step){
+    case 'points':
+      return <></>;
+      break;
+    case 'survey':
+      return <SmartPantrySurvey survey={response.survey} />;
+      break;
+  }
+}

@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+	"baseUrl": "./src",
+	"esModuleInterop": true,
+	"module": "commonjs",
+	"noImplicitReturns": true,
+	"noUnusedLocals": true,
+	"outDir": "lib",
+	"paths": {
+	    "@/*": ["*"],
+	    "@sma-v4/schema": ["./schema"]
+	},
+	"sourceMap": true,
+	"strict": true,
+	"target": "es2017"
+    },
+    "compileOnSave": true,
+    "exclude": [
+	"src/**/*test.ts"
+    ],
+    "include": [
+      "src"
+    ]
+}

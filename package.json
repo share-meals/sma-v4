@@ -1,0 +1,10 @@
+{
+    "license": "MIT",
+    "packageManager": "yarn@4.1.0",
+    "private": true,
+    "version": "1.0.0",
+    "workspaces": [
+        "apps/*",
+        "apps/server/functions"
+    ]
+}
