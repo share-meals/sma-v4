@@ -30,7 +30,7 @@ import {
 } from 'react';
 import {useParams} from 'react-router-dom';
 
-import WarningIcon from '@material-design-icons/svg/sharp/Warning.svg';
+//import WarningIcon from '@material-design-icons/svg/sharp/Warning.svg';
 
 
 const TIMEOUT_TOTAL_MIN = 5;
@@ -109,13 +109,6 @@ export const SmartPantryVend: React.FC = () => {
 	{secondsRemaining <= TIMEOUT_WARNING_SECONDS
 	&& <>
 	  <IonRow style={{alignItems: 'center'}}>
-	    <IonCol size='auto'>
-	      <IonImg
-	      aria-hidden='true'
-	      src={WarningIcon}
-		style={{width: '4rem'}}
-	      />
-	    </IonCol>
 	    <IonCol>
 	      <IonText>
 		<p>
@@ -150,3 +143,14 @@ export const SmartPantryVend: React.FC = () => {
     </IonRow>
   </IonGrid>;
 };
+
+/*
+	    <IonCol size='auto'>
+	      <IonImg
+	      aria-hidden='true'
+	      src={WarningIcon}
+		style={{width: '4rem'}}
+	      />
+	    </IonCol>
+
+*/
