@@ -67,7 +67,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.18.9, @babel/core@npm:^7.20.12, @babel/core@npm:^7.22.9, @babel/core@npm:^7.23.0, @babel/core@npm:^7.23.2, @babel/core@npm:^7.23.5":
+"@babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.18.9, @babel/core@npm:^7.20.12, @babel/core@npm:^7.22.9, @babel/core@npm:^7.23.0, @babel/core@npm:^7.23.2, @babel/core@npm:^7.23.5, @babel/core@npm:^7.23.9":
   version: 7.23.9
   resolution: "@babel/core@npm:7.23.9"
   dependencies:
@@ -4426,6 +4426,7 @@ __metadata:
   resolution: "@sma-v4/client@workspace:apps/client"
   dependencies:
     "@axe-core/react": "npm:^4.8.4"
+    "@babel/core": "npm:^7.23.9"
     "@babel/preset-react": "npm:^7.23.3"
     "@capacitor-community/fcm": "npm:^5.0.2"
     "@capacitor/app": "npm:5.0.6"
@@ -4468,7 +4469,7 @@ __metadata:
     eslint: "npm:^8.35.0"
     eslint-plugin-react: "npm:^7.32.2"
     eslint-plugin-storybook: "npm:^0.6.15"
-    firebase: "npm:^10.8.0"
+    firebase: "npm:10"
     ionicons: "npm:^7.0.0"
     jsdom: "npm:^22.1.0"
     ol: "npm:^8.2.0"
@@ -9712,7 +9713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firebase@npm:^10.8.0":
+"firebase@npm:10":
   version: 10.8.0
   resolution: "firebase@npm:10.8.0"
   dependencies:
