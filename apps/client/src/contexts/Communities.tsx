@@ -11,7 +11,7 @@ import {
   useContext,
   useState,
 } from 'react';
-import {communitySchema} from '@sma-v4/schema';
+import {communitySchema} from '@/components/schema';
 import {
   useFirestore,
   useFirestoreCollectionData,

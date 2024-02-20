@@ -9,7 +9,7 @@ import {
   GeolocationPosition,
   PermissionStatus
 } from '@capacitor/geolocation';
-import {latlngSchema} from '@sma-v4/schema';
+import {latlngSchema} from '@/components/schema';
 import {
   useIntl
 } from 'react-intl';

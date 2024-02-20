@@ -11,11 +11,13 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import {fromLonLat} from 'ol/proj';
-import {latlngSchema} from '@sma-v4/schema';
+import {
+  latlngSchema,
+  postSchema
+} from '@/components/schema';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Point} from 'ol/geom';
 import {PostInfoBanner} from '@/components/PostInfoBanner';
-import {postSchema} from '@sma-v4/schema';
 import {
   RFeature,
   RLayerCluster,
