@@ -33,7 +33,7 @@ export const SmartPantryDashboard: React.FC = () => {
   const [daysLeftInSurvey, setDaysLeftInSurvey] = useState<number | null | undefined>();
 
   useEffect(() => {
-    if(timestamp !== null){
+    if(timestamp !== null && timestamp !== undefined){
       setDaysLeftInSurvey(differenceInDays(now, timestamp.toDate()));
     }else{
       setDaysLeftInSurvey(null);

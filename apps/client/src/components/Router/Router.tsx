@@ -150,7 +150,7 @@ export const Router: React.FC = () => {
 				 id='pages.smartPantryDashboard.title'
 				 defaultMessage='Smart Pantry Dashboard'
 	      />}>
-	      <SmartPantryDashboard />
+		<SmartPantryDashboard />
 	    </LayoutWrapper>
 	  </AuthGuard>
 	</Route>

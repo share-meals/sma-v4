@@ -73,8 +73,9 @@ export const SmartPantryVend: React.FC = () => {
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60 * TIMEOUT_TOTAL_MIN);
   useEffect(() => {
     (async () => {
-      const {data} = await vendFunction({spid});
-      setSessionId(data.sessionId);
+      await vendFunction({spid});
+      //const {data} = await vendFunction({spid});
+      //setSessionId(data.sessionId);
     })();
     const id = window.setInterval(() => {
       if(secondsRemaining <= 0){
