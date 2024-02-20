@@ -5,6 +5,7 @@ import {
 } from 'firebase/firestore';
 import {PostsProvider} from '@/contexts/Posts';
 import {ProfileProvider} from '@/contexts/Profile';
+import {SmartPantryProvider} from '@/contexts/SmartPantry';
 import {
   useFirestore,
   useSigninCheck,
@@ -18,7 +19,9 @@ export const ProfileWrapper: React.FC<React.PropsWithChildren> = ({
     return <ProfileProvider>
       <CommunitiesProvider>
 	<PostsProvider>
-	  {children}
+	  <SmartPantryProvider>
+	    {children}
+	  </SmartPantryProvider>
 	</PostsProvider>
       </CommunitiesProvider>
     </ProfileProvider>;  
