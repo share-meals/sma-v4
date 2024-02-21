@@ -14,7 +14,7 @@ interface props {
 export const Header: React.FC<React.PropsWithChildren<props>> = ({
   translatedTitle
 }) => {
-
+  console.log();
   return <IonHeader className='ion-no-border'>
     <IonToolbar color='primary'>
       <div className='max-width-md margin-horizontal-auto'>
@@ -22,7 +22,7 @@ export const Header: React.FC<React.PropsWithChildren<props>> = ({
 	  <IonBackButton />
 	</IonButtons>
 	<IonTitle>
-	  {translatedTitle}
+	  {translatedTitle}{import.meta.env.VITE_ENVIRONMENT !== 'live' && ` [${import.meta.env.VITE_ENVIRONMENT}]`}
 	</IonTitle>
       </div>
     </IonToolbar>

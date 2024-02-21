@@ -53,11 +53,12 @@ const removePrefix = (id: string): string => {
 
 export const CommunitiesProvider: React.FC<React.PropsWithChildren> = ({children}) => {
   const {uid} = useProfile();
-
   const firestore: Firestore = useFirestore();
   const ref = doc(firestore, 'users', uid);
   const {data: userData}  = useFirestoreDocData(ref, {idField: 'id'});
-  const communityIds: string[] = Object.keys(userData.private.communities);
+  const communityIds: string[] = userData.private.communities
+			       ? Object.keys(userData.private.communities)
+			       : ['NULL'];
   
   const communitiesCollection = collection(firestore, 'communities');
   const communitiesQuery = query(communitiesCollection,

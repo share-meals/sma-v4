@@ -15,10 +15,12 @@ import {
   IonCol,
   IonGrid,
   IonIcon,
-  IonImg,
+  //IonImg, // don't use since lazy loading causes flickering
   IonItem,
+  IonLabel,
   IonList,
   IonRow,
+  IonText,
   useIonToast
 } from '@ionic/react';
 import {sendEmailVerification} from 'firebase/auth';
@@ -57,7 +59,8 @@ const SignupForm: React.FC = () => {
     watch
   } = useForm({
     mode: 'onBlur',
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
+    reValidateMode: 'onBlur'
   });
 
   const watchHasCommunityCode = watch('hasCommunityCode');
@@ -71,21 +74,21 @@ const SignupForm: React.FC = () => {
 	  // todo: verify that this works on server
 	  sendEmailVerification(response.user);
 	}).catch((error: unknown) => {
-	if(error instanceof FirebaseError){
-	  toast({
-	    color: 'danger',
-	    duration: 2 * 1000,
-	    mode: 'md',
-	    onDidDismiss: () => {setIsLoading(false)},
-	    position: 'top',
-	    positionAnchor: 'signup-submit-button',
-	    message: intl.formatMessage({
-	      id: 'common.toast.error',
-	      defaultMessage: 'Error: {code}',
-	    }, {code: error.code}),
-	    swipeGesture: 'vertical'
-	  });
-	}
+	  if(error instanceof FirebaseError){
+	    toast({
+	      color: 'danger',
+	      duration: 2 * 1000,
+	      mode: 'md',
+	      onDidDismiss: () => {setIsLoading(false)},
+	      position: 'top',
+	      positionAnchor: 'signup-submit-button',
+	      message: intl.formatMessage({
+		id: 'common.toast.error',
+		defaultMessage: 'Error: {code}',
+	      }, {code: error.code}),
+	      swipeGesture: 'vertical'
+	    });
+	  }
 	}).finally(() => {
 	  setIsLoading(false);
 	});
@@ -166,7 +169,7 @@ const SignupForm: React.FC = () => {
 	  <IonIcon color='primary' slot='start' src={ArticleSharpIcon} />
 	</IonItem>
       </IonList>
-      <div className='ion-text-center'>
+      <div className='ion-padding-top ion-text-center'>
 	<StateButton
 	  id='signup-submit-button'
 	  isLoading={isLoading}
@@ -184,10 +187,18 @@ export const Signup: React.FC = () => {
   return (
     <IonGrid>
       <IonRow>
-	<IonCol>
-	  <IonImg src={SignupSVG} />
+	<IonCol size-xs='6' push-xs='3' push-sm='0'>
+	  <img src={SignupSVG} className='square responsive' />
 	</IonCol>
-	<IonCol>
+	<IonCol size-xs='12' size-sm='6'>
+	  <IonText>
+	    <p className='ion-padding-bottom'>
+	      <FormattedMessage
+		id='pages.signup.greeting'
+		defaultMessage='Create your Share Meals account to start'
+	      />
+	    </p>
+	  </IonText>
 	  <SignupForm />
 	</IonCol>
       </IonRow>
