@@ -38,11 +38,20 @@ setupIonicReact({
   mode: 'md'
 });
 
+const AppLoadingIndicator: React.FC = () => {
+  return <div style={{
+    backgroundColor: '#0e592f',
+    height: '100vh',
+    width: '100vw'
+  }}></div>; 
+}
+
+
 export const App: React.FC = () => {
   return (
-      <Suspense fallback={<LoadingIndicator />}>
+      <Suspense fallback={<AppLoadingIndicator/>}>
 	<FirebaseWrapper>
-	  <Suspense fallback={<LoadingIndicator />}>
+	  <Suspense fallback={<AppLoadingIndicator />}>
 	      <I18nWrapper>
 		<ProfileWrapper>
 		  <IonApp className='background-dark'>

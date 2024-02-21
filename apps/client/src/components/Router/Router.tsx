@@ -123,6 +123,7 @@ export const Router: React.FC = () => {
 	  </AuthGuard>
 	</Route>
 
+
 	<Route exact path='/smart-pantry'>
 	  <AuthGuard requiredAuth='authed' requiredFeature='canSmartPantry'>
 	    <LayoutWrapper
@@ -174,7 +175,6 @@ export const Router: React.FC = () => {
 	    </LayoutWrapper>
 	  </AuthGuard>
 	</Route>
-
 	
 	<Route exact path='/verify-email'>
 	  <AuthGuard requiredAuth='authed'>

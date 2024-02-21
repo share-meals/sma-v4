@@ -18,7 +18,6 @@ import {
   IonList,
   IonRow,
   IonText,
-  useIonToast
 } from '@ionic/react';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useAuth} from 'reactfire';
@@ -34,7 +33,7 @@ import ArrowOutwardIcon from '@material-design-icons/svg/sharp/arrow_outward.svg
 const LoginForm: React.FC = () => {
   const auth = useAuth();
   const intl = useIntl();
-  const [toast] = useIonToast();
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     control,
@@ -54,67 +53,54 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
       .catch((error: unknown) => {
-      if(error instanceof FirebaseError){
-	// todo: common errors
-	toast({
-	  color: 'danger',
-	  duration: 5 * 1000,
-	  mode: 'md',
-	  onDidDismiss: () => {setIsLoading(false)},
-	  position: 'top',
-	  positionAnchor: 'login-submit-button',
-	  message: intl.formatMessage({
-	    id: 'common.toast.error',
-	    defaultMessage: 'Error: {code}',
-	    // @ts-ignore
-	  }, {code: error.code}),
-	  swipeGesture: 'vertical'
-	});
-      }
+	if(error instanceof FirebaseError){
+	  // todo: common errors
+	  setError(error.code);
+	}
       })
       .finally(() => {
 	setIsLoading(false);
       });
   });
   
-  return <>
-    <form
-      onSubmit={onSubmit}>
-      <Input
-	control={control}
-	disabled={isLoading}
-	label={intl.formatMessage({
-	  id: 'forms.label.email',
-	  defaultMessage: 'Email',
-	})}
-	name='email'
-	required={true}
-	type='email'
-      />
-      <Input
-	control={control}
-	disabled={isLoading}
-	label={intl.formatMessage({
-	  id: 'forms.label.password',
-	  defaultMessage: 'Password',
-	})}
-	name='password'
-	required={true}
-	type='password'
-      />
-      <div className='ion-padding-top ion-text-center'>
-	<StateButton
-	  id='login-submit-button'
-	  isLoading={isLoading}
-	  type='submit'>
-	  <FormattedMessage
-	    id='buttons.label.login'
-	    defaultMessage='Login'
-	  />
-	</StateButton>
-      </div>
-    </form>
-  </>;
+  return <form
+	   onSubmit={onSubmit}>
+    <Input
+    control={control}
+    disabled={isLoading}
+    label={intl.formatMessage({
+      id: 'forms.label.email',
+      defaultMessage: 'Email',
+    })}
+    name='email'
+    required={true}
+    type='email'
+    />
+    <Input
+    control={control}
+    disabled={isLoading}
+    label={intl.formatMessage({
+      id: 'forms.label.password',
+      defaultMessage: 'Password',
+    })}
+    name='password'
+    required={true}
+    type='password'
+    />
+    <div className='ion-padding-top ion-text-center'>
+      <StateButton
+	isLoading={isLoading}
+	type='submit'>
+	<FormattedMessage
+	  id='buttons.label.login'
+	  defaultMessage='Login'
+	/>
+      </StateButton>
+      {error && <>
+	{error}
+	</>}
+    </div>
+  </form>;
 }
 
 export const Login: React.FC = () => {
@@ -128,13 +114,13 @@ export const Login: React.FC = () => {
 	  <IonText>
 	    <p className='ion-padding-bottom'>
 	      <FormattedMessage
-		id='pages.login.greeting'
-		defaultMessage='Login to your Share Meals account'
+	      id='pages.login.greeting'
+	      defaultMessage='Login to your Share Meals account'
 	      />
 	    </p>
 	  </IonText>
 	  <LoginForm />
-	  <IonList className='mt-3'>
+	  <IonList className='mt-3 ion-hide'>
 	    <IonItem lines='none'>
 	      <IonLabel>
 		<FormattedMessage
