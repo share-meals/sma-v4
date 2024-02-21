@@ -61,3 +61,15 @@ ion-input {
     margin-bottom: #{$margin}rem;
   }
 }
+
+img{
+    &.square {
+	aspect-ratio: 1/1;
+    }
+    
+    &.responsive {
+	width: 100%;
+    }
+}
+
+.firebase-emulator-warning{display: none;}

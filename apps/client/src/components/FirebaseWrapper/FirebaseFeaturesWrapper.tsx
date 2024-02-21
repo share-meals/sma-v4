@@ -22,15 +22,6 @@ import {
   getFunctions
 } from 'firebase/functions';
 
-function ErrorFallback({ error }: any) {
-  return (
-    <div role='alert'>
-      <p>Error loading projects:</p>
-      <pre>{error.message}</pre>
-    </div>
-  );
-}
-
 export const FirebaseFeaturesWrapper: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
@@ -40,11 +31,17 @@ export const FirebaseFeaturesWrapper: React.FC<React.PropsWithChildren> = ({
   const firestore = getFirestore(app);
   const functions = getFunctions(app);
   if(import.meta.env.VITE_ENVIRONMENT === 'emulator'){
-    connectAuthEmulator(auth, 'http://localhost:9099');
-    connectDatabaseEmulator(database, 'localhost', 9000)
-    connectFirestoreEmulator(firestore, 'localhost', 8080);
-    connectFunctionsEmulator(functions, 'localhost', 5001);
+    try{
+      connectAuthEmulator(auth, 'http://localhost:9099');
+      connectDatabaseEmulator(database, 'localhost', 9000)
+      connectFirestoreEmulator(firestore, 'localhost', 8080);
+      connectFunctionsEmulator(functions, 'localhost', 5001);
     }
+    catch(error){
+      // todo: in emulator: Firebase: Error (auth/emulator-config-failed)
+      console.log(error);
+    }
+  }
   return (
     <AuthProvider sdk={auth}>
       <DatabaseProvider sdk={database}>

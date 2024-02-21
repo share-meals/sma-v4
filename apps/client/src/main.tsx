@@ -10,7 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
   // Not For Production
   import('@axe-core/react').then(axe => {
     axe.default(React, ReactDOM, 1000);
-    root.render(<App />);
+    root.render(<React.StrictMode><App /></React.StrictMode>);
   });
 } else{
   // For Production

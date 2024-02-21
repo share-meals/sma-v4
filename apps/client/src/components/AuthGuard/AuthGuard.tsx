@@ -4,7 +4,7 @@ import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Redirect} from 'react-router-dom';
 import {useCommunities} from '@/contexts/Communities';
 import {useLocation} from 'react-router-dom';
-import {useProfile} from '@/contexts/Profile';
+//import {useAuthGuard} from '@/contexts/AuthGuard';
 import {useUser} from 'reactfire';
 
 interface props {
@@ -17,16 +17,32 @@ export const AuthGuard: React.FC<React.PropsWithChildren<props>> = ({
   requiredAuth,
   requiredFeature,
 }) => {
+  //const {url, setUrl} = useAuthGuard();
   const {communities} = useCommunities();
-  const {/*status,*/ data} = useUser();
-  const {pathname} = useLocation();
-
-  /*
-  if(status === 'loading'){
-    return <LoadingIndicator />;
+  const {data} = useUser();
+  // @ts-ignore
+  const {pathname, location} = useLocation();
+  if(data !== null){
+    if(data.emailVerified === false
+       && pathname !== '/verify-email'
+      && (location !== undefined && location.pathname !== '/verify-email')
+    ){
+      return <Redirect to='/verify-email' />;
+    }
+    if(requiredAuth === 'unauthed'){
+      return <Redirect to='/' />;
+    }
   }
-  */
-  
+
+
+  if(data === null
+     && requiredAuth === 'authed'){
+    return <Redirect to='/' />;
+  }
+  //  
+//  console.log(a);
+  /*
+
   if(requiredFeature === 'canPost'
      && (communities === null
       || Object.keys(communities.canPost).length === 0)){
@@ -39,32 +55,15 @@ export const AuthGuard: React.FC<React.PropsWithChildren<props>> = ({
     return <Redirect to='/' />;    
   }
 
-  console.log(communities);
   if(requiredFeature === 'canSmartPantry'
      && (communities === null
       || communities === undefined
       || Object.keys((communities.canSmartPantry)).length === 0)){
     return <Redirect to='/' />;    
   }
-
-  if(data !== null
-     && pathname !== '/verify-email'
-     && data.emailVerified === false
-  ){
-    return <Redirect to='/verify-email' />;
-  }
   
-  if(data !== null
-     && requiredAuth === 'unauthed'){
-    return <Redirect to='/' />;
-  }
 
-  if(data === null
-     && requiredAuth === 'authed'){
-    return <Redirect to='/' />;
-  }
-
-
+*/
   // TODO: check unverified
   // implied that requiredAuth === 'any' will render
 
