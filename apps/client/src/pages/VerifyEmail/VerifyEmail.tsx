@@ -20,17 +20,29 @@ import {
 import {sendEmailVerification} from 'firebase/auth';
 import {StateButton} from '@share-meals/frg-ui';
 import {useAuth} from 'reactfire';
+import {
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+import {useProfile} from '@/contexts/Profile';
 import {useHistory} from 'react-router-dom';
-import {useState} from 'react';
 
 import VerifyEmailSVG from '@/assets/svg/verifyEmail.svg';
 
 export const VerifyEmail: React.FC = () => {
   const auth = useAuth();
   const history = useHistory();
+  // @ts-ignore
+  const unblock = useRef<any>();
   const intl = useIntl();
   const [isLoading, setIsLoading] = useState(false);
   const [toast] = useIonToast();
+  const {uid: email} = useProfile();
+
+  useEffect(() => {
+    unblock.current = history.block();
+  }, []);
   
   const logout = () => {
     auth.signOut();
@@ -42,8 +54,7 @@ export const VerifyEmail: React.FC = () => {
       color: 'warning',
       duration: 5 * 1000,
       mode: 'md',
-      position: 'top',
-      positionAnchor: 'verify-email-resend-button',
+      position: 'bottom',
       message: intl.formatMessage({
 	id: 'pages.verifyEmail.verificationEmailSent',
 	defaultMessage: 'An email has been sent to your email address.'
@@ -56,41 +67,40 @@ export const VerifyEmail: React.FC = () => {
     setIsLoading(true);
     await auth.currentUser!.reload();
     if(auth.currentUser!.emailVerified){
-      history.push('/map');
+      unblock.current();
+      history.replace('/map');
     }else{
       toast({
 	color: 'danger',
 	duration: 5 * 1000,
-	mode: 'md',
-	position: 'top',
-	positionAnchor: 'verify-status-button',
+	mode: 'ios',
+	position: 'bottom',
 	message: intl.formatMessage({
 	  id: 'pages.verifyEmail.stillUnverified',
-	  defaultMessage: 'Your account seems to still be unverified. Please the resend "Resend Email" button to receive another.'
+	  defaultMessage: 'Still unverified.'
 	}),
 	swipeGesture: 'vertical'
       });
     }
     setIsLoading(false);
   };
-  
   return <IonGrid>
     <IonRow>
-      <IonCol>
-	<IonImg src={VerifyEmailSVG} style={{width: '100%'}}/>
+      <IonCol size-xs='6' push-xs='3' push-sm='0'>
+	<IonImg src={VerifyEmailSVG} className='responsive square' />
       </IonCol>
-      <IonCol>
+      <IonCol size-xs='12' size-sm='6'>
 	<IonText>
 	  <p>
 	    <FormattedMessage
 	      id='pages.verifyEmail.greeting'
-	      defaultMessage='Before continuing, please verify your email'
+	      defaultMessage='We sent a verification email to {email}. Please open it and click on the verification link before continuing.'
+	      values={{email: email}}
 	    />
 	  </p>
 	</IonText>
-	<div className='ion-text-center mb-3'>
+	<div className='ion-text-center'>
 	  <StateButton
-	    id='verify-status-button'
 	    isLoading={isLoading}
 	    onClick={verifyStatus}>
 	    <FormattedMessage
@@ -99,26 +109,44 @@ export const VerifyEmail: React.FC = () => {
 	    />
 	  </StateButton>
 	</div>
-	<IonRow style={{alignItems: 'flex-end'}}>
-	  <IonCol>
-	    <IonButton fill='outline' onClick={logout}>
+	<IonList className='mt-3'>
+	  <IonItem lines='none'>
+	    <IonLabel>
 	      <FormattedMessage
+		id='pages.verifyEmail.resendLabel'
+		defaultMessage="didn't get one?"
+	      />
+	      </IonLabel>
+	      <IonButton
+		fill='outline'
+		onClick={resendVerificationEmail}
+		slot='end'
+		size='default'>
+	      <FormattedMessage
+		id='pages.verifyEmail.resendButton'
+		defaultMessage="resend"
+	      />
+	      </IonButton>
+	  </IonItem>
+	  <IonItem lines='none'>
+	    <IonLabel>
+	      <FormattedMessage
+		id='pages.verifyEmail.logoutLabel'
+		defaultMessage='not your account?'
+	      />
+	      </IonLabel>
+	      <IonButton
+		fill='outline'
+		onClick={logout}
+		slot='end'
+		size='default'>
+		<FormattedMessage
 		id='pages.common.logout'
-		defaultMessage='Logout'
-	      />
-	    </IonButton>
-	  </IonCol>
-	  <IonCol className='ion-text-right'>
-	    <IonButton
-	      id='verify-email-resend-button'
-	      onClick={resendVerificationEmail}>
-	      <FormattedMessage
-		id='pages.verifyEmail.resend'
-		defaultMessage='Resend Email'
-	      />
-	    </IonButton>
-	  </IonCol>
-	</IonRow>
+		defaultMessage='logout'
+		/>
+	      </IonButton>
+	  </IonItem>
+	</IonList>
       </IonCol>
     </IonRow>
   </IonGrid>;

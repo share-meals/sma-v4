@@ -45,23 +45,17 @@ import PersonAddAltIcon from '@material-design-icons/svg/sharp/person_add_alt.sv
 import SettingsSuggestIcon from '@material-design-icons/svg/sharp/settings_suggest.svg';
 
 export const Router: React.FC = () => {
-  const {/*status, */data} = useSigninCheck();
+  const {data} = useSigninCheck();
   const {communities} = useCommunities();
   const {posts} = usePosts();
 
-  /*
-     if(status === 'loading'){
-     return <LoadingIndicator />;
-     }
-   */
-  
   return <IonReactRouter>
     <IonTabs>
       <IonRouterOutlet>
 	<Route exact path='/'>
 	  {data.signedIn
 	  ? <Redirect to='/map' />
-	  : <Redirect to='/login' />}
+	  : <Redirect to='/signup' />}
 	</Route>
 	<Route exact path="/login">
 	  <AuthGuard requiredAuth='unauthed'>
@@ -203,7 +197,7 @@ export const Router: React.FC = () => {
       <IonTabBar slot='bottom' color='primary'>
 	{!data.signedIn &&
 	 <IonTabButton data-testid='login button' tab='login' href='/login'>
-	   <IonIcon aria-hidden='true' src={LoginIcon} />
+	   <IonIcon aria-hidden='true' src={LoginIcon}/>
 	   <IonLabel>
 	     Login
 	   </IonLabel>
