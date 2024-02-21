@@ -19,6 +19,8 @@ type name = string;
 type uid = string;
 
 export interface ProfileState {
+  url: string | undefined,
+  setUrl: Dispatch<SetStateAction<string | undefined>>,
   emailVerified: emailVerified,
   name: name,
   setEmailVerified: Dispatch<SetStateAction<emailVerified>>,
@@ -36,10 +38,13 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
   const [emailVerified, setEmailVerified] = useState<emailVerified>(data!.emailVerified);
   const [name, setName] = useState<name>(data!.displayName || '');
   const [uid, setUid] = useState<uid>(data!.uid);
+  const [url, setUrl] = useState<string>();
 
 
   return <ProfileContext.Provider
 	   value={{
+	     url,
+	     setUrl,
 	     emailVerified,
 	     name,
 	     setEmailVerified,

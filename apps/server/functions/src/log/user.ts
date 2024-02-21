@@ -15,6 +15,10 @@ export const logUserCreate: logUserCreate = ({
   ipAddress,
   userId,
 }) => {
+  if (process.env.FUNCTIONS_EMULATOR) {
+    // emulator
+    return new Promise((resolve) => resolve);
+  }
   const bigQuery: BigQuery = generateBigQueryClient();
   return bigQuery
       .dataset("app_analytics")
@@ -42,6 +46,10 @@ export const logUserCommunityAdd: logUserCommunityAdd = ({
   level,
   userId,
 }) => {
+  if (process.env.FUNCTIONS_EMULATOR) {
+    // emulator
+    return new Promise((resolve) => resolve);
+  }
   const bigQuery: BigQuery = generateBigQueryClient();
   return bigQuery
       .dataset("app_analytics")

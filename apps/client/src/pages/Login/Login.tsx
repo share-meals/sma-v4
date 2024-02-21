@@ -12,7 +12,7 @@ import {
   IonCol,
   IonGrid,
   IonIcon,
-  IonImg,
+  //IonImg, // don't use since lazy loading causes flickering
   IonItem,
   IonLabel,
   IonList,
@@ -46,14 +46,14 @@ const LoginForm: React.FC = () => {
 	email: true,
 	password: true
       })
-    )
+    ),
+    reValidateMode: 'onBlur'
   });
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
-    try{
-      await signInWithEmailAndPassword(auth, data.email, data.password);
-    } catch(error: unknown){
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .catch((error: unknown) => {
       if(error instanceof FirebaseError){
 	// todo: common errors
 	toast({
@@ -71,19 +71,13 @@ const LoginForm: React.FC = () => {
 	  swipeGesture: 'vertical'
 	});
       }
-    }
-    setIsLoading(false);
+      })
+      .finally(() => {
+	setIsLoading(false);
+      });
   });
   
   return <>
-    <IonText>
-      <p className='ion-padding-bottom'>
-	<FormattedMessage
-	  id='pages.login.greeting'
-	  defaultMessage='To begin using the Share Meals app, please log in.'
-	/>
-      </p>
-    </IonText>
     <form
       onSubmit={onSubmit}>
       <Input
@@ -94,6 +88,7 @@ const LoginForm: React.FC = () => {
 	  defaultMessage: 'Email',
 	})}
 	name='email'
+	required={true}
 	type='email'
       />
       <Input
@@ -104,6 +99,7 @@ const LoginForm: React.FC = () => {
 	  defaultMessage: 'Password',
 	})}
 	name='password'
+	required={true}
 	type='password'
       />
       <div className='ion-padding-top ion-text-center'>
@@ -125,23 +121,34 @@ export const Login: React.FC = () => {
   return (
     <IonGrid>
       <IonRow>
-	<IonCol>
-	  <IonImg src={LoginSVG} style={{width: '100%'}}/>
+	<IonCol size-xs='6' push-xs='3' push-sm='0'>
+	  <img src={LoginSVG} className='square responsive' />
 	</IonCol>
-	<IonCol>
+	<IonCol size-xs='12' size-sm='6'>
+	  <IonText>
+	    <p className='ion-padding-bottom'>
+	      <FormattedMessage
+		id='pages.login.greeting'
+		defaultMessage='Login to your Share Meals account'
+	      />
+	    </p>
+	  </IonText>
 	  <LoginForm />
-	  <IonList style={{marginTop: '4rem'}}>
-	    <IonItem
-	      className='ion-text-right ion-hide'
-	      href='/forgot-password'
-	      lines='none'>
+	  <IonList className='mt-3'>
+	    <IonItem lines='none'>
 	      <IonLabel>
 		<FormattedMessage
 		  id='pages.login.forgotPassword'
 		  defaultMessage='forgot your password?'
 		/>
 	      </IonLabel>
-	      <IonIcon color='primary' slot='end' src={ArrowOutwardIcon} />
+	      <IonButton
+		fill='outline'
+		href='/reset-password'
+		slot='end'
+		size='default'>
+		Reset
+	      </IonButton>
 	    </IonItem>
 	  </IonList>
 	</IonCol>
