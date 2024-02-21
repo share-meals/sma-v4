@@ -40,6 +40,10 @@ const LoginForm: React.FC = () => {
     control,
     handleSubmit
   } = useForm({
+    defaultValues: {
+      email: 'jon.chin@nyu.edu',
+      password: 'ragnorak'
+    },
     mode: 'onBlur',
     resolver: zodResolver(
       userSchema.pick({
@@ -61,8 +65,7 @@ const LoginForm: React.FC = () => {
 	  duration: 5 * 1000,
 	  mode: 'md',
 	  onDidDismiss: () => {setIsLoading(false)},
-	  position: 'top',
-	  positionAnchor: 'login-submit-button',
+	  position: 'bottom',
 	  message: intl.formatMessage({
 	    id: 'common.toast.error',
 	    defaultMessage: 'Error: {code}',
@@ -88,7 +91,6 @@ const LoginForm: React.FC = () => {
 	  defaultMessage: 'Email',
 	})}
 	name='email'
-	required={true}
 	type='email'
       />
       <Input
@@ -99,12 +101,10 @@ const LoginForm: React.FC = () => {
 	  defaultMessage: 'Password',
 	})}
 	name='password'
-	required={true}
 	type='password'
       />
       <div className='ion-padding-top ion-text-center'>
 	<StateButton
-	  id='login-submit-button'
 	  isLoading={isLoading}
 	  type='submit'>
 	  <FormattedMessage
@@ -134,7 +134,7 @@ export const Login: React.FC = () => {
 	    </p>
 	  </IonText>
 	  <LoginForm />
-	  <IonList className='mt-3'>
+	  <IonList className='mt-3 ion-hide'>
 	    <IonItem lines='none'>
 	      <IonLabel>
 		<FormattedMessage
