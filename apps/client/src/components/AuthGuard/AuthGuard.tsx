@@ -4,6 +4,7 @@ import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Redirect} from 'react-router-dom';
 import {useCommunities} from '@/contexts/Communities';
 import {useLocation} from 'react-router-dom';
+//import {useAuthGuard} from '@/contexts/AuthGuard';
 import {useUser} from 'reactfire';
 
 interface props {
@@ -16,6 +17,7 @@ export const AuthGuard: React.FC<React.PropsWithChildren<props>> = ({
   requiredAuth,
   requiredFeature,
 }) => {
+  //const {url, setUrl} = useAuthGuard();
   const {communities} = useCommunities();
   const {data} = useUser();
   // @ts-ignore
@@ -23,19 +25,22 @@ export const AuthGuard: React.FC<React.PropsWithChildren<props>> = ({
   if(data !== null){
     if(data.emailVerified === false
        && pathname !== '/verify-email'
-       && (location !== undefined && location.pathname !== '/verify-email')
+      && (location !== undefined && location.pathname !== '/verify-email')
     ){
       return <Redirect to='/verify-email' />;
     }
     if(requiredAuth === 'unauthed'){
       return <Redirect to='/' />;
     }
-
-  }else{
-    if(requiredAuth === 'authed'){
-      return <Redirect to='/signup' />;
-    }
   }
+
+
+  if(data === null
+     && requiredAuth === 'authed'){
+    return <Redirect to='/' />;
+  }
+  //  
+//  console.log(a);
   /*
 
   if(requiredFeature === 'canPost'

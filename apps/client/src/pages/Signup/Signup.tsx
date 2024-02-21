@@ -50,7 +50,7 @@ const SignupForm: React.FC = () => {
     email: true,
     password: true,
     name: true
-  }).partial().extend({
+  }).extend({
     //hasCommunityCode: z.boolean()
   });
   const {
@@ -80,7 +80,8 @@ const SignupForm: React.FC = () => {
 	      duration: 2 * 1000,
 	      mode: 'md',
 	      onDidDismiss: () => {setIsLoading(false)},
-	      position: 'bottom',
+	      position: 'top',
+	      positionAnchor: 'signup-submit-button',
 	      message: intl.formatMessage({
 		id: 'common.toast.error',
 		defaultMessage: 'Error: {code}',
@@ -102,7 +103,8 @@ const SignupForm: React.FC = () => {
 	}),
 	mode: 'md',
 	onDidDismiss: () => {setIsLoading(false)},
-	position: 'bottom',
+	position: 'top',
+	positionAnchor: 'signup-submit-button',
 	swipeGesture: 'vertical'
       });
   });
@@ -117,6 +119,7 @@ const SignupForm: React.FC = () => {
 	  defaultMessage: 'Email',
 	})}
 	name='email'
+	required={true}
 	type='email'
       />
       <Input
@@ -127,6 +130,7 @@ const SignupForm: React.FC = () => {
 	defaultMessage: 'Password',
       })}
 	name='password'
+	required={true}
 	type='password'
       />
       <Input
@@ -137,6 +141,7 @@ const SignupForm: React.FC = () => {
 	  defaultMessage: 'Name',
 	})}
 	name='name'
+	required={true}
 	type='text'
       />
       <IonList lines='none' className='ion-hide'>
@@ -166,6 +171,7 @@ const SignupForm: React.FC = () => {
       </IonList>
       <div className='ion-padding-top ion-text-center'>
 	<StateButton
+	  id='signup-submit-button'
 	  isLoading={isLoading}
 	  type='submit'>
 	  <FormattedMessage

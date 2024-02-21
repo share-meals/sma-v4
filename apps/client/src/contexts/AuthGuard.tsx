@@ -1,11 +1,12 @@
 import {
   createContext,
   useContext,
-  useRef,
+  useState,
 } from 'react';
 
 export interface AuthGuardState {
-  urlRef: React.MutableRefObject<string | null>,
+  url: string | undefined,
+  setUrl: any
 }
 
 const AuthGuardContext = createContext<AuthGuardState>({} as AuthGuardState);
@@ -15,10 +16,10 @@ export const useAuthGuard = () => useContext(AuthGuardContext);
 export const AuthGuardProvider: React.FC<React.PropsWithChildren> = ({
   children
 }) => {
-  const urlRef = useRef<string | null>(null);
+  const [url, setUrl] = useState<string | undefined>();
   return <AuthGuardContext.Provider
 	   value={{
-	     urlRef
+	     url, setUrl
 	   }}>
     {children}
   </AuthGuardContext.Provider>
