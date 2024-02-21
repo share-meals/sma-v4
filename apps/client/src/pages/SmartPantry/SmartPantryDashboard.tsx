@@ -56,7 +56,10 @@ export const SmartPantryDashboard: React.FC = () => {
   return <IonGrid>
     <IonRow className='ion-align-items-center'>
       <IonCol>
-	<IonImg src={SmartPantrySVG} style={{width: '75%', margin: 'auto'}} />
+	<IonImg
+	className='responsive square'
+	  src={SmartPantrySVG}
+	  style={{width: '75%', margin: 'auto'}} />
       </IonCol>
       <IonCol className='ion-text-center'>
 	<IonText>
@@ -81,10 +84,7 @@ export const SmartPantryDashboard: React.FC = () => {
     <IonRow>
       <IonCol>
 	<IonList>
-	  <IonItem
-	    detail={true}
-	    disabled={!canTakeSurvey}
-	    href={`/smart-pantry/${spid}/survey`}>
+	  <IonItem>
 	    <IonLabel>
 	    {canTakeSurvey
 	    ? <FormattedMessage
@@ -98,18 +98,33 @@ export const SmartPantryDashboard: React.FC = () => {
 	    />
 	    }
 	    </IonLabel>
+	    <IonButton
+	      disabled={!canTakeSurvey}
+	      href={`/smart-pantry/${spid}/survey`}
+	      fill='outline'
+	      size='default'
+	      slot='end'>
+	      Take
+	    </IonButton>
 	  </IonItem>
-	  <IonItem
-	    detail={true}
-	    disabled={false && points! <= 0}
-	    href={`/smart-pantry/${spid}/vend`}>
+	  <IonItem>
 	    <IonLabel>
 	      <FormattedMessage
 		id='pages.smartPantryDashboard.sendPoints'
-		defaultMessage='Send points to {spid}'
-		values={{spid}}
+		defaultMessage='Send points to'
 	      />
+	      <div>
+		{spid}
+	      </div>
 	    </IonLabel>
+	    <IonButton
+	      disabled={points! <= 0}
+	      href={`/smart-pantry/${spid}/vend`}
+	      fill='outline'
+	      size='default'
+	      slot='end'>
+	      Send
+	    </IonButton>
 	  </IonItem>
 	</IonList>
       </IonCol>

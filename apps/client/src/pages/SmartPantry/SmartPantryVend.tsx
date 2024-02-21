@@ -30,8 +30,7 @@ import {
 } from 'react';
 import {useParams} from 'react-router-dom';
 
-//import WarningIcon from '@material-design-icons/svg/sharp/Warning.svg';
-
+import SendToMobileIcon from '@material-design-icons/svg/sharp/publish.svg';
 
 const TIMEOUT_TOTAL_MIN = 5;
 const TIMEOUT_WARNING_SECONDS = 60;
@@ -52,7 +51,11 @@ export const SmartPantryVend: React.FC = () => {
   const cancelFunction = httpsCallable(functions, 'smartpantry-vend-cancel');
 
   const cancelVend = () => {
-    history.replace(`/smart-pantry/${spid}`);
+    cancelFunction({machineId: spid}).then(() => {
+      history.replace(`/smart-pantry/${spid}`);
+    }).catch((error) => {
+      console.log(error);
+    });
   };
 
   useEffect(() => {
@@ -72,36 +75,36 @@ export const SmartPantryVend: React.FC = () => {
 
   const [secondsRemaining, setSecondsRemaining] = useState<number>(60 * TIMEOUT_TOTAL_MIN);
   useEffect(() => {
-    (async () => {
-      await vendFunction({spid});
-      //const {data} = await vendFunction({spid});
-      //setSessionId(data.sessionId);
-    })();
-    const id = window.setInterval(() => {
-      if(secondsRemaining <= 0){
-	clearInterval(intervalId);
-	cancelVend();
-      }
-      setSecondsRemaining((s) => s - TIMEOUT_COUNTER_RESOLUTION);
-    }, TIMEOUT_COUNTER_RESOLUTION * 1000);
-    setIntervalId(id);
-    return () => {
-      if(shouldCancelRef.current === true){
-	cancelFunction({machineId: spid});
-      }
-      clearInterval(id);
-    };
-
+    // todo: sessionId
+    vendFunction({spid}).then(() => {
+      const id = window.setInterval(() => {
+	if(secondsRemaining <= 0){
+	  clearInterval(intervalId);
+	  cancelVend();
+	}
+	setSecondsRemaining((s) => s - TIMEOUT_COUNTER_RESOLUTION);
+      }, TIMEOUT_COUNTER_RESOLUTION * 1000);
+      setIntervalId(id);
+      return () => {
+	if(shouldCancelRef.current === true){
+	  cancelFunction({machineId: spid});
+	}
+	clearInterval(id);
+      };
+    });
   }, []);
   if(status === 'loading' || sessionId === undefined){
     return <LoadingIndicator />;
   }
   return <IonGrid>
     <IonRow>
-      <IonCol>
-
+      <IonCol size-xs='6' push-xs='3' push-sm='0'>
+	<IonImg
+	className='responsive square'
+	  src={SendToMobileIcon}
+	style={{width: '75%', margin: 'auto'}}/>
       </IonCol>
-      <IonCol>
+      <IonCol size-xs='12' size-sm='6'>
 	<IonText>
 	  <p>
 	    We sent your points to the machine. Please make a choice on the Smart Pantry to receive your item.
