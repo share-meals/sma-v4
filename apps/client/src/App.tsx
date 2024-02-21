@@ -9,8 +9,6 @@ import {ProfileWrapper} from '@/components/ProfileWrapper';
 import {Router} from '@/components/Router';
 import {Suspense} from 'react';
 
-//import {AuthGuardProvider} from '@/contexts/AuthGuard';
-
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -40,18 +38,18 @@ setupIonicReact({
 
 export const App: React.FC = () => {
   return (
-      <Suspense fallback={<LoadingIndicator />}>
-	<FirebaseWrapper>
-	  <Suspense fallback={<LoadingIndicator />}>
-	      <I18nWrapper>
-		<ProfileWrapper>
-		  <IonApp className='background-dark'>
-		    <Router />
-		  </IonApp>
-		</ProfileWrapper>
-	      </I18nWrapper>
-	  </Suspense>
-	</FirebaseWrapper>
-      </Suspense>
+    <Suspense fallback={<LoadingIndicator />}>
+      <FirebaseWrapper>
+	<Suspense fallback={<LoadingIndicator />}>
+	  <I18nWrapper>
+	    <ProfileWrapper>
+	      <IonApp className='background-dark'>
+		<Router />
+	      </IonApp>
+	    </ProfileWrapper>
+	  </I18nWrapper>
+	</Suspense>
+      </FirebaseWrapper>
+    </Suspense>
   )
 };
