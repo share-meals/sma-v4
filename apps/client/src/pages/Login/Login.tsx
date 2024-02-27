@@ -39,10 +39,6 @@ const LoginForm: React.FC = () => {
     control,
     handleSubmit
   } = useForm({
-    defaultValues: {
-      email: 'jon.chin@nyu.edu',
-      password: 'REMOVED'
-    },
     mode: 'onBlur',
     resolver: zodResolver(
       userSchema.pick({
