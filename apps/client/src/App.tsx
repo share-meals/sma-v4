@@ -1,15 +1,13 @@
-import {FirebaseWrapper} from '@/components/FirebaseWrapper';
+//import {FirebaseProvider} from '@/hooks/Firebase';
+import {AppWrapper} from '@/components/AppWrapper';
 import {I18nWrapper} from '@/components/I18nWrapper';
+import '@/components/Firebase';
 import {
   IonApp,
-  setupIonicReact,
+  setupIonicReact
 } from '@ionic/react';
-import {LoadingIndicator} from '@/components/LoadingIndicator';
-import {ProfileWrapper} from '@/components/ProfileWrapper';
+import {ProfileProvider} from '@/hooks/Profile';
 import {Router} from '@/components/Router';
-import {Suspense} from 'react';
-
-//import {AuthGuardProvider} from '@/contexts/AuthGuard';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -28,39 +26,23 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-import '@/theme/variables.css';
-
-import '@/theme/animations.scss';
-import '@/theme/common.scss';
-import '@/theme/overrides.scss';
+import './theme/variables.css';
+import './theme/common.css';
 
 setupIonicReact({
   mode: 'md'
 });
 
-const AppLoadingIndicator: React.FC = () => {
-  return <div style={{
-    backgroundColor: '#0e592f',
-    height: '100vh',
-    width: '100vw'
-  }}></div>; 
-}
-
-
 export const App: React.FC = () => {
   return (
-      <Suspense fallback={<AppLoadingIndicator/>}>
-	<FirebaseWrapper>
-	  <Suspense fallback={<AppLoadingIndicator />}>
-	      <I18nWrapper>
-		<ProfileWrapper>
-		  <IonApp className='background-dark'>
-		    <Router />
-		  </IonApp>
-		</ProfileWrapper>
-	      </I18nWrapper>
-	  </Suspense>
-	</FirebaseWrapper>
-      </Suspense>
+    <IonApp>
+      <I18nWrapper>
+	<ProfileProvider>
+	  <AppWrapper>
+	    <Router />
+	  </AppWrapper>
+	</ProfileProvider>
+      </I18nWrapper>
+    </IonApp>
   )
-};
+}

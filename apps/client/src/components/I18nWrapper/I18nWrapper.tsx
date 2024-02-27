@@ -5,11 +5,7 @@ import {
   IntlShape,
 } from 'react-intl';
 
-import en from './dictionaries/en.json';
-
-interface dictionary {
-  [key: string]: string | dictionary;
-}
+import en from './locales/en.json';
 
 const messages: object = {
   en: en
@@ -18,15 +14,10 @@ const messages: object = {
 export const I18nWrapper: React.FC<React.PropsWithChildren> = ({
   children
 }) => {
-  const cache = createIntlCache();
-  const intl: IntlShape = createIntl({
-    locale: 'en',
-    messages: {}
-  }, cache);
   return <IntlProvider
+  children={children}
   locale='en'
-  messages={{}}
-  >
-  {children}
-  </IntlProvider>
+  messages={en}
+  onError={() => {}}
+  />;
 };

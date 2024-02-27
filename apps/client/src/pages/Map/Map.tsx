@@ -14,8 +14,8 @@ import {fromLonLat} from 'ol/proj';
 import {
   latlngSchema,
   postSchema
-} from '@/components/schema';
-import {LoadingIndicator} from '@/components/LoadingIndicator';
+} from '@sma-v4/schema';
+//import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Point} from 'ol/geom';
 import {PostInfoBanner} from '@/components/PostInfoBanner';
 import {
@@ -26,10 +26,11 @@ import {
 } from 'rlayers';
 import {
   useEffect,
+  useMemo,
   useState
 } from 'react';
-import {useGeolocation} from '@/components/GeolocationWrapper';
-import {usePosts} from '@/contexts/Posts';
+//import {useGeolocation} from '@/components/GeolocationWrapper';
+import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 
 type latlng = z.infer<typeof latlngSchema>;
@@ -57,6 +58,7 @@ const InfoModal: React.FC<{posts: post[]}> = ({posts}) => {
       setIsOpen(true);
     }
   }, [posts]);
+
   return <IonModal isOpen={isOpen} onDidDismiss={() => {setIsOpen(false);}}>
       <IonHeader className='ion-no-border'>
 	<IonToolbar color='dark'>
@@ -77,15 +79,24 @@ const InfoModal: React.FC<{posts: post[]}> = ({posts}) => {
 };
 
 export const Map: React.FC = () => {
+  /*
   const {
     getGeolocation,
     lastGeolocation,
     permissionState
   } = useGeolocation();
-  const {posts} = usePosts();
+  */
+  const {posts} = useProfile();
   const [clickedPosts, setClickedPosts] = useState<post[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  
+  const features = useMemo(() => Object.values(posts).map((f: any) => (
+    <RFeature
+      key={f.id}
+      feature={convertToFeature(f)}
+    />
+  )), [posts]);
+
+  /*
   useEffect(() => {
     getGeolocation()
       .then(() => {
@@ -96,7 +107,7 @@ export const Map: React.FC = () => {
 	console.log(error);
       });
   }, []);
-
+  */
   /*
   if(permissionState === 'prompt'
      || permissionState === 'prompt-with-rationale'){
@@ -105,8 +116,16 @@ export const Map: React.FC = () => {
     </div>
   }
   */
+
+  if(posts === null){
+    return <></>;
+  }
   
-  const center: latlng = lastGeolocation || defaultLocation;
+  //const center: latlng = lastGeolocation || defaultLocation;
+  const center = {
+    lat: 40.73778660789576,
+    lng: -73.98966952873556
+  };
   return <div style={{height: 'calc(100vh - 113px)'}}>
     <RMap
       height='100%'
@@ -122,14 +141,9 @@ export const Map: React.FC = () => {
 	onClick={(event) => {
 	  const posts = event.target.get('features').map((p: Feature) => p.getProperties().properties);
 	  setClickedPosts(posts);
-	}}	
+	}}
 	distance={50}>
-	{posts.map((f) => (
-	  <RFeature
-	    key={f.id}
-	    feature={convertToFeature(f)}
-	  />
-	))}
+	{features}
 	<ClusterLayerStyle />
       </RLayerCluster>
     </RMap>

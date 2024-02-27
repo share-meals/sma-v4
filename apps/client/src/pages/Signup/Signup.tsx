@@ -9,7 +9,10 @@ import {
   FormattedMessage,
   useIntl
 } from 'react-intl';
-import {httpsCallable} from 'firebase/functions';
+import {
+  getFunctions,
+  httpsCallable,
+} from 'firebase/functions';
 import {
   IonButton,
   IonCol,
@@ -21,16 +24,14 @@ import {
   IonList,
   IonRow,
   IonText,
-  useIonToast
 } from '@ionic/react';
-import {sendEmailVerification} from 'firebase/auth';
-import {signInWithEmailAndPassword} from '@firebase/auth';
+import {Notice} from '@/components/Notice';
 import {
-  useAuth,
-  useFunctions
-} from 'reactfire';
+  sendEmailVerification,
+  signInWithEmailAndPassword
+} from 'firebase/auth';
 import {useForm} from 'react-hook-form';
-import {userSchema} from '@/components/schema';
+import {userSchema} from '@sma-v4/schema';
 import {useState} from 'react';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -39,12 +40,14 @@ import ArticleSharpIcon from '@material-design-icons/svg/sharp/article.svg';
 import FeedSharpIcon from '@material-design-icons/svg/sharp/feed.svg';
 import SignupSVG from '@/assets/svg/signup.svg';
 
+const functions = getFunctions();
+const signupFunction = httpsCallable(functions, 'user-create');
+
+
 const SignupForm: React.FC = () => {
-  const auth = useAuth();
-  const functions = useFunctions();
+  //const auth = useAuth();
   const intl = useIntl();
-  const [toast] = useIonToast();
-  const signupFunction = httpsCallable(functions, 'user-create');
+  const [error, setError] = useState<FirebaseError | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const schema = userSchema.pick({
     email: true,
@@ -63,60 +66,35 @@ const SignupForm: React.FC = () => {
     reValidateMode: 'onBlur'
   });
 
-  const watchHasCommunityCode = watch('hasCommunityCode');
+  //const watchHasCommunityCode = watch('hasCommunityCode');
   
   const onSubmit = handleSubmit(
     async(data) => {
       setIsLoading(true);
       signupFunction(data)
 	.then(async () => {
+	  /*
 	  const response = await signInWithEmailAndPassword(auth, data.email, data.password);
 	  // todo: verify that this works on server
 	  sendEmailVerification(response.user);
+	  */
 	}).catch((error: unknown) => {
 	  if(error instanceof FirebaseError){
-	    toast({
-	      color: 'danger',
-	      duration: 2 * 1000,
-	      mode: 'md',
-	      onDidDismiss: () => {setIsLoading(false)},
-	      position: 'top',
-	      positionAnchor: 'signup-submit-button',
-	      message: intl.formatMessage({
-		id: 'common.toast.error',
-		defaultMessage: 'Error: {code}',
-	      }, {code: error.code}),
-	      swipeGesture: 'vertical'
-	    });
+	    setError(error);
 	  }
 	}).finally(() => {
 	  setIsLoading(false);
 	});
-    },
-    (data) => {
-      toast({
-	color: 'danger',
-	duration: 2 * 1000,
-	message: intl.formatMessage({
-	  id: 'common.form.error',
-	  defaultMessage: 'There are errors in your form',
-	}),
-	mode: 'md',
-	onDidDismiss: () => {setIsLoading(false)},
-	position: 'top',
-	positionAnchor: 'signup-submit-button',
-	swipeGesture: 'vertical'
-      });
-  });
+    });
   return <>
     <form
+      noValidate
       onSubmit={onSubmit}>
       <Input
 	control={control}
 	disabled={isLoading}
 	label={intl.formatMessage({
-	  id: 'forms.label.email',
-	  defaultMessage: 'Email',
+	  id: 'forms.label.email'
 	})}
 	name='email'
 	required={true}
@@ -126,8 +104,7 @@ const SignupForm: React.FC = () => {
 	control={control}
 	disabled={isLoading}
 	label={intl.formatMessage({
-	id: 'forms.label.password',
-	defaultMessage: 'Password',
+	id: 'forms.label.password'
       })}
 	name='password'
 	required={true}
@@ -137,8 +114,7 @@ const SignupForm: React.FC = () => {
 	control={control}
 	disabled={isLoading}
 	label={intl.formatMessage({
-	  id: 'forms.label.name',
-	  defaultMessage: 'Name',
+	  id: 'forms.label.name'
 	})}
 	name='name'
 	required={true}
@@ -157,14 +133,12 @@ const SignupForm: React.FC = () => {
 	<IonItem button disabled={isLoading}>
 	  <FormattedMessage
 	    id='pages.signup.readPrivacyPolicy'
-	    defaultMessage='Read Privacy Policy'
 	  />
 	  <IonIcon color='primary' slot='start' src={FeedSharpIcon} />
 	</IonItem>
 	<IonItem button disabled={isLoading}>
 	  <FormattedMessage
 	    id='pages.signup.readTOS'
-	    defaultMessage='Read Terms of Service'
 	  />
 	  <IonIcon color='primary' slot='start' src={ArticleSharpIcon} />
 	</IonItem>
@@ -176,10 +150,19 @@ const SignupForm: React.FC = () => {
 	  type='submit'>
 	  <FormattedMessage
 	    id='buttons.label.signup'
-	    defaultMessage='Signup'
 	  />
 	</StateButton>
       </div>
+      {error && <Notice color='danger'>
+	<IonText>
+	  <p>
+	    <FormattedMessage
+	      id='common.notice.error'
+	      values={{code: error.code}}
+	    />
+	  </p>
+	</IonText>
+      </Notice>}
     </form>
   </>;
 }
@@ -195,7 +178,6 @@ export const Signup: React.FC = () => {
 	    <p className='ion-padding-bottom'>
 	      <FormattedMessage
 		id='pages.signup.greeting'
-		defaultMessage='Create your Share Meals account to start'
 	      />
 	    </p>
 	  </IonText>
