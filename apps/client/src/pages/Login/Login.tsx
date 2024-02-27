@@ -1,3 +1,4 @@
+import {signInWithEmailAndPassword} from 'firebase/auth';
 import {FirebaseError} from '@firebase/util';
 import {
   FormattedMessage,
@@ -19,10 +20,10 @@ import {
   IonRow,
   IonText,
 } from '@ionic/react';
-import {signInWithEmailAndPassword} from 'firebase/auth';
-import {useAuth} from 'reactfire';
+import {getFirebaseAuth} from '@/components/Firebase';
+import {Notice} from '@/components/Notice';
 import {useForm} from 'react-hook-form';
-import {userSchema} from '@/components/schema';
+import {userSchema} from '@sma-v4/schema';
 import {useState} from 'react';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -31,14 +32,17 @@ import LoginSVG from '@/assets/svg/login.svg';
 import ArrowOutwardIcon from '@material-design-icons/svg/sharp/arrow_outward.svg';
 
 const LoginForm: React.FC = () => {
-  const auth = useAuth();
   const intl = useIntl();
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<FirebaseError | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     control,
     handleSubmit
   } = useForm({
+    defaultValues: {
+      email: 'jon.chin@nyu.edu',
+      password: 'ragnorak'
+    },
     mode: 'onBlur',
     resolver: zodResolver(
       userSchema.pick({
@@ -51,41 +55,50 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
+    signInWithEmailAndPassword(getFirebaseAuth(), data.email, data.password)
+	.then(() => {
+	})
+	.catch((error) => {
+	  console.log(error);
+	  if(error instanceof FirebaseError){
+	    setError(error);
+	  }
+	})
+	.finally(() => {
+	  setIsLoading(false);
+	});
+    /*
     signInWithEmailAndPassword(auth, data.email, data.password)
       .catch((error: unknown) => {
-	if(error instanceof FirebaseError){
-	  // todo: common errors
-	  setError(error.code);
-	}
       })
       .finally(() => {
 	setIsLoading(false);
       });
+    */
   });
   
   return <form
+	   noValidate
 	   onSubmit={onSubmit}>
     <Input
-    control={control}
-    disabled={isLoading}
-    label={intl.formatMessage({
-      id: 'forms.label.email',
-      defaultMessage: 'Email',
-    })}
-    name='email'
-    required={true}
-    type='email'
+      control={control}
+      disabled={isLoading}
+      label={intl.formatMessage({
+	id: 'forms.label.email',
+      })}
+      name='email'
+      required={true}
+      type='email'
     />
     <Input
-    control={control}
-    disabled={isLoading}
-    label={intl.formatMessage({
-      id: 'forms.label.password',
-      defaultMessage: 'Password',
-    })}
-    name='password'
-    required={true}
-    type='password'
+      control={control}
+      disabled={isLoading}
+      label={intl.formatMessage({
+	id: 'forms.label.password',
+      })}
+      name='password'
+      required={true}
+      type='password'
     />
     <div className='ion-padding-top ion-text-center'>
       <StateButton
@@ -93,13 +106,19 @@ const LoginForm: React.FC = () => {
 	type='submit'>
 	<FormattedMessage
 	  id='buttons.label.login'
-	  defaultMessage='Login'
 	/>
       </StateButton>
-      {error && <>
-	{error}
-	</>}
     </div>
+      {error && <Notice color='danger'>
+	<IonText>
+	  <p>
+	    <FormattedMessage
+	      id='common.notice.error'
+	      values={{code: error.code}}
+	    />
+	  </p>
+	</IonText>
+      </Notice>}
   </form>;
 }
 
@@ -115,7 +134,6 @@ export const Login: React.FC = () => {
 	    <p className='ion-padding-bottom'>
 	      <FormattedMessage
 	      id='pages.login.greeting'
-	      defaultMessage='Login to your Share Meals account'
 	      />
 	    </p>
 	  </IonText>
@@ -123,10 +141,7 @@ export const Login: React.FC = () => {
 	  <IonList className='mt-3 ion-hide'>
 	    <IonItem lines='none'>
 	      <IonLabel>
-		<FormattedMessage
-		  id='pages.login.forgotPassword'
-		  defaultMessage='forgot your password?'
-		/>
+		<FormattedMessage id='pages.login.forgotPassword' />
 	      </IonLabel>
 	      <IonButton
 		fill='outline'

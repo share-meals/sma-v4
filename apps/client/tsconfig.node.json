@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "composite": true,
-      "jsx": "react-jsx",
-    "module": "ES2022",
+    "jsx": "react-jsx",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true
   },

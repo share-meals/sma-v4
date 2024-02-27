@@ -14,11 +14,7 @@
 	"noImplicitAny": true,
 	"noImplicitReturns": true,
 	"paths": {
-	    "@/*": ["./src/*"],
-	    "@/components/*": ["./src/components/*"],
-	    "@/contexts/*": ["./src/contexts/*"],
-	    "@/pages/*": ["./src/pages/*"],
-	    "@sma-v4/schema/*": ["./src/components/schema/*"]
+	    "@/*": ["./src/*"]
 	},
 	"resolveJsonModule": true,
 	"skipLibCheck": true,
