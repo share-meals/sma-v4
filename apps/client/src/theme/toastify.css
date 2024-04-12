@@ -1,0 +1,4 @@
+:root {
+    --toastify-color-info: var(--ion-color-primary);
+    --toastify-color-success: var(--ion-color-success);
+}

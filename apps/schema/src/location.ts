@@ -6,12 +6,9 @@ export const latlngSchema = z.object({
 });
 
 export const locationSchema = z.object({
-  address: z.string(),
-  room: z.string()
+  address: z.string()
+  .nonempty({message: 'Required'}), // hackzorz for WherePicker
+  name: z.string().optional(),
+  room: z.string().optional()
 })
-.merge(latlngSchema)
-.required({
-  address: true,
-  lat: true,
-  lng: true
-});
+.merge(latlngSchema);

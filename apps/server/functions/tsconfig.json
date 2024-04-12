@@ -8,7 +8,7 @@
 	"outDir": "lib",
 	"paths": {
 	    "@/*": ["*"],
-	    "@sma-v4/schema": ["./schema"]
+	    "@sma-v4/schema": ["schema"]
 	},
 	"sourceMap": true,
 	"strict": true,
@@ -19,6 +19,6 @@
 	"src/**/*test.ts"
     ],
     "include": [
-      "src"
+	"src"
     ]
 }

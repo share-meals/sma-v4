@@ -2,15 +2,15 @@
     "name": "@sma-v4/server-functions",
     "packageManager": "yarn@4.0.1",
     "scripts": {
-        "schema:update": "cp -R ../../schema/src/* ./src/schema",
         "lint": "eslint --ext .js,.ts .",
-        "build": "rm -rf lib/*; tsc && tsc-alias",
-        "build:watch": "rm -rf lib/*; concurrently \"tsc --watch\" \"tsc-alias -w\"",
-        "serve": "concurrently --kill-others \"npm run build:watch\" \"firebase emulators:start --only functions\"",
-        "shell": "npm run build && firebase functions:shell",
-        "start": "npm run shell",
-        "test": "jest",
-        "deploy": "firebase deploy --only functions",
+        "build": "run-s schema:sync build:internal",
+        "build:watch": "run-s schema:sync build:internal:watch",
+        "build:internal": "rm -rf lib/*; tsc && tsc-alias",
+        "build:internal:watch": "rm -rf lib/*; concurrently \"tsc --watch\" \"tsc-alias -w\"",
+        "schema:sync": "rm src/schema/*; cp ../../schema/src/* src/schema",
+        "test": "run-s schema:sync test:internal",
+        "test:internal": "jest",
+        "deploy": "yarn schema:sync; firebase deploy --only functions",
         "logs": "firebase functions:log"
     },
     "engines": {
@@ -19,10 +19,12 @@
     "main": "lib/index.js",
     "dependencies": {
         "@google-cloud/bigquery": "^7.4.0",
+        "@google-cloud/bigquery-storage": "^4.4.0",
         "firebase-admin": "^12.0.0",
         "firebase-functions": "^4.7.0",
         "iso-language-codes": "^2.0.0",
         "legit": "^1.0.9",
+        "protobufjs": "^7.2.6",
         "zod": "^3.22.4"
     },
     "devDependencies": {
@@ -35,6 +37,7 @@
         "eslint-config-google": "^0.14.0",
         "eslint-plugin-import": "^2.29.1",
         "jest": "^29.7.0",
+        "npm-run-all": "^4.1.5",
         "ts-jest": "^29.1.2",
         "tsc-alias": "^1.8.8",
         "typescript": "^5.3.3"
