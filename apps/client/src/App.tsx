@@ -1,13 +1,18 @@
 //import {FirebaseProvider} from '@/hooks/Firebase';
+import {AlertsProvider} from '@/hooks/Alerts';
 import {AppWrapper} from '@/components/AppWrapper';
-import {I18nWrapper} from '@/components/I18nWrapper';
+import {I18nProvider} from '@/hooks/I18n';
 import '@/components/Firebase';
 import {
   IonApp,
   setupIonicReact
 } from '@ionic/react';
+import {GeolocationProvider} from '@/hooks/Geolocation';
+import {LoggerProvider} from '@/hooks/Logger';
+import {MessagingProvider} from '@/hooks/Messaging';
 import {ProfileProvider} from '@/hooks/Profile';
 import {Router} from '@/components/Router';
+import {ToastContainer} from 'react-toastify';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -29,20 +34,30 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './theme/common.css';
 
+import 'react-toastify/dist/ReactToastify.css';
+import './theme/toastify.css'; // overwrite react-toastify colors
+
 setupIonicReact({
   mode: 'md'
 });
 
 export const App: React.FC = () => {
-  return (
-    <IonApp>
-      <I18nWrapper>
-	<ProfileProvider>
-	  <AppWrapper>
-	    <Router />
-	  </AppWrapper>
-	</ProfileProvider>
-      </I18nWrapper>
-    </IonApp>
-  )
+  return <IonApp>
+    <LoggerProvider>
+      <I18nProvider>
+	<AlertsProvider>
+	  <MessagingProvider>
+	    <ProfileProvider>
+	      <AppWrapper>
+		<GeolocationProvider>
+		  <Router />
+		</GeolocationProvider>
+	      </AppWrapper>
+	    </ProfileProvider>
+	  </MessagingProvider>
+	</AlertsProvider>
+      </I18nProvider>
+    </LoggerProvider>
+    <ToastContainer />
+  </IonApp>;
 }

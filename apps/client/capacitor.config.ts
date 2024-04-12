@@ -1,9 +1,14 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.sharemeals.org',
+  appId: 'org.sharemeals.app',
   appName: 'Share Meals',
   webDir: 'dist',
+  plugins: {
+    PushNotifications: {
+      presentationOptions: ['alert', 'badge', 'sound'],
+    },
+  },
   server: {
     androidScheme: 'https'
   }

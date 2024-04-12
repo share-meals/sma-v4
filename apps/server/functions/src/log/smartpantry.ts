@@ -44,7 +44,7 @@ const SurveyResponseSchema = [
 export const logSmartPantrySurveyResponse: logSmartPantrySurveyResponse = (args) => {
   if (process.env.FUNCTIONS_EMULATOR) {
     // emulator
-    return new Promise((resolve) => resolve);
+    return new Promise((resolve) => {resolve});
   }
   const bigQuery: BigQuery = generateBigQueryClient();
   return bigQuery

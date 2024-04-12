@@ -1,0 +1,10 @@
+{
+  "name": "scripts",
+  "packageManager": "yarn@4.1.0",
+  "dependencies": {
+    "apn": "^2.2.0",
+    "firestore-export-import": "^1.4.0",
+    "js-yaml": "^4.1.0",
+    "prompt-sync": "^4.2.0"
+  }
+}

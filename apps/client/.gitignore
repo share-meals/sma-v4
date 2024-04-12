@@ -1,5 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+ios/App/App/GoogleService-Info.plist
+
 temp
 .env*
 
@@ -30,3 +32,8 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
+
+*storybook.log
+
+cypress/screenshots
+cypress/videos

@@ -1,32 +1,31 @@
-//import {addCustomClaim} from "@/user/customClaim/add";
-import {addUserToCommunity} from "./community/add";
+import {addUserToCommunity} from './community/add';
 import {
   CallableRequest,
   HttpsError,
   onCall,
-} from "firebase-functions/v2/https";
+} from 'firebase-functions/v2/https';
 import {
   CollectionReference,
   DocumentData,
   Firestore,
   getFirestore,
   QuerySnapshot,
-} from "firebase-admin/firestore";
-import {createDummyCommunity} from "@/community/createDummyCommunity";
+} from 'firebase-admin/firestore';
+import {createDummyCommunity} from '@/community/createDummyCommunity';
 import {
   functionsErrorCodes,
   languageType,
   userSchema,
-} from "@sma-v4/schema";
+} from '@sma-v4/schema';
 import {
   getAuth,
   UserRecord,
-} from "firebase-admin/auth";
-import {InsertRowsResponse} from "@google-cloud/bigquery";
-//import {logUserCreate} from "@/log/user";
-import {z} from "zod";
+} from 'firebase-admin/auth';
+import {InsertRowsResponse} from '@google-cloud/bigquery';
+import {logUserCreate} from '@/log';
+import {z} from 'zod';
 
-const legit = require("legit");
+const legit = require('legit');
 
 export const verifySchema = (data: {[key: string]: any}): boolean => {
   const schema = userSchema.pick({
@@ -46,14 +45,14 @@ export const create = onCall(
   async (request: CallableRequest<any>) => {
     if (!verifySchema(request.data)) {
       throw new HttpsError(
-        "invalid-argument",
+        'invalid-argument',
         functionsErrorCodes.invalidArgumentSchema
       );
     }
 
     if (!process.env.FUNCTIONS_EMULATOR && !(await legit(request.data.email))) {
       throw new HttpsError(
-        "invalid-argument",
+        'invalid-argument',
         functionsErrorCodes.invalidArgumentEmailDomain
       );
     }
@@ -71,38 +70,38 @@ export const create = onCall(
       });
     } catch (error: any) {
       switch (error.code) {
-        case "auth/email-already-exists":
+        case 'auth/email-already-exists':
 	  throw new HttpsError(
-	    "already-exists",
+	    'already-exists',
 	    error.code
 	  );
 	  break;
         default:
 	  throw new HttpsError(
-	    "unknown",
+	    'unknown',
 	    error.code
 	  );
 	  break;
       }
     }
-    const userLanguage: z.infer<typeof languageType> = request.data.language || "en"; // default to English
+    const userLanguage: z.infer<typeof languageType> = request.data.language || 'en'; // default to English
 
     const firestore: Firestore = getFirestore();
 
     // create user record
-    await firestore.collection("users").doc(userRecord.uid).set({
+    await firestore.collection('users').doc(userRecord.uid).set({
       private: {
         language: userLanguage,
       },
     });
 
     // get any matche dcommunities
-    const emailDomain: string = request.data.email.split("@")[1];
-    const communitiesCollection: CollectionReference<DocumentData> = firestore.collection("communities");
+    const emailDomain: string = request.data.email.split('@')[1];
+    const communitiesCollection: CollectionReference<DocumentData> = firestore.collection('communities');
     const matchedCommunityQueries: Promise<QuerySnapshot<DocumentData>[]> = Promise.all([
-      communitiesCollection.where("domains", "array-contains", emailDomain).get(),
-      communitiesCollection.where("codes.member", "array-contains", request.data.codes || ["NULL"]).get(),
-      communitiesCollection.where("codes.admin", "array-contains", request.data.codes || ["NULL"]).get(),
+      communitiesCollection.where('domains', 'array-contains', emailDomain).get(),
+      communitiesCollection.where('codes.member', 'array-contains', request.data.codes || ['NULL']).get(),
+      communitiesCollection.where('codes.admin', 'array-contains', request.data.codes || ['NULL']).get(),
     ]);
 
     const matchedCommunitySnapshots: QuerySnapshot<DocumentData>[] = await matchedCommunityQueries;
@@ -112,16 +111,16 @@ export const create = onCall(
     type addCommunityTaskPayload = {
       code: string,
       communityId: string,
-      level: "admin" | "member",
+      level: 'admin' | 'member',
     };
     const addCommunityTasks: {[key: string]: addCommunityTaskPayload} = {};
     if (matchedCommunitySnapshots.reduce((sum, snapshot) => sum + snapshot.size, 0) === 0) {
       // no matched communities at all
 
-      if (request.data.email.endsWith("edu")) {
+      if (request.data.email.endsWith('edu')) {
         // only create a dummy community if user has an edu email address
         const dummyCommunityId: string = await createDummyCommunity(emailDomain);
-        addCommunityTasks[dummyCommunityId] = {code: emailDomain, communityId: dummyCommunityId, level: "member"};
+        addCommunityTasks[dummyCommunityId] = {code: emailDomain, communityId: dummyCommunityId, level: 'member'};
       }
     } else {
       // at least one community is matched, so need to find which ones
@@ -130,15 +129,15 @@ export const create = onCall(
         .forEach((doc) => {
 	  switch (index) {
 	    case 0:
-	      addCommunityTasks[doc.id] = {code: emailDomain, communityId: doc.id, level: "member"};
+	      addCommunityTasks[doc.id] = {code: emailDomain, communityId: doc.id, level: 'member'};
 	      break;
 	    case 1:
 	      // todo: find intersection of codes
-	      addCommunityTasks[doc.id] = {code: request.data.codes.join(","), communityId: doc.id, level: "member"};
+	      addCommunityTasks[doc.id] = {code: request.data.codes.join(','), communityId: doc.id, level: 'member'};
 	      break;
 	    case 2:
 	      // todo: find intersection of codes
-	      addCommunityTasks[doc.id] = {code: request.data.codes.join(","), communityId: doc.id, level: "admin"};
+	      addCommunityTasks[doc.id] = {code: request.data.codes.join(','), communityId: doc.id, level: 'admin'};
 	      break;
 	  }
         });
@@ -160,22 +159,26 @@ export const create = onCall(
       );
     });
 
-    /*
-    tasks.push(
-      addCustomClaim({
-        id: userRecord.uid,
-        key: "language",
-        value: userLanguage,
-      }),
-      logUserCreate({
-        emailDomain,
-        ipAddress: request.rawRequest.ip,
-        userId: userRecord.uid,
-      })
-    );
+    if(!process.env.FUNCTIONS_EMULATOR){
+      tasks.push(
+	logUserCreate({
+          emailDomain,
+          ipAddress: request.rawRequest.ip,
+          userId: userRecord.uid,
+	})
+      );
+    }
     
+    /*
+       tasks.push(
+       addCustomClaim({
+       id: userRecord.uid,
+       key: 'language',
+       value: userLanguage,
+       }),
+       );
+     */
     Object.freeze(tasks);
     // todo: this hangs in the emulator
-    return Promise.all(tasks);
-    */
+    await Promise.all(tasks);
 });
