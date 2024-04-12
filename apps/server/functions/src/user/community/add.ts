@@ -29,14 +29,16 @@ export const addUserToCommunity: addUserToCommunity = ({
       id: userId,
       key: communityId,
       value: level,
-    }),
-    logUserCommunityAdd({
+    })
+  ];
+  if(!process.env.FUNCTIONS_EMULATOR){
+    tasks.push(logUserCommunityAdd({
       code,
       communityId,
       ipAddress,
       level,
       userId,
-    }),
-  ];
+    }));
+  }
   return tasks;
 };

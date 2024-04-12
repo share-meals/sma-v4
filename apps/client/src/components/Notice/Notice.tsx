@@ -1,19 +1,62 @@
+import classNames from 'classnames';
 import {
   IonCard,
-  IonCardContent
+  IonCardContent,
+  IonCol,
+  IonGrid,
+  IonIcon,
+  IonRow,
+  IonText,
+  IonThumbnail,
 } from '@ionic/react';
 
-interface Notice {
+import CheckCircle from '@material-symbols/svg-400/rounded/check_circle.svg';
+import Warning from '@material-symbols/svg-400/rounded/warning.svg';
+
+import './Notice.css';
+
+export interface NoticeProps {
+  className?: string,
   color: string
 };
 
-export const Notice: React.FC<React.PropsWithChildren<Notice>> = ({
+const getIcon = (color: string) => {
+  switch(color){
+    case 'danger':
+      return Warning;
+    case 'success':
+      return CheckCircle;
+    default:
+      return Warning;
+  }
+}
+
+export const Notice: React.FC<React.PropsWithChildren<NoticeProps>> = ({
   children,
+  className,
   color
 }) => {
-  return <IonCard color={color}>
-    <IonCardContent>
-      {children}
+  return <IonCard
+      className={classNames(['notice', 'ion-no-margin', className])}
+      style={{
+	border: `2px solid var(--ion-color-${color}`,
+	boxShadow: 'none'
+      }}>
+      <IonCardContent className='ion-text-left ion-no-padding'>
+	<IonGrid>
+	  <IonRow className='ion-align-items-center'>
+	  <IonCol size='auto'>
+	    <IonIcon icon={getIcon(color)} color={color} style={{fontSize: '2rem'}} />
+	  </IonCol>
+	  <IonCol>
+	    <IonText>
+	      <p>
+		{children}
+	      </p>
+	    </IonText>
+	  </IonCol>
+	</IonRow>
+      </IonGrid>
     </IonCardContent>
-  </IonCard>
+  </IonCard>;
 }

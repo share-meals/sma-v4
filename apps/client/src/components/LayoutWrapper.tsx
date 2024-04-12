@@ -6,25 +6,23 @@ import {
 import {useProfile} from '@/hooks/Profile';
 
 interface props {
-  isFullscreen?: boolean;
   translatedTitle: React.ReactNode;
 }
 
 export const LayoutWrapper: React.FC<React.PropsWithChildren<props>> = ({
   children,
-  isFullscreen = false,
   translatedTitle
 }) => {
   const style = {
-    backgroundColor: 'var(--ion-color-light)',
+    backgroundColor: '#ffffff',
     minHeight: '100%',
     maxWidth: 768,
     margin: 'auto',
-    padding: isFullscreen ? 0 : '2rem'
+    padding: 0
   };
   return <IonPage>
     <Header translatedTitle={translatedTitle} />
-    <IonContent>
+    <IonContent style={{'--background': 'var(--ion-color-dark)'}}>
       <div style={style}>
 	{children}
       </div>

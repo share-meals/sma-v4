@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Share Meals</string>
+    <string name="title_activity_main">Share Meals</string>
+    <string name="package_name">app.sharemeals.org</string>
+    <string name="custom_url_scheme">app.sharemeals.org</string>
+</resources>
