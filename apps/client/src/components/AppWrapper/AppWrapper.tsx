@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import {useI18n} from '@/hooks/I18n';
 import {useProfile} from '@/hooks/Profile';
 
 import './AppWrapper.css';
@@ -11,6 +12,7 @@ import './AppWrapper.css';
 
 export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
   const {isLoading: isProfileLoading} = useProfile();
+  const {dateFnsLocale, language} = useI18n();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if(!isProfileLoading){
@@ -22,7 +24,9 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
   }, [isProfileLoading]);
 
   // doesn't work?
-  if(!isProfileLoading){
+  if(!isProfileLoading
+     || language === undefined
+     || dateFnsLocale === undefined){
     return <div id='appLoadingIndicator'>
       <img
 	src={Logo}

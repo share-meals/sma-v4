@@ -1,5 +1,7 @@
 import {ClusterLayerStyle} from './ClusterLayerStyle';
 import {Feature} from 'ol';
+import {FormattedMessage} from 'react-intl';
+import {fromLonLat} from 'ol/proj';
 import {
   IonButton,
   IonButtons,
@@ -10,12 +12,11 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import {fromLonLat} from 'ol/proj';
 import {
   latlngSchema,
   postSchema
 } from '@sma-v4/schema';
-//import {LoadingIndicator} from '@/components/LoadingIndicator';
+import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Point} from 'ol/geom';
 import {PostInfoBanner} from '@/components/PostInfoBanner';
 import {
@@ -29,7 +30,7 @@ import {
   useMemo,
   useState
 } from 'react';
-//import {useGeolocation} from '@/components/GeolocationWrapper';
+import {useGeolocation} from '@/hooks/Geolocation';
 import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 
@@ -40,7 +41,6 @@ import CloseSharpIcon from '@material-design-icons/svg/sharp/close.svg';
 
 const defaultLocation: latlng = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
 
-
 const convertToFeature = (post: post): Feature => {
   return new Feature({
     geometry: new Point(fromLonLat([post.location.lng, post.location.lat])),
@@ -50,7 +50,6 @@ const convertToFeature = (post: post): Feature => {
   });
 };
 
-
 const InfoModal: React.FC<{posts: post[]}> = ({posts}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
@@ -59,11 +58,17 @@ const InfoModal: React.FC<{posts: post[]}> = ({posts}) => {
     }
   }, [posts]);
 
+  useEffect(() => {
+    return () => {
+      setIsOpen(false);
+    }
+  }, []);
+  
   return <IonModal isOpen={isOpen} onDidDismiss={() => {setIsOpen(false);}}>
       <IonHeader className='ion-no-border'>
-	<IonToolbar color='dark'>
+	<IonToolbar color='primary'>
 	  <IonTitle>
-	    hello
+	    <FormattedMessage id='pages.map.postsList' />
 	  </IonTitle>
 	  <IonButtons slot='end'>
 	    <IonButton onClick={() => {setIsOpen(false);}}>
@@ -72,70 +77,71 @@ const InfoModal: React.FC<{posts: post[]}> = ({posts}) => {
 	  </IonButtons>
 	</IonToolbar>
       </IonHeader>
-    <IonContent>
-      {posts.map((p) => <PostInfoBanner key={p.id} {...p} />)}
-    </IonContent>
+      <IonContent color='light'>
+	{posts.map((p) => <PostInfoBanner key={p.id} {...p} onNavigate={() => {setIsOpen(false);}}/>)}
+      </IonContent>
   </IonModal>;
 };
 
 export const Map: React.FC = () => {
-  /*
   const {
     getGeolocation,
     lastGeolocation,
     permissionState
   } = useGeolocation();
-  */
+  
+  useEffect(() => {
+    (async () => {
+      if(lastGeolocation === undefined){
+	getGeolocation()
+	  .catch((error) => {
+	    console.log(error);
+	  });
+      }
+    })();
+  }, [lastGeolocation]);
   const {posts} = useProfile();
   const [clickedPosts, setClickedPosts] = useState<post[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const features = useMemo(() => Object.values(posts).map((f: any) => (
+  // todo: || [] is a hack
+  const features = useMemo(() => Object.values(posts || []).map((f: any) => (
     <RFeature
       key={f.id}
       feature={convertToFeature(f)}
     />
   )), [posts]);
 
-  /*
-  useEffect(() => {
-    getGeolocation()
-      .then(() => {
-	// do nothing
-	// lastGeolocation is updated
-      })
-      .catch((error) => {
-	console.log(error);
-      });
-  }, []);
-  */
-  /*
-  if(permissionState === 'prompt'
-     || permissionState === 'prompt-with-rationale'){
-    return <div style={{height: '100%'}}>
+  if(
+    posts === null
+    || permissionState === 'prompt'
+    || permissionState === 'prompt-with-rationale'
+    || (
+      permissionState === 'denied'
+      && lastGeolocation === undefined
+    )
+  ){
+    return <div style={{height: 'calc(100vh - 113px)'}}>
       <LoadingIndicator />
-    </div>
-  }
-  */
-
-  if(posts === null){
-    return <></>;
+    </div>;
   }
   
   //const center: latlng = lastGeolocation || defaultLocation;
-  const center = {
-    lat: 40.73778660789576,
-    lng: -73.98966952873556
-  };
-  return <div style={{height: 'calc(100vh - 113px)'}}>
+  return <div style={{
+    height: 'calc(100vh - 113px)',
+    position: 'relative'
+  }}>
     <RMap
       height='100%'
       initial={{
 	center: fromLonLat([
-	  center.lng,
-	  center.lat
+	  lastGeolocation!.lng,
+	  lastGeolocation!.lat
 	]),
 	zoom: 14
-      }}>
+      }}
+      minZoom={6}
+      maxZoom={16}
+    >
       <ROSM />
       <RLayerCluster
 	onClick={(event) => {
