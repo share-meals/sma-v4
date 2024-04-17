@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "app.sharemeals.org"
+    namespace "org.sharemeals.app"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "app.sharemeals.org"
+        applicationId "org.sharemeals.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
