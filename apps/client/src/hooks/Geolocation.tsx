@@ -97,7 +97,7 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
 	  }),
 	  onDidDismiss: async () => {
 	    if(Capacitor.isNativePlatform()){
-	      const afterPromptPermissions: any = Geolocation.requestPermissions({permissions: ['location']});
+	      const afterPromptPermissions: any = await Geolocation.requestPermissions({permissions: ['location']});
 	      if(afterPromptPermissions.location === 'denied'){
 		getBackupGeolocation();
 		return;
