@@ -1,4 +1,4 @@
-package app.sharemeals.org;
+package org.sharemeals.app;
 
 import com.getcapacitor.BridgeActivity;
 

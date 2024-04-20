@@ -2,7 +2,7 @@ const apn = require('apn');
 const fs = require('fs');
 const yaml = require('js-yaml');
 
-const input = yaml.load(fs.readFileSync('./sendToAPNSToken.yaml', 'utf-8'));
+const input = yaml.load(fs.readFileSync('../input-apns.yaml', 'utf-8'));
 
 // Set up APNs connection options
 const options = {

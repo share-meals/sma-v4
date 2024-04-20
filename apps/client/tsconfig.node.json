@@ -2,7 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "jsx": "react-jsx",
-    "module": "ESNext",
+    "module": "ES2022",
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true
   },
