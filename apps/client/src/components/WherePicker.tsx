@@ -177,6 +177,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	    .catch(handleGetGeolocationError);
 	}else{
 	  // todo: need to check if address === undefined is necessary
+	  try{
 	  const response = await fromLatLng(lastGeolocation!.lat, lastGeolocation!.lng);
 	  // todo: handle more statuses
 	  switch(response.status){
@@ -195,6 +196,14 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	      // todo: something
 	      break;
 	  }
+	  }catch(error: any){
+	    // typically no results from geocode?
+	    setValue('location.address', `(${lastGeolocation!.lat}, ${lastGeolocation!.lng})`);
+	    setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
+	    setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
+	    setInternalLat(lastGeolocation!.lat);
+	    setInternalLng(lastGeolocation!.lng);
+	  };
 	}
       })();
     }
