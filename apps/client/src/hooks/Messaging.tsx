@@ -98,8 +98,8 @@ export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children})
 	FirebaseMessaging.removeAllListeners()
 			 .then(() => {
 			   FirebaseMessaging.addListener('notificationReceived', (event) => {
-			     console.log(event);
-			     toast.info('hello world');
+			     // todo: toast a message and have it clickable / redirectable
+			     console.log(JSON.stringify(event));
 			   });
 			 });
 	break;
