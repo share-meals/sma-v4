@@ -27,6 +27,7 @@ import {useProfile} from '@/hooks/Profile';
 import {Account} from '@/pages/Account';
 import {Login} from '@/pages/Login';
 import {Map} from '@/pages/Map';
+import {PageNotFound} from '@/pages/PageNotFound';
 import {Post} from '@/pages/Post';
 import {PrivacyPolicy} from '@/pages/PrivacyPolicy';
 import {ResetPassword} from '@/pages/ResetPassword';
@@ -169,6 +170,16 @@ export const Router: React.FC = () => {
 	    </LayoutWrapper>
 	  </AuthGuard>
 	</Route>
+	<Route exact path='/page-not-found'>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.pageNotFound.title' />}>
+	    <PageNotFound />
+	  </LayoutWrapper>
+	</Route>
+	<Route>
+	  <Redirect to='/page-not-found' />
+	</Route>
+	  
 	
       </IonRouterOutlet>
       <IonTabBar color='primary' slot='bottom'>
