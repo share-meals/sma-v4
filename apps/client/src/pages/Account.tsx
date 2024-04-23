@@ -31,6 +31,8 @@ import {zodResolver} from '@hookform/resolvers/zod';
 
 import CloseSharpIcon from '@material-design-icons/svg/sharp/close.svg';
 
+const DEBUG_TAP_COUNT: number = 7;
+
 /*
 const ChangePasswordModal: React.FC = () => {
   const auth = getFirebaseAuth();
@@ -96,7 +98,8 @@ const ChangePasswordModal: React.FC = () => {
 export const Account: React.FC = () => {
   const [showDebugTaps, setShowDebugTaps] = useState<number>(0);
   const {log, logs} = useLogger();
-  const {messagingToken} = useMessaging();
+  const {getMessagingToken} = useMessaging();
+  const [messagingToken, setMessagingToken] = useState<string | null>(null);
   const {user, signout} = useProfile();
   const [showLogs, setShowLogs] = useState<boolean>(false);
   useIonViewDidLeave(() => {
@@ -110,7 +113,7 @@ export const Account: React.FC = () => {
     });
     signout();
   };
-  const showLogsModal = () => {
+  const showLogsModal = async () => {
     setShowLogs(true);
   };
   return <>
@@ -122,12 +125,19 @@ export const Account: React.FC = () => {
       <FormattedMessage id='common.label.logout' />
     </IonItem>
 
-    <IonItem className='ion-text-right' onClick={() => {setShowDebugTaps(showDebugTaps + 1);}}>
-      <IonLabel>
+    <IonItem className='ion-text-right' onClick={async () => {
+      if(showDebugTaps < DEBUG_TAP_COUNT){
+	setShowDebugTaps(showDebugTaps + 1);
+	if(showDebugTaps === DEBUG_TAP_COUNT - 1){
+	  setMessagingToken(await getMessagingToken());
+	}
+      }
+    }}>
+      <IonLabel className='no-select'>
 	<FormattedMessage id='pages.account.version' values={{version: import.meta.env.VITE_APP_VERSION}}/>
       </IonLabel>
     </IonItem>
-    {showDebugTaps >= 7 && <>
+    {showDebugTaps >= DEBUG_TAP_COUNT && <>
       <IonListHeader color='dark'>
 	<FormattedMessage id='pages.account.debug' />
       </IonListHeader>
