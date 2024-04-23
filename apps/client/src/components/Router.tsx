@@ -25,6 +25,7 @@ import {useHistory} from 'react-router-dom';
 import {useProfile} from '@/hooks/Profile';
 
 import {Account} from '@/pages/Account';
+import {CloseAccount} from '@/pages/CloseAccount';
 import {Login} from '@/pages/Login';
 import {Map} from '@/pages/Map';
 import {PageNotFound} from '@/pages/PageNotFound';
@@ -140,6 +141,14 @@ export const Router: React.FC = () => {
 	    <LayoutWrapper
 	      translatedTitle={<FormattedMessage id='pages.account.title' />}>
 	      <Account />
+	    </LayoutWrapper>
+	  </AuthGuard>
+	</Route>
+	<Route exact path='/close-account'>
+	  <AuthGuard requiredAuth='authed'>
+	    <LayoutWrapper
+	      translatedTitle={<FormattedMessage id='pages.closeAccount.title' />}>
+	      <CloseAccount />
 	    </LayoutWrapper>
 	  </AuthGuard>
 	</Route>
