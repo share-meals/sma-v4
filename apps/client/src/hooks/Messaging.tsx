@@ -44,7 +44,7 @@ interface MessagingState {
   enable: () => Promise<void>,
   sendMessagingToken: () => Promise<void>,
   clearMessagingToken: (uid: string) => Promise<void>,
-  messagingToken: string | null,
+  getMessagingToken: () => Promise<string>,
   updateCommunitySubscriptions: (fixedCommunityIds: string[] | null) => Promise<void>,
 }
 
@@ -61,7 +61,6 @@ const userCommunityUnsubscribeFunction = httpsCallable(functions, 'user-communit
 export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children}) => {
   const [permission, setPermission] = useState<'prompt' | 'prompt-with-rationale' | 'granted' | 'denied' | null>(null);
   const [needPrompt, setNeedPrompt] = useState<boolean>(false);
-  const [messagingToken, setMessagingToken] = useState<string | null>(null);
   const subscribedCommunities = useRef<string[] | null>(null);
   const {addAlert} = useAlerts();
   const {log} = useLogger();
@@ -116,7 +115,6 @@ export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children})
       message: `sending messaging token`
     });
     const messagingToken = await getMessagingToken();
-    setMessagingToken(messagingToken);
     const device = await Device.getInfo();
     userMessagingTokenCreateFunction({
       messagingToken,
@@ -138,6 +136,8 @@ export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children})
 
   const subUnsubCommunities = useCallback(async (fixedCommunityIds: string[], action: 'subscribe' | 'unsubscribe') => {
     const p = await checkPermission();
+    const messagingToken = await getMessagingToken();
+
     if(p === 'denied'){
       // if we don't have permissions, then exit early
       return;
@@ -239,7 +239,7 @@ export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children})
 	   value={{
 	     clearMessagingToken,
 	     enable,
-	     messagingToken,
+	     getMessagingToken,
 	     sendMessagingToken,
 	     updateCommunitySubscriptions
 	   }}>
