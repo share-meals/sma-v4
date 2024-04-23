@@ -3,6 +3,12 @@
     
 }
 
+.no-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
 ion-card{
     --color: var(--ion-text-color);
     font-size: 1rem !important;
