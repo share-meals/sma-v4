@@ -25,8 +25,16 @@ interface MapProps {
   zoom?: number;
 }
 
+const NOTIFICATION_WIDTH: number = 30;
+
 const GeolocationError: React.FC = () => (
-  <div style={{position: 'absolute', zIndex: 999, width: '100%', bottom: '1rem'}}>
+  <div style={{
+    bottom: '1rem',
+    position: 'absolute',
+    right: `calc(50% - ${NOTIFICATION_WIDTH / 2}rem)`,
+    width: `${NOTIFICATION_WIDTH}rem`,
+    zIndex: 999,
+  }}>
     <Notice color='danger'>
       <IonLabel>
 	<FormattedMessage id='errors.geolocation.denied' />
