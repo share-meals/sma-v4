@@ -20,6 +20,7 @@ import {
   IonToolbar,
   useIonViewDidLeave
 } from '@ionic/react';
+import {LanguageSwitcher} from '@/components/LanguageSwitcher';
 import {useForm} from 'react-hook-form';
 import {useLogger} from '@/hooks/Logger';
 import {useMessaging} from '@/hooks/Messaging';
@@ -120,6 +121,9 @@ export const Account: React.FC = () => {
     <IonList>
     <IonItem className='ion-hide'>
       <FormattedMessage id='pages.account.changePassword' />
+    </IonItem>
+    <IonItem>
+      <LanguageSwitcher />
     </IonItem>
     <IonItem button onClick={signoutInternal}>
       <FormattedMessage id='common.label.logout' />

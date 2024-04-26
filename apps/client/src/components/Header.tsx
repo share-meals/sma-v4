@@ -58,7 +58,7 @@ export const Header: React.FC<React.PropsWithChildren<props>> = ({
       <IonContent className='ion-padding'>
 	{Object.keys(alerts).map((key) =>
 	  <IonItem key={key}>
-	    {alerts[key].message}
+	    <FormattedMessage id={alerts[key].message} />
 	  </IonItem>)}	
       </IonContent>
     </IonModal>
