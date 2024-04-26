@@ -101,9 +101,10 @@ export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children})
 			     console.log(JSON.stringify(event));
 			   });
 			 });
+	// todo: remove alert if exists
 	break;
       case 'denied':
-	addAlert('messaging', {message: intl.formatMessage({id: 'errors.messaging.denied'})});
+	addAlert('messaging', {message: 'errors.messaging.denied'});
 	break;
     }
   }, [addAlert]);

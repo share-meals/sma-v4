@@ -31,6 +31,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import {LanguageSwitcher} from '@/components/LanguageSwitcher';
 import {Notice} from '@/components/Notice';
 import {PrivacyPolicy} from '@/pages/PrivacyPolicy';
 import {
@@ -238,6 +239,10 @@ export const Signup: React.FC = () => {
 	  <img src={SignupSVG} className='square responsive' />
 	</IonCol>
 	<IonCol size-xs='12' size-sm='6'>
+	  <LanguageSwitcher
+	    fill='outline'
+	    labelPlacement='stacked'
+	  />
 	  <IonText>
 	    <p className='ion-padding-bottom'>
 	      <FormattedMessage
