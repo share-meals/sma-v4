@@ -201,7 +201,7 @@ export const Router: React.FC = () => {
 	<IonTabButton data-testid='signup button' tab='signup' href='/signup' className={isLoggedIn ? 'ion-hide' : ''}>
 	  <IonIcon aria-hidden='true' src={PersonAddAltIcon} />
 	  <IonLabel>
-	    Signup
+	    <FormattedMessage id='pages.signup.title' />
 	  </IonLabel>
 	</IonTabButton>
 	<IonTabButton data-testid='map button' tab='map' href='/map' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>

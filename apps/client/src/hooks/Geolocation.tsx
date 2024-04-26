@@ -67,7 +67,7 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
       case 'denied':
 	if(permissionState !== 'denied'){
 	  setPermissionState('denied');
-	  addAlert('geolocation', {message: intl.formatMessage({id: 'errors.geolocation.denied'})});
+	  addAlert('geolocation', {message: 'errors.geolocation.denied'});
 	}
 	getBackupGeolocation();
 	break;
