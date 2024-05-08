@@ -7,19 +7,22 @@ import {
   messagingTokenSchema,
 } from '@sma-v4/schema';
 import {getMessaging} from 'firebase-admin/messaging';
+/*
 import {
   
 } from 'firebase-functions/logger';
-import {validateSchema} from '@/common';
+*/
+import {
+  requireAuthed,
+  validateSchema
+} from '@/common';
 import {z} from 'zod';
 
 export const subscribe = onCall(async (
   request: CallableRequest<any>
 ) => {
-  if (process.env.FUNCTIONS_EMULATOR) {
-    // emulator
-    return;
-  }
+  requireAuthed(request.auth);
+
   // need to convert messagingTokenSchema to object
   validateSchema(
     {
@@ -29,6 +32,10 @@ export const subscribe = onCall(async (
 	communityIds: z.array(fixedCommunityIdSchema).nonempty()
       })
   });
+  if (process.env.FUNCTIONS_EMULATOR) {
+    // emulator
+    return;
+  }
 
   const tasks = [];
   for(const c of request.data.communityIds){

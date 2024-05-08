@@ -1,14 +1,32 @@
+import {auth} from '@/components/Firebase';
+import {
+  communityCodeSchema,
+  userSchema
+} from '@sma-v4/schema';
+import {CommunityTags} from '@/components/CommunityTags';
+import {
+  Dispatch,
+  SetStateAction,
+  useState
+} from 'react';
 import {
   FormattedMessage,
   useIntl
 } from 'react-intl';
 import {
-  Input
+  getFunctions,
+  httpsCallable,
+} from 'firebase/functions';
+import {
+  Input,
+  StateButton,
 } from '@share-meals/frg-ui';
 import {
   IonButton,
   IonButtons,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
   IonIcon,
   IonItem,
@@ -16,17 +34,17 @@ import {
   IonList,
   IonListHeader,
   IonModal,
+  IonRow,
   IonTitle,
   IonToolbar,
   useIonViewDidLeave
 } from '@ionic/react';
 import {LanguageSwitcher} from '@/components/LanguageSwitcher';
+import {Notice} from '@/components/Notice';
 import {useForm} from 'react-hook-form';
 import {useLogger} from '@/hooks/Logger';
 import {useMessaging} from '@/hooks/Messaging';
 import {useProfile} from '@/hooks/Profile';
-import {useState} from 'react';
-import {userSchema} from '@sma-v4/schema';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
@@ -34,12 +52,17 @@ import CloseSharpIcon from '@material-design-icons/svg/sharp/close.svg';
 
 const DEBUG_TAP_COUNT: number = 7;
 
-/*
-const ChangePasswordModal: React.FC = () => {
-  const auth = getFirebaseAuth();
+interface ChangePasswordModalProps {
+  setShowChangePassword: Dispatch<SetStateAction<boolean>>,
+  showChangePassword: boolean,
+}
+
+const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
+  setShowChangePassword,
+  showChangePassword,
+}) => {
   const intl = useIntl();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const {
     control,
     handleSubmit
@@ -57,52 +80,151 @@ const ChangePasswordModal: React.FC = () => {
     console.log(data);
   });
 
-    return <>
-    <form
-      onSubmit={onSubmit}>
-      <Input
-	control={control}
-	disabled={isLoading}
-	label={intl.formatMessage({id: 'forms.label.new_password'})}
-	name='new_password'
-	type='password'
-      />
-     <Input
-	control={control}
-	disabled={isLoading}
-       label={intl.formatMessage({id: 'forms.label.confirm_new_password'})}
-	name='confirm_new_password'
-	type='password'
-      />
-      <Input
-	control={control}
-	disabled={isLoading}
-	label={intl.formatMessage({id: 'forms.label.old_password'})}
-	name='old_password'
-	type='password'
-      />
-     </form>
+  return <>
+    <IonModal isOpen={showChangePassword} onDidDismiss={() => {setShowChangePassword(false);}}>
+      <IonHeader className='ion-no-border'>
+	<IonToolbar color='primary'>
+	  <IonTitle>
+	    <FormattedMessage id='pages.account.changePassword' />
+	  </IonTitle>
+	  <IonButtons slot='end'>
+	    <IonButton onClick={() => {setShowChangePassword(false);}}>
+	      <IonIcon src={CloseSharpIcon}/>
+	    </IonButton>
+	  </IonButtons>
+	</IonToolbar>
+      </IonHeader>
+      <IonContent className='ion-padding'>
+	<form
+	  onSubmit={onSubmit}>
+	  <Input
+	    control={control}
+	    disabled={isLoading}
+	    fill='outline'
+	    label={intl.formatMessage({id: 'pages.account.newPassword'})}
+	    labelPlacement='floating'
+	    name='newPassword'
+	    required={true}
+	    type='password'
+	  />
+	  <Input
+	    control={control}
+	    disabled={isLoading}
+	    fill='outline'
+	    label={intl.formatMessage({id: 'pages.account.confirmNewPassword'})}
+	    labelPlacement='floating'
+	    name='confirmNewPassword'
+	    required={true}
+	    type='password'
+	  />
+	  <Input
+	    control={control}
+	    disabled={isLoading}
+	    fill='outline'
+	    label={intl.formatMessage({id: 'pages.account.currentPassword'})}
+	    labelPlacement='floating'
+	    name='currentPassword'
+	    required={true}
+	    type='password'
+	  />
+	  <div className='ion-padding-top ion-text-center'>
+	    <StateButton
+	      data-testid='button-change-passwordsubmit'
+	      isLoading={isLoading}
+	      type='submit'>
+	      <FormattedMessage id='buttons.label.submit' />
+	    </StateButton>
+	  </div>
+	</form>
+      </IonContent>
+    </IonModal>
   </>;
-
 };
 
-      <IonButton
-	fill='outline'
-	onClick={signout}
-	slot='end'
-      >
-      </IonButton>
-
-
- */
+const AddCommunityForm: React.FC = () => {
+  const intl = useIntl();
+  const functions = getFunctions();
+  const [hasError, setHasError] = useState<boolean>(false);
+  const addByCommunityCodeFunction = httpsCallable(functions, 'user-community-addByCommunityCode');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {
+    control,
+    formState,
+    handleSubmit,
+    reset
+  } = useForm({
+    mode: 'onSubmit',
+    resolver: zodResolver(
+      z.object({
+	communityCode: communityCodeSchema
+      })
+    ),
+    reValidateMode: 'onSubmit'
+  });
+  useIonViewDidLeave(() => {
+    setHasError(false);
+    reset();
+  });
+  const onSubmit = handleSubmit(async (data) => {
+    setIsLoading(true);
+    addByCommunityCodeFunction(data)
+      .then(() => {
+	// todo: something
+      })
+      .catch((error) => {
+	setHasError(true);
+	console.log(error);
+      }).finally(() => {
+	setIsLoading(false);
+      });
+  });
+  return <>
+    <form
+      noValidate
+      onSubmit={onSubmit}>
+      <IonGrid>
+	<IonRow className='ion-align-items-top'>
+	  <IonCol>
+	    <Input
+	      control={control}
+	      data-testid='addCommunity-input-communityCode'
+	      disabled={isLoading}
+	      fill='outline'
+	      label={intl.formatMessage({id: 'common.label.communityCode'})}
+	      labelPlacement='floating'
+	      name='communityCode'
+	      required={true}
+	      type='text'
+	    />
+	  </IonCol>
+	  <IonCol size='auto'>
+	    <StateButton
+	      isLoading={isLoading}
+	      style={{marginTop: 10}}
+	      type='submit'>
+	      <FormattedMessage id='pages.account.join' />
+	    </StateButton>
+	  </IonCol>
+	</IonRow>
+      </IonGrid>
+      {hasError
+      && <Notice color='danger' className='ion-margin'>
+	<IonLabel>
+	  <FormattedMessage id='common.errors.noCommunitiesFound' />
+	</IonLabel>
+      </Notice>}
+    </form>
+  </>;
+}
 
 export const Account: React.FC = () => {
   const [showDebugTaps, setShowDebugTaps] = useState<number>(0);
   const {log, logs} = useLogger();
   const {getMessagingToken} = useMessaging();
   const [messagingToken, setMessagingToken] = useState<string | null>(null);
-  const {user, signout} = useProfile();
+  const {communities, user, signout} = useProfile();
   const [showLogs, setShowLogs] = useState<boolean>(false);
+  const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
   useIonViewDidLeave(() => {
     setShowDebugTaps(0);
   });
@@ -118,52 +240,67 @@ export const Account: React.FC = () => {
     setShowLogs(true);
   };
   return <>
-    <IonList>
-    <IonItem className='ion-hide'>
-      <FormattedMessage id='pages.account.changePassword' />
-    </IonItem>
-    <IonItem>
-      <LanguageSwitcher />
-    </IonItem>
-    <IonItem button onClick={signoutInternal}>
-      <FormattedMessage id='common.label.logout' />
-    </IonItem>
-
-    <IonItem className='ion-text-right' onClick={async () => {
-      if(showDebugTaps < DEBUG_TAP_COUNT){
-	setShowDebugTaps(showDebugTaps + 1);
-	if(showDebugTaps === DEBUG_TAP_COUNT - 1){
-	  setMessagingToken(await getMessagingToken());
-	}
-      }
-    }}>
-      <IonLabel className='no-select'>
-	<FormattedMessage id='pages.account.version' values={{version: import.meta.env.VITE_APP_VERSION}}/>
-      </IonLabel>
-    </IonItem>
-    {showDebugTaps >= DEBUG_TAP_COUNT && <>
+    <IonList className='ion-no-padding'>
       <IonListHeader color='dark'>
-	<FormattedMessage id='pages.account.debug' />
+	<FormattedMessage id='pages.account.settings' />
+      </IonListHeader>
+      <IonItem button detail={true} onClick={() => {setShowChangePassword(true);}}>
+	<FormattedMessage id='pages.account.changePassword' />
+      </IonItem>
+      <IonItem>
+	<LanguageSwitcher />
+      </IonItem>
+      <IonListHeader color='dark'>
+	<FormattedMessage id='common.label.communities' />
       </IonListHeader>
       <IonItem>
-	<IonLabel>
-	  <strong><FormattedMessage id='pages.account.userId' /></strong>
-	  <br />
-	  {user.uid}
+	<CommunityTags communities={Object.keys(communities)} onClose={(communityId) => {
+	  // remove user from communityId
+	}}/>
+      </IonItem>
+      <AddCommunityForm />
+      <IonListHeader color='dark'>
+      </IonListHeader>
+      <IonItem button detail={true} onClick={signoutInternal}>
+	<FormattedMessage id='common.label.logout' />
+      </IonItem>
+
+      <IonItem className='ion-text-right mt-3' lines='none' onClick={async () => {
+	if(showDebugTaps < DEBUG_TAP_COUNT){
+	  setShowDebugTaps(showDebugTaps + 1);
+	  if(showDebugTaps === DEBUG_TAP_COUNT - 1){
+	    setMessagingToken(await getMessagingToken());
+	  }
+	}
+      }}>
+	<IonLabel className='no-select'>
+	  <FormattedMessage id='pages.account.version' values={{version: import.meta.env.VITE_APP_VERSION}}/>
 	</IonLabel>
       </IonItem>
-      <IonItem>
-	<IonLabel>
-	  <strong><FormattedMessage id='pages.account.messagingToken' /></strong>
-	  <br />
-	  {messagingToken}
-	</IonLabel>
-      </IonItem>
-      <IonItem button onClick={showLogsModal}>
-	<FormattedMessage id='pages.account.showLogs' />
-      </IonItem>
-    </>}
+      {showDebugTaps >= DEBUG_TAP_COUNT && <>
+	<IonListHeader color='dark'>
+	  <FormattedMessage id='pages.account.debug' />
+	</IonListHeader>
+	<IonItem>
+	  <IonLabel>
+	    <strong><FormattedMessage id='pages.account.userId' /></strong>
+	    <br />
+	    {user.uid}
+	  </IonLabel>
+	</IonItem>
+	<IonItem>
+	  <IonLabel>
+	    <strong><FormattedMessage id='pages.account.messagingToken' /></strong>
+	    <br />
+	    {messagingToken}
+	  </IonLabel>
+	</IonItem>
+	<IonItem button onClick={showLogsModal}>
+	  <FormattedMessage id='pages.account.showLogs' />
+	</IonItem>
+      </>}
     </IonList>
+    <ChangePasswordModal {...{showChangePassword, setShowChangePassword}}/>
     <IonModal isOpen={showLogs} onDidDismiss={() => {setShowLogs(false);}}>
       <IonHeader className='ion-no-border'>
 	<IonToolbar color='primary'>
