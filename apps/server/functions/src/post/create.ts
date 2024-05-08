@@ -52,11 +52,11 @@ const sendNewPostMessage = async ({
 
 export const create = onCall(
   async (request: CallableRequest<any>) => {
+    requireAuthed(request.auth);
     validateSchema({
       data: request.data,
       schema: postCreateServerSchema
     });
-    requireAuthed(request.auth);
     
     // validate that user has correct permissions to post to the communities
     const firestore: Firestore = getFirestore();

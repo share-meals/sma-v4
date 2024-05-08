@@ -1,15 +1,17 @@
+// internal
+
 import {
   Firestore,
   getFirestore,
-} from "firebase-admin/firestore";
-import {addCustomClaim} from "@/user/customClaim/add";
-import {logUserCommunityAdd} from "@/log/user";
+} from 'firebase-admin/firestore';
+import {addCustomClaim} from '@/user/customClaim/add';
+import {logUserCommunityAdd} from '@/log/user';
 
 type addUserToCommunity = (args: {
   code?: string,
   communityId: string,
   ipAddress?: string,
-  level: "admin" | "member",
+  level: 'admin' | 'member', // todo: pull admin | member from schema
   userId: string,
 }) => Promise<void>[];
 

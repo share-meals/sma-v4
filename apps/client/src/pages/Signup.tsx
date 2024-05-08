@@ -44,7 +44,7 @@ import {
   useState,
 } from 'react';
 import {useForm} from 'react-hook-form';
-import {userSchema} from '@sma-v4/schema';
+import {signupSchema} from '@sma-v4/schema';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
@@ -70,30 +70,23 @@ const SignupForm: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const modal = useRef<HTMLIonModalElement>(null);
-  const schema = userSchema.pick({
-    email: true,
-    password: true,
-    name: true
-  }).extend({
-    confirmPassword: z.string()
-    //hasCommunityCode: z.boolean()
-  }).refine((data) => data.password === data.confirmPassword, {
-    message: 'must match password',
-    path: ['confirmPassword']
-  });
   const {
     control,
     formState,
-    handleSubmit,
-    watch
+    handleSubmit
   } = useForm({
     mode: 'onSubmit',
-    resolver: zodResolver(schema),
-    reValidateMode: 'onSubmit'
+    resolver: zodResolver(signupSchema),
+    reValidateMode: 'onSubmit',
+    defaultValues: {
+      email: `${Math.random()}@apple.none`,
+      password: 'abcd1234',
+      confirmPassword: 'abcd1234',
+      name: 'my name',
+      communityCode: 'eatmoresalad'
+    }
   });
 
-  //const watchHasCommunityCode = watch('hasCommunityCode');
-  
   const onSubmit = handleSubmit(
     async (data) => {
       setIsLoading(true);
@@ -155,15 +148,17 @@ const SignupForm: React.FC = () => {
 	required={true}
 	type='text'
       />
+      <Input
+	control={control}
+	disabled={isLoading}
+	fill='outline'
+	helperText={intl.formatMessage({id: 'pages.signUp.communityCodeOptional'})}
+	label={intl.formatMessage({id: 'common.label.communityCode'})}
+	labelPlacement='floating'
+	name='communityCode'
+	type='text'
+      />
       <IonList lines='none'>
-	<IonItem lines='none' className='ion-hide'>
-	  <Toggle
-	    control={control}
-	    disabled={isLoading}
-	    label='Have a Community Code?'
-	    mode='ios'
-	    name='hasCommunityCode' />
-	</IonItem>
 	<IonItem lines='none'>
 	  <IonLabel>
 	    <FormattedMessage id='pages.signup.privacyPolicy' />
