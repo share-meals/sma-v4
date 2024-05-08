@@ -7,17 +7,16 @@ import {
   messagingTokenSchema,
 } from '@sma-v4/schema';
 import {getMessaging} from 'firebase-admin/messaging';
-import {validateSchema} from '@/common';
+import {
+  // requireAuthed, // cannot require authed since this is called as the user signs out
+  validateSchema
+} from '@/common';
 import {z} from 'zod';
 
 export const unsubscribe = onCall(async (
   request: CallableRequest<any>
 ) => {
-  if (process.env.FUNCTIONS_EMULATOR) {
-    // emulator
-    return;
-  }
-
+  // requireAuthed(request.auth); // cannot require authed since this is called as the user signs out
   // need to convert messagingTokenSchema to object
   validateSchema({
     data: request.data,
@@ -26,6 +25,11 @@ export const unsubscribe = onCall(async (
     communityIds: z.array(fixedCommunityIdSchema).nonempty()
     })
   });
+  
+  if (process.env.FUNCTIONS_EMULATOR) {
+    // emulator
+    return;
+  }
 
   const tasks = [];
   for(const c of request.data.communityIds){

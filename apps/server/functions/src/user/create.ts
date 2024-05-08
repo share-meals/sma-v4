@@ -1,4 +1,4 @@
-import {addUserToCommunity} from './community/add';
+import {addUserToCommunity} from './community/addUserToCommunity';
 import {
   CallableRequest,
   HttpsError,
@@ -15,7 +15,7 @@ import {createDummyCommunity} from '@/community/createDummyCommunity';
 import {
   functionsErrorCodes,
   languageType,
-  userSchema,
+  signupSchema,
 } from '@sma-v4/schema';
 import {
   getAuth,
@@ -23,32 +23,17 @@ import {
 } from 'firebase-admin/auth';
 import {InsertRowsResponse} from '@google-cloud/bigquery';
 import {logUserCreate} from '@/log';
+import {validateSchema} from '@/common';
 import {z} from 'zod';
 
 const legit = require('legit');
 
-export const verifySchema = (data: {[key: string]: any}): boolean => {
-  const schema = userSchema.pick({
-    email: true,
-    name: true,
-    password: true,
-    language: true,
-  })
-  .partial({
-    language: true, // todo: make this required
-  });
-
-  return schema.safeParse(data).success;
-};
-
 export const create = onCall(
   async (request: CallableRequest<any>) => {
-    if (!verifySchema(request.data)) {
-      throw new HttpsError(
-        'invalid-argument',
-        functionsErrorCodes.invalidArgumentSchema
-      );
-    }
+    validateSchema({
+      data: request.data,
+      schema: signupSchema
+    });
 
     if (!process.env.FUNCTIONS_EMULATOR && !(await legit(request.data.email))) {
       throw new HttpsError(
@@ -100,12 +85,11 @@ export const create = onCall(
     const communitiesCollection: CollectionReference<DocumentData> = firestore.collection('communities');
     const matchedCommunityQueries: Promise<QuerySnapshot<DocumentData>[]> = Promise.all([
       communitiesCollection.where('domains', 'array-contains', emailDomain).get(),
-      communitiesCollection.where('codes.member', 'array-contains', request.data.codes || ['NULL']).get(),
-      communitiesCollection.where('codes.admin', 'array-contains', request.data.codes || ['NULL']).get(),
+      communitiesCollection.where('codes.member', 'array-contains', request.data.communityCode || ['NULL']).get(),
+      communitiesCollection.where('codes.admin', 'array-contains', request.data.communityCode || ['NULL']).get(),
     ]);
-
+    
     const matchedCommunitySnapshots: QuerySnapshot<DocumentData>[] = await matchedCommunityQueries;
-
     // use an object so no duplicates are stored
     // and admin codes will overwrite other tasks
     type addCommunityTaskPayload = {
@@ -132,12 +116,10 @@ export const create = onCall(
 	      addCommunityTasks[doc.id] = {code: emailDomain, communityId: doc.id, level: 'member'};
 	      break;
 	    case 1:
-	      // todo: find intersection of codes
-	      addCommunityTasks[doc.id] = {code: request.data.codes.join(','), communityId: doc.id, level: 'member'};
+	      addCommunityTasks[doc.id] = {code: request.data.communityCode, communityId: doc.id, level: 'member'};
 	      break;
 	    case 2:
-	      // todo: find intersection of codes
-	      addCommunityTasks[doc.id] = {code: request.data.codes.join(','), communityId: doc.id, level: 'admin'};
+	      addCommunityTasks[doc.id] = {code: request.data.communityCode, communityId: doc.id, level: 'admin'};
 	      break;
 	  }
         });

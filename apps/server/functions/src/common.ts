@@ -6,6 +6,7 @@ import {
 import {functionsErrorCodes} from '@sma-v4/schema';
 import {HttpsError} from 'firebase-functions/v2/https';
 import {
+  ZodEffects,
   ZodIntersection,
   ZodObject,
 } from 'zod';
@@ -20,7 +21,7 @@ export const requireAuthed = (auth: AuthData | undefined) => {
 
 interface ValidateSchema {
   data: {[key: string]: any},
-  schema: ZodObject<any> | ZodIntersection<any, any>
+  schema: ZodEffects<any> | ZodObject<any> | ZodIntersection<any, any>
 };
 
 export const validateSchema: (args: ValidateSchema) => void = ({data, schema}) => {
