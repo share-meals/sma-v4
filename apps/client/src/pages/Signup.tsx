@@ -105,6 +105,7 @@ const SignupForm: React.FC = () => {
 	control={control}
 	disabled={isLoading}
 	fill='outline'
+	helperText={intl.formatMessage({id: 'pages.signup.emailEduAddress'})}
 	label={intl.formatMessage({id: 'common.label.email'})}
 	labelPlacement='floating'
 	name='email'
@@ -145,7 +146,7 @@ const SignupForm: React.FC = () => {
 	control={control}
 	disabled={isLoading}
 	fill='outline'
-	helperText={intl.formatMessage({id: 'pages.signUp.communityCodeOptional'})}
+	helperText={intl.formatMessage({id: 'pages.signup.communityCodeOptional'})}
 	label={intl.formatMessage({id: 'common.label.communityCode'})}
 	labelPlacement='floating'
 	name='communityCode'
