@@ -78,13 +78,6 @@ const SignupForm: React.FC = () => {
     mode: 'onSubmit',
     resolver: zodResolver(signupSchema),
     reValidateMode: 'onSubmit',
-    defaultValues: {
-      email: `${Math.random()}@apple.none`,
-      password: 'abcd1234',
-      confirmPassword: 'abcd1234',
-      name: 'my name',
-      communityCode: 'eatmoresalad'
-    }
   });
 
   const onSubmit = handleSubmit(
