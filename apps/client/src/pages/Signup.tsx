@@ -58,11 +58,21 @@ const SignupForm: React.FC = () => {
   //const auth = useAuth();
   const intl = useIntl();
   const [error, setError] = useState<string | null>(null);
-  const getMessage = useCallback((code: string) => {
+  const getMessage = useCallback((code: string, message?: string) => {
     switch(code){
       case 'auth/email-already-exists':
       case 'functions/already-exists':
 	return intl.formatMessage({id: 'pages.signup.error.email-already-exists'});
+      case 'functions/invalid-argument':
+	switch(message){
+	  case 'no matched communities':
+	    return intl.formatMessage({id: 'common.errors.noCommunitiesFound'});
+	    break;
+	  default:
+	    // do nothing?
+	    break;
+	}
+	
       default:
 	return intl.formatMessage({id: 'pages.login.error.default'});
     }
@@ -70,11 +80,18 @@ const SignupForm: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const modal = useRef<HTMLIonModalElement>(null);
+  const defaultValues = import.meta.env.VITE_ENVIRONMENT === 'emulator' ? {
+    email: `${Math.random()}@test.com`,
+    password: 'passwordpassword',
+    confirmPassword: 'passwordpassword',
+    name: 'test user'
+  } : {};
   const {
     control,
     formState,
     handleSubmit
   } = useForm({
+    defaultValues,
     mode: 'onSubmit',
     resolver: zodResolver(signupSchema),
     reValidateMode: 'onSubmit',
@@ -90,8 +107,7 @@ const SignupForm: React.FC = () => {
 	  sendEmailVerification(response.user);
 	}).catch((error: unknown) => {
 	  if(error instanceof FirebaseError){
-	    console.log(JSON.stringify(error));
-	    setError(error.code);
+	    setError(getMessage(error.code, error.message));
 	  }
 	}).finally(() => {
 	  setIsLoading(false);
@@ -194,7 +210,7 @@ const SignupForm: React.FC = () => {
 	<FormattedMessage id='common.label.formHasErrors' />
       </Notice>}
       {error && <Notice color='danger'>
-	{getMessage(error)}
+	{error}
       </Notice>}
     </form>
     <IonModal
