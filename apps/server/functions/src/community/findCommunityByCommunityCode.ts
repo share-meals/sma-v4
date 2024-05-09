@@ -7,19 +7,22 @@ import {
   getFirestore,
   QuerySnapshot,
 } from 'firebase-admin/firestore';
+import {communityCodeSchema} from '@sma-v4/schema';
+import {z} from 'zod';
 
-export interface findByCommunityCodeProps {
-  communityCode: any
+
+export interface findCommunityByCommunityCodeProps {
+  communityCode: z.infer<typeof communityCodeSchema>
 }
 
-export const findByCommunityCode = async ({
+export const findCommunityByCommunityCode = async ({
   communityCode
-}: findByCommunityCodeProps) => {
+}: findCommunityByCommunityCodeProps) => {
   const firestore: Firestore = getFirestore();
   const communitiesCollection: CollectionReference<DocumentData> = firestore.collection('communities');
   const matchedCommunityQueries: Promise<QuerySnapshot<DocumentData>[]> = Promise.all([
-    communitiesCollection.where('codes.member', 'array-contains', communityCode || ['NULL']).get(),
-    communitiesCollection.where('codes.admin', 'array-contains', communityCode || ['NULL']).get(),
+    communitiesCollection.where('codes.member', 'array-contains', communityCode.toLowerCase() || ['NULL']).get(),
+    communitiesCollection.where('codes.admin', 'array-contains', communityCode.toLowerCase() || ['NULL']).get(),
   ]);
   const matchedCommunitySnapshots: QuerySnapshot<DocumentData>[] = await matchedCommunityQueries;
   const payload = matchedCommunitySnapshots.map((match, index) => {

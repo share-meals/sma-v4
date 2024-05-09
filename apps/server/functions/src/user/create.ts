@@ -4,14 +4,13 @@ import {
   HttpsError,
   onCall,
 } from 'firebase-functions/v2/https';
+import {createDummyCommunity} from '@/community/createDummyCommunity';
+import {findCommunityByCommunityCode} from '@/community/findCommunityByCommunityCode';
+import {findCommunityByEmailDomain} from '@/community/findCommunityByEmailDomain';
 import {
-  CollectionReference,
-  DocumentData,
   Firestore,
   getFirestore,
-  QuerySnapshot,
 } from 'firebase-admin/firestore';
-import {createDummyCommunity} from '@/community/createDummyCommunity';
 import {
   functionsErrorCodes,
   languageType,
@@ -28,6 +27,24 @@ import {z} from 'zod';
 
 const legit = require('legit');
 
+interface CommunityMatch {
+  code: string,
+  communityId: any,
+  level: string,
+}
+
+const mergeCommunityMatches = (matches1: CommunityMatch[], matches2: CommunityMatch[]) => {
+  // will prefer items from matches2 over matches1
+  const map = new Map();
+  matches1.forEach(obj => {
+    map.set(obj.communityId, obj);
+  });
+  matches2.forEach(obj => {
+    map.set(obj.communityId, obj);
+  });
+  return Array.from(map.values());
+}
+
 export const create = onCall(
   async (request: CallableRequest<any>) => {
     validateSchema({
@@ -42,6 +59,32 @@ export const create = onCall(
       );
     }
 
+    const firestore: Firestore = getFirestore();
+
+    // --------------------------------
+				 
+				 // get any matched communities
+    const emailDomain: string = request.data.email.split('@')[1];
+
+    const matchedCommunitiesByEmailDomain = await findCommunityByEmailDomain({emailDomain});
+    const matchedCommunitiesByCommunityCode = await findCommunityByCommunityCode({communityCode: request.data.communityCode});
+    const matchedCommunities = mergeCommunityMatches(matchedCommunitiesByEmailDomain, matchedCommunitiesByCommunityCode);
+
+    if(matchedCommunities.length === 0){
+      // no matched communities at all
+      if (request.data.email.endsWith('edu')) {
+        // only create a dummy community if user has an edu email address
+        const dummyCommunityId: string = await createDummyCommunity(emailDomain);
+        matchedCommunities.push({code: emailDomain, communityId: dummyCommunityId, level: 'member'});
+      }else{
+	throw new HttpsError(
+	  'invalid-argument',
+	  'no matched communities'
+	);
+      }
+    }
+
+    
     // try to create user
     const auth = getAuth();
     let userRecord: UserRecord;
@@ -71,8 +114,6 @@ export const create = onCall(
     }
     const userLanguage: z.infer<typeof languageType> = request.data.language || 'en'; // default to English
 
-    const firestore: Firestore = getFirestore();
-
     // create user record
     await firestore.collection('users').doc(userRecord.uid).set({
       private: {
@@ -80,57 +121,9 @@ export const create = onCall(
       },
     });
 
-    // get any matche dcommunities
-    const emailDomain: string = request.data.email.split('@')[1];
-    const communitiesCollection: CollectionReference<DocumentData> = firestore.collection('communities');
-    const matchedCommunityQueries: Promise<QuerySnapshot<DocumentData>[]> = Promise.all([
-      communitiesCollection.where('domains', 'array-contains', emailDomain).get(),
-      communitiesCollection.where('codes.member', 'array-contains', request.data.communityCode || ['NULL']).get(),
-      communitiesCollection.where('codes.admin', 'array-contains', request.data.communityCode || ['NULL']).get(),
-    ]);
-    
-    const matchedCommunitySnapshots: QuerySnapshot<DocumentData>[] = await matchedCommunityQueries;
-    // use an object so no duplicates are stored
-    // and admin codes will overwrite other tasks
-    type addCommunityTaskPayload = {
-      code: string,
-      communityId: string,
-      level: 'admin' | 'member',
-    };
-    const addCommunityTasks: {[key: string]: addCommunityTaskPayload} = {};
-    if (matchedCommunitySnapshots.reduce((sum, snapshot) => sum + snapshot.size, 0) === 0) {
-      // no matched communities at all
-
-      if (request.data.email.endsWith('edu')) {
-        // only create a dummy community if user has an edu email address
-        const dummyCommunityId: string = await createDummyCommunity(emailDomain);
-        addCommunityTasks[dummyCommunityId] = {code: emailDomain, communityId: dummyCommunityId, level: 'member'};
-      }
-    } else {
-      // at least one community is matched, so need to find which ones
-      matchedCommunitySnapshots.forEach((match, index) => {
-        match.docs
-        .forEach((doc) => {
-	  switch (index) {
-	    case 0:
-	      addCommunityTasks[doc.id] = {code: emailDomain, communityId: doc.id, level: 'member'};
-	      break;
-	    case 1:
-	      addCommunityTasks[doc.id] = {code: request.data.communityCode, communityId: doc.id, level: 'member'};
-	      break;
-	    case 2:
-	      addCommunityTasks[doc.id] = {code: request.data.communityCode, communityId: doc.id, level: 'admin'};
-	      break;
-	  }
-        });
-      });
-    }
-    Object.freeze(addCommunityTasks);
-
     const tasks: Promise<InsertRowsResponse | void>[] = [];
 
-    Object.values(addCommunityTasks)
-    .forEach((t) => {
+    matchedCommunities.forEach((t) => {
       tasks.push(
         ...addUserToCommunity({
 	  userId: userRecord.uid,
