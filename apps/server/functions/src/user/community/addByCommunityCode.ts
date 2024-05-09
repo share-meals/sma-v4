@@ -5,7 +5,7 @@ import {
   onCall,
 } from 'firebase-functions/v2/https';
 import {communityCodeSchema} from '@sma-v4/schema';
-import {findByCommunityCode} from './findByCommunityCode';
+import {findCommunityByCommunityCode} from '@/community/findCommunityByCommunityCode';
 import {
   requireAuthed,
   validateSchema
@@ -22,7 +22,7 @@ export const addByCommunityCode = onCall(async (
       communityCode: communityCodeSchema
     })
   });
-  const matchedCommunities = await findByCommunityCode({communityCode: request.data.communityCode});
+  const matchedCommunities = await findCommunityByCommunityCode({communityCode: request.data.communityCode});
   if(matchedCommunities.length === 0){
     throw new HttpsError(
       'invalid-argument',
