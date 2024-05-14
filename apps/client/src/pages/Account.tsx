@@ -49,6 +49,7 @@ import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
 import CloseSharpIcon from '@material-design-icons/svg/sharp/close.svg';
+import AddSharpIcon from '@material-design-icons/svg/sharp/add.svg';
 
 const DEBUG_TAP_COUNT: number = 7;
 
@@ -141,7 +142,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
   </>;
 };
 
-const AddCommunityForm: React.FC = () => {
+const JoinCommunityForm: React.FC = () => {
   const intl = useIntl();
   const functions = getFunctions();
   const [hasError, setHasError] = useState<boolean>(false);
@@ -217,6 +218,58 @@ const AddCommunityForm: React.FC = () => {
   </>;
 }
 
+const JoinCommunityByEmailAddress: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const joinCommunityByEmailAddress = () => {
+    setIsLoading(true);
+    // make call
+    // display image if needed
+    
+  };
+  return <>
+    <StateButton
+      isLoading={isLoading}
+      onClick={joinCommunityByEmailAddress}
+    >
+      Join by Your Email Address
+    </StateButton>
+  </>;
+}
+
+interface JoinCommunityModalProps {
+  setShowJoinCommunity: Dispatch<SetStateAction<boolean>>,
+  showJoinCommunity: boolean,
+}
+
+const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
+  setShowJoinCommunity,
+  showJoinCommunity
+}) => {
+  return <IonModal isOpen={showJoinCommunity} onDidDismiss={() => {setShowJoinCommunity(false);}}>
+    <IonHeader className='ion-no-border'>
+      <IonToolbar color='primary'>
+	<IonTitle>
+	  <FormattedMessage id='pages.account.joinCommunity' />
+	</IonTitle>
+	<IonButtons slot='end'>
+	  <IonButton onClick={() => {setShowJoinCommunity(false);}}>
+	    <IonIcon src={CloseSharpIcon}/>
+	  </IonButton>
+	</IonButtons>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent className='ion-padding'>
+      <JoinCommunityForm />
+      <div className='ion-text-center mv-1'>
+	or
+      </div>
+      <div className='ion-text-center'>
+	<JoinCommunityByEmailAddress />
+      </div>
+    </IonContent>
+  </IonModal>
+}
+
 export const Account: React.FC = () => {
   const [showDebugTaps, setShowDebugTaps] = useState<number>(0);
   const {log, logs} = useLogger();
@@ -225,6 +278,7 @@ export const Account: React.FC = () => {
   const {communities, user, signout} = useProfile();
   const [showLogs, setShowLogs] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
+  const [showJoinCommunity, setShowJoinCommunity] = useState<boolean>(false);
   useIonViewDidLeave(() => {
     setShowDebugTaps(0);
   });
@@ -239,6 +293,7 @@ export const Account: React.FC = () => {
   const showLogsModal = async () => {
     setShowLogs(true);
   };
+
   return <>
     <IonList className='ion-no-padding'>
       <IonListHeader color='dark'>
@@ -251,14 +306,23 @@ export const Account: React.FC = () => {
 	<LanguageSwitcher />
       </IonItem>
       <IonListHeader color='dark'>
+	<div className='ion-align-items-center ion-justify-content-between' style={{display: 'flex', width: '100%'}}>
+	  
 	<FormattedMessage id='common.label.communities' />
+	<StateButton
+	  color='light'
+	  fill='outline'
+	  onClick={() => {setShowJoinCommunity(true);}}>
+	  <IonIcon slot='icon-only' src={AddSharpIcon} />
+	</StateButton>
+	</div>
       </IonListHeader>
-      <IonItem>
+      <div className='mv-1 ph-1'>
 	<CommunityTags communities={Object.keys(communities)} onClose={(communityId) => {
+	  console.log(communityId);
 	  // remove user from communityId
 	}}/>
-      </IonItem>
-      <AddCommunityForm />
+      </div>
       <IonListHeader color='dark'>
       </IonListHeader>
       <IonItem button detail={true} onClick={signoutInternal}>
@@ -301,6 +365,7 @@ export const Account: React.FC = () => {
       </>}
     </IonList>
     <ChangePasswordModal {...{showChangePassword, setShowChangePassword}}/>
+    <JoinCommunityModal {...{showJoinCommunity, setShowJoinCommunity}}/>
     <IonModal isOpen={showLogs} onDidDismiss={() => {setShowLogs(false);}}>
       <IonHeader className='ion-no-border'>
 	<IonToolbar color='primary'>
