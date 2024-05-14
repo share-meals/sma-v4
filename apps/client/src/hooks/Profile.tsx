@@ -143,7 +143,12 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	    starts: doc.data().starts.toDate(),
 	  }]));
 	  for(const p of Object.values(ps)){
-	    postSchema.parse(p);
+	    const schemaCompliance = postSchema.safeParse(p);
+	    if(!schemaCompliance.success){
+	      console.log(schemaCompliance.error);
+	      // post retrieved from firebase does not match schema
+	      // todo: better handling
+	    }
 	  }
 	  setPosts(ps);
 	});
