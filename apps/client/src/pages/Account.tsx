@@ -142,10 +142,18 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
   </>;
 };
 
+interface JoinCommunitySuccessMessage {
+  code: string,
+  communityId: string,
+  communityName: string,
+  level: 'admin' | 'member'
+}
+
 const JoinCommunityForm: React.FC = () => {
   const intl = useIntl();
   const functions = getFunctions();
   const [hasError, setHasError] = useState<boolean>(false);
+  const [hasSuccess, setHasSuccess] = useState<JoinCommunitySuccessMessage[] | null>(null);
   const addByCommunityCodeFunction = httpsCallable(functions, 'user-community-addByCommunityCode');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
@@ -163,14 +171,18 @@ const JoinCommunityForm: React.FC = () => {
     reValidateMode: 'onSubmit'
   });
   useIonViewDidLeave(() => {
+    setHasSuccess(null);
     setHasError(false);
     reset();
   });
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
+    setHasSuccess(null);
+    setHasError(false);
     addByCommunityCodeFunction(data)
-      .then(() => {
-	// todo: something
+      .then((response) => {
+	setHasSuccess(response.data);
+	reset();
       })
       .catch((error) => {
 	setHasError(true);
@@ -208,6 +220,31 @@ const JoinCommunityForm: React.FC = () => {
 	  </IonCol>
 	</IonRow>
       </IonGrid>
+      {hasSuccess !== null
+      && <Notice color='success' className='ion-margin'>
+	<IonLabel>
+	  {hasSuccess.map((m) => {
+	    switch(m.level){
+	      case 'admin':
+		return <FormattedMessage
+			 id='pages.account.addedCommunity.asAdmin'
+			 values={{communityName: m.communityName}} />;
+		break;
+	      case 'member':
+	      default:
+		return <FormattedMessage
+			 id='pages.account.addedCommunity.asMember'
+			 values={{communityName: m.communityName}} />;
+		break;
+	    }
+	  }).map((m, index) => {
+	    return <div key={index}>
+	      {m}
+	    </div>
+	  })}
+	</IonLabel>
+      </Notice>}
+      
       {hasError
       && <Notice color='danger' className='ion-margin'>
 	<IonLabel>
@@ -260,12 +297,14 @@ const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
     </IonHeader>
     <IonContent className='ion-padding'>
       <JoinCommunityForm />
+      <span className='ion-hide'>
       <div className='ion-text-center mv-1'>
 	or
       </div>
       <div className='ion-text-center'>
 	<JoinCommunityByEmailAddress />
       </div>
+      </span>
     </IonContent>
   </IonModal>
 }
