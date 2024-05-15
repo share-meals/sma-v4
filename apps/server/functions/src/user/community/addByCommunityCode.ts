@@ -38,4 +38,5 @@ export const addByCommunityCode = onCall(async (
     });
   });
   await Promise.all(tasks);
+  return matchedCommunities;
 });

@@ -30,6 +30,7 @@ export const findCommunityByCommunityCode = async ({
       return {
 	code: communityCode,
 	communityId: doc.id,
+	communityName: doc.data().name,
 	level: index === 0 ? 'member' : 'admin'
       };
     });
