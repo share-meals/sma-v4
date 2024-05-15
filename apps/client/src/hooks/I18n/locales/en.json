@@ -47,6 +47,8 @@
   "geolocation.alert.message": "For the best experience, the Share Meals App accesses your geolocation to show posts that are nearby. A pop up will now appear that will request permission to access your geolocation.",
   "messaging.prompt.text": "For the best experience, the Share Meals App sends you push notifications to alert you of new posts. A pop up will now appear that will request permission to send you notifications.",
   "messaging.prompt.title": "Push Notifications Access",
+  "pages.account.addedCommunity.asAdmin": "Congrats! You joined {communityName} as an admin!",
+  "pages.account.addedCommunity.asMember": "Congrats! You joined {communityName}!",
   "pages.account.changePassword": "Change Password",
   "pages.account.confirmNewPassword": "Confirm New Password",
   "pages.account.currentPassword": "Current Password",
