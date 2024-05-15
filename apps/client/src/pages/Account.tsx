@@ -181,7 +181,7 @@ const JoinCommunityForm: React.FC = () => {
     setHasError(false);
     addByCommunityCodeFunction(data)
       .then((response) => {
-	setHasSuccess(response.data);
+	setHasSuccess(response.data as JoinCommunitySuccessMessage[]);
 	reset();
       })
       .catch((error) => {
