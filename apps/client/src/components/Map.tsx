@@ -55,7 +55,6 @@ export const Map: React.FC<MapProps> = ({
   const {
     permissionState
   } = useGeolocation();
-  //console.log(layers[0].geojson.features[0].geometry.coordinates);
   return <div style={{height: '100%', position: 'relative'}}>
     <MapProvider
       center={center}

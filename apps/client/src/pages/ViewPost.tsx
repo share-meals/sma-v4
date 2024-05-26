@@ -197,9 +197,6 @@ const MoreActions: React.FC<MoreActionsProps> = ({
     ]);
   }
   buttons.push({
-	handler: () => {
-	  console.log('cancel');
-	},
 	icon: CancelIcon,
 	text: intl.formatMessage({id: 'buttons.label.cancel'}),
   });
@@ -211,7 +208,6 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 }
 
 const PostContent: React.FC<{post: Post}> = ({post}) => {
-  console.log(post);
   const {dateFnsLocale} = useI18n();
   const [showMap, setShowMap] = useState<boolean>(false);
   const layer: MapLayer = useMemo(() => ({
