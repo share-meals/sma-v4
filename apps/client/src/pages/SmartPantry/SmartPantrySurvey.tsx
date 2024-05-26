@@ -15,7 +15,7 @@ export const SmartPantrySurvey: React.FC = () => {
   const functions = getFunctions();
   const handshakeFunction = httpsCallable(functions, 'smartpantry-handshake');
   useIonViewDidEnter(() => {
-    console.log(123);
+
   });
   return <>
 

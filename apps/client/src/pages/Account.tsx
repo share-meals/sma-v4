@@ -357,10 +357,8 @@ export const Account: React.FC = () => {
 	</div>
       </IonListHeader>
       <div className='mv-1 ph-1'>
-	<CommunityTags communities={Object.keys(communities)} onClose={(communityId) => {
-	  console.log(communityId);
-	  // remove user from communityId
-	}}/>
+	{/* todo: add onClose param to allow removing a user from the community */}
+	<CommunityTags communities={Object.keys(communities)} />
       </div>
       <IonListHeader color='dark'>
       </IonListHeader>
