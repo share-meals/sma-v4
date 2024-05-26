@@ -338,7 +338,7 @@ export const Account: React.FC = () => {
       <IonListHeader color='dark'>
 	<FormattedMessage id='pages.account.settings' />
       </IonListHeader>
-      <IonItem button detail={true} onClick={() => {setShowChangePassword(true);}}>
+      <IonItem className='ion-hide' button detail={true} onClick={() => {setShowChangePassword(true);}}>
 	<FormattedMessage id='pages.account.changePassword' />
       </IonItem>
       <IonItem>
