@@ -1,12 +1,9 @@
-import {close} from './close';
+import {internalClose} from './internalClose';
 import {
   Request,
-//  Response,
   onRequest,
 } from 'firebase-functions/v2/https';
-import {
-  getFirestore,
-} from 'firebase-admin/firestore';
+import {getFirestore} from 'firebase-admin/firestore';
 import {onSchedule} from 'firebase-functions/v2/scheduler';
 
 const cullFunction = async () => {
@@ -15,7 +12,7 @@ const cullFunction = async () => {
   if(!stalePosts.empty){
     const tasks: Promise<any>[] = [];
     stalePosts.forEach((post) => {
-      tasks.push(close(post.id));
+      tasks.push(internalClose(post.id));
     });
     await Promise.all(tasks);
   }
