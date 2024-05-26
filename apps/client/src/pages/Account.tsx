@@ -48,8 +48,8 @@ import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
-import CloseSharpIcon from '@material-design-icons/svg/sharp/close.svg';
-import AddSharpIcon from '@material-design-icons/svg/sharp/add.svg';
+import CloseIcon from '@material-design-icons/svg/sharp/close.svg';
+import AddIcon from '@material-design-icons/svg/sharp/add.svg';
 
 const DEBUG_TAP_COUNT: number = 7;
 
@@ -90,7 +90,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 	  </IonTitle>
 	  <IonButtons slot='end'>
 	    <IonButton onClick={() => {setShowChangePassword(false);}}>
-	      <IonIcon src={CloseSharpIcon}/>
+	      <IonIcon src={CloseIcon}/>
 	    </IonButton>
 	  </IonButtons>
 	</IonToolbar>
@@ -290,7 +290,7 @@ const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
 	</IonTitle>
 	<IonButtons slot='end'>
 	  <IonButton onClick={() => {setShowJoinCommunity(false);}}>
-	    <IonIcon src={CloseSharpIcon}/>
+	    <IonIcon src={CloseIcon}/>
 	  </IonButton>
 	</IonButtons>
       </IonToolbar>
@@ -352,7 +352,7 @@ export const Account: React.FC = () => {
 	  color='light'
 	  fill='outline'
 	  onClick={() => {setShowJoinCommunity(true);}}>
-	  <IonIcon slot='icon-only' src={AddSharpIcon} />
+	  <IonIcon slot='icon-only' src={AddIcon} />
 	</StateButton>
 	</div>
       </IonListHeader>
@@ -413,7 +413,7 @@ export const Account: React.FC = () => {
 	  </IonTitle>
 	  <IonButtons slot='end'>
 	    <IonButton onClick={() => {setShowLogs(false);}}>
-	      <IonIcon src={CloseSharpIcon}/>
+	      <IonIcon src={CloseIcon}/>
 	    </IonButton>
 	  </IonButtons>
 	</IonToolbar>
