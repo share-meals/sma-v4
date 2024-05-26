@@ -1,7 +1,7 @@
 {
     "name": "@sma-v4/client",
     "private": true,
-    "version": "4.0.2",
+    "version": "4.0.3",
     "type": "module",
     "scripts": {
         "build": "run-s build:development",
@@ -11,7 +11,7 @@
         "build:vite:development": "tsc; vite build --mode development",
         "build:vite:emulator": "tsc; vite build --mode emulator",
         "build:vite:live": "tsc; vite build --mode live",
-	"i18n:compare": "yarn i18n:extract; node scripts/compare_json.cjs temp/raw_en.json src/hooks/I18n/locales/en.json",
+        "i18n:compare": "yarn i18n:extract; node scripts/compare_json.cjs temp/raw_en.json src/hooks/I18n/locales/en.json",
         "i18n:compile": "formatjs compile temp/raw_en.json --out-file temp/en.json --format=simple",
         "i18n:extract": "formatjs extract 'src/**/*.tsx*' --ignore '**/*.d.ts' --out-file ./temp/raw_en.json --format formatter.cjs",
         "lint": "eslint",
@@ -63,6 +63,7 @@
         "@ionic/react-router": "^7.0.0",
         "@material-design-icons/svg": "^0.14.13",
         "@material-symbols/svg-400": "^0.16.0",
+        "@material-symbols/svg-700": "^0.18.0",
         "@share-meals/frg-ui": "^0.0.15",
         "@types/react-router": "^5.1.20",
         "@types/react-router-dom": "^5.3.3",

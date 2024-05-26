@@ -116,3 +116,50 @@ ion-datetime-button.hasError::part(native){
     background: var(--ion-color-danger);
     color: var(--ion-color-danger-contrast);
 }
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.feature {
+    position: relative;
+}
+
+.feature::after {
+    content: ' ';
+    position: absolute;
+    --opacity: 1;
+    height: 0.25rem;
+    width: 100%;
+    display: block;
+    left: 0;
+    bottom: -0.5rem;
+    background: linear-gradient(
+	-45deg,
+	rgba(40, 116, 73, var(--opacity)),
+	rgba(61, 194, 255, var(--opacity))
+    );
+    background-size: 400% 400%;
+    border-radius: 4px;
+    animation: gradient 3s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+	background-position: 0% 50%;
+    }
+    50% {
+	background-position: 100% 50%;
+    }
+    100% {
+	background-position: 0% 50%;
+    }
+}

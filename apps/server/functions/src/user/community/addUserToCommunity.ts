@@ -24,7 +24,7 @@ export const addUserToCommunity: addUserToCommunity = ({
 }) => {
   const firestore: Firestore = getFirestore();
   const tasks: Promise<any>[] = [
-    firestore.collection("users")
+    firestore.collection('users')
         .doc(userId)
         .update({[`private.communities.${communityId}`]: level}),
     addCustomClaim({
