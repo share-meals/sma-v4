@@ -4781,6 +4781,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@material-symbols/svg-700@npm:^0.18.0":
+  version: 0.18.0
+  resolution: "@material-symbols/svg-700@npm:0.18.0"
+  checksum: 10c0/a3e3f1043fa964280aa67642f9662c492e4ad909338f259bd9180330f1e2e6efdc23f03ecc9d497888c8b63f1a1fbefe7549db89051dafeb5814e4e5f08f46fe
+  languageName: node
+  linkType: hard
+
 "@mdx-js/react@npm:^3.0.0":
   version: 3.0.1
   resolution: "@mdx-js/react@npm:3.0.1"
@@ -5253,6 +5260,7 @@ __metadata:
     "@ionic/react-router": "npm:^7.0.0"
     "@material-design-icons/svg": "npm:^0.14.13"
     "@material-symbols/svg-400": "npm:^0.16.0"
+    "@material-symbols/svg-700": "npm:^0.18.0"
     "@share-meals/frg-ui": "npm:^0.0.15"
     "@storybook/addon-a11y": "npm:^8.0.2"
     "@storybook/addon-actions": "npm:^8.0.4"

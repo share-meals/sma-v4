@@ -89,3 +89,34 @@ export const logMessagingTokenAction: logMessagingTokenAction = ({
     console.log(JSON.stringify(error));
   });
 };
+
+type logUserAction = (args: {
+  action: string,
+  communities: string[],
+  ip_address: string,
+  payload: string,
+  user_id: string,
+}) => Promise<any>;
+
+
+export const logUserAction: logUserAction = async ({communities, ...data}) => {
+  const bigQuery: BigQuery = generateBigQueryClient();
+  const now = new Date();
+  const tasks: Promise<void | InsertRowsResponse>[] = [];
+  for(const community of communities){
+    tasks.push(
+      bigQuery
+      .dataset('app_analytics')
+      .table('user_action')
+      .insert({
+	community,
+	timestamp: now,
+	...data
+      })
+      .catch((error: any) => {
+	console.log(JSON.stringify(error));
+      })
+    );
+  }
+  return Promise.all(tasks);
+}

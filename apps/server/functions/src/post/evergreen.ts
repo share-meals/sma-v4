@@ -4,16 +4,16 @@ import {
   onCall,
 } from 'firebase-functions/v2/https';
 import {getFirestore} from 'firebase-admin/firestore';
-import {internalClose} from './internalClose';
+import {logUserAction} from '@/log';
+import {postActionSchema} from '@sma-v4/schema';
 import {
-  isAdminOf,
+  requireAdminOf,
   requireAuthed,
   validateSchema
 } from '@/common';
-import {logUserAction} from '@/log';
-import {postActionSchema} from '@sma-v4/schema';
 
-export const close = onCall(
+
+export const evergreen = onCall(
   async (request: CallableRequest<any>) => {
     requireAuthed(request.auth);
     validateSchema({
@@ -30,18 +30,21 @@ export const close = onCall(
 
     const {uid: user_id} = request.auth!;
     const data = post.data();
-    const isAdmin = await isAdminOf({
+    await requireAdminOf({
       communities: data!.communities,
       user_id,
     });
-    const isOwner = data!.user_id === user_id;
-    if(!isAdmin && !isOwner){
+    if(data!.user_id !== data!.user_id){
+      // is not owner
       throw new HttpsError('unauthenticated', 'unauthenticated');
     }
-    await Promise.all([
-      internalClose(request.data.id),
+
+    return Promise.all([
+      firestore.collection('posts')
+      .doc(request.data.id)
+      .update({evergreen: request.data.value}),
       logUserAction({
-	action: 'post close',
+	action: request.data.value ? 'post evergreen' : 'post unevergreen',
 	communities: data!.communities,
 	ip_address: request.rawRequest.ip ?? '',
 	payload: request.data.id,
