@@ -18,6 +18,7 @@ import fr from 'date-fns/locale/fr';
 import ab from 'date-fns/locale/en-US';
 
 import en from './locales/en.json';
+import es from './locales/es.json';
 import id from './locales/id.json';
 
 // cannot specify exact languages due to storing in Preferences
@@ -27,6 +28,7 @@ const messages: {
   [key: string]: any
 } = {
   en,
+  es,
   id
 };
 
