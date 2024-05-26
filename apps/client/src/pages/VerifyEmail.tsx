@@ -1,10 +1,7 @@
 // todo: when resend email, get auth/too-many-requests
 
 import {auth} from '@/components/Firebase';
-import {
-  FormattedMessage,
-  useIntl
-} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import {
   IonButton,
   IonCol,
@@ -32,7 +29,6 @@ import VerifyEmailSVG from '@/assets/svg/verifyEmail.svg';
 export const VerifyEmail: React.FC = () => {
   const history = useHistory();
   const unblock = useRef<any>();
-  const intl = useIntl();
   const [isLoading, setIsLoading] = useState(false);
   const [stillUnverified, setStillUnverified] = useState(false);
   const [verifyEmailResent, setVerifyEmailResent] = useState(false);
