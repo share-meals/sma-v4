@@ -1,36 +1,51 @@
-import {getDatabase} from 'firebase-admin/database';
+import {
+  CallableRequest,
+  HttpsError,
+  onCall,
+} from 'firebase-functions/v2/https';
 import {getFirestore} from 'firebase-admin/firestore';
+import {internalClose} from './internalClose';
+import {
+  isAdminOf,
+  requireAuthed,
+  validateSchema
+} from '@/common';
+import {logUserAction} from '@/log';
+import {postActionSchema} from '@sma-v4/schema';
 
-export async function close(id: string){
-  const database = getDatabase();
-  const firestore = getFirestore();
-  const postReference = firestore.collection('posts').doc(id);
-  const post = await postReference.get();
-  if(!post.exists){
-    return;
-  }
-  const tasks: Promise<any>[] = [];
-
-  
-  // todo: delete photos
-  // todo: delete chats
-
-
-  // clean up all subscriptions
-  const subscribers = (await database.ref(`/subscriptions/post-users/${id}`)
-  .once('value')).val();
-  if(subscribers){
-    const updates: {[key: string]: null} = {};
-    for(const subscriberId of Object.keys(subscribers)){
-      updates[`/subscriptions/user-posts/${subscriberId}/${id}`] = null;
+export const close = onCall(
+  async (request: CallableRequest<any>) => {
+    requireAuthed(request.auth);
+    validateSchema({
+      data: request.data,
+      schema: postActionSchema
+    });
+    
+    // get post
+    const firestore = getFirestore();
+    const post = await firestore.collection('posts').doc(request.data.id).get();
+    if(!post.exists){
+      throw new HttpsError('not-found', 'not-found');
     }
-    updates[`/subscriptions/post-users/${id}`] = null;
-    tasks.push(database.ref().update(updates));
-  }
 
-  // delete the post
-  tasks.push(postReference.delete());
-
-  // roll it all together
-  await Promise.all(tasks);
-}
+    const {uid: user_id} = request.auth!;
+    const data = post.data();
+    const isAdmin = await isAdminOf({
+      communities: data!.communities,
+      user_id,
+    });
+    const isOwner = data!.user_id === user_id;
+    if(!isAdmin && !isOwner){
+      throw new HttpsError('unauthenticated', 'unauthenticated');
+    }
+    await Promise.all([
+      internalClose(request.data.id),
+      logUserAction({
+	action: 'post close',
+	communities: data!.communities,
+	ip_address: request.rawRequest.ip ?? '',
+	payload: request.data.id,
+	user_id,
+      }),
+    ]);
+});

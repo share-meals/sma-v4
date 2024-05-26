@@ -1,26 +1,30 @@
-const {BigQuery} = require('@google-cloud/bigquery');
+// leave all functions as async
+// since it works better in the Promise.all workflow
+
+import {
+  BigQuery,
+  InsertRowsResponse,
+} from '@google-cloud/bigquery';
+import {generateBigQueryClient} from './bigQueryClient';
 import {postSchema} from '@sma-v4/schema';
 import {z} from 'zod';
 
-const bigquery = new BigQuery();
+type LogPostCreateParams = z.infer<typeof postSchema>
+			 & {
+			   ip_address: string,
+			   photos: any, // todo: implement photos
+			   post_id: string
+			 }
 
-type LogPostCreate = z.infer<typeof postSchema>
-		   & {
-		     ip_address: string,
-		     photos: any, // todo: implement photos
-		     post_id: string
-		   };
+type LogPostCreate = (args: LogPostCreateParams) => Promise<(void | InsertRowsResponse)[]>;
 
-export const logPostCreate = async ({communities, ...data}: LogPostCreate) => {
-  if(process.env.FUNCTIONS_EMULATOR){
-    // bigquery calls hang on emulator
-    return;
-  }
+export const logPostCreate: LogPostCreate = async ({communities, ...data}) => {
+  const bigQuery: BigQuery = generateBigQueryClient();
   const now = new Date();
-  const tasks: Promise<void>[] = [];
+  const tasks: Promise<void | InsertRowsResponse>[] = [];
   for(const community of communities){
     tasks.push(
-      bigquery
+      bigQuery
       .dataset('app_analytics')
       .table('post')
       .insert({
@@ -51,15 +55,12 @@ export const logPostCreate = async ({communities, ...data}: LogPostCreate) => {
 }
 
 export const logPostView = async ({communities, ...data}: any) => {
-  if(process.env.FUNCTIONS_EMULATOR){
-    // bigquery calls hang on emulator
-    return;
-  }
+  const bigQuery: BigQuery = generateBigQueryClient();
   const now = new Date();
-  const tasks: Promise<void>[] = [];
+  const tasks: Promise<void | InsertRowsResponse>[] = [];
   for(const community of communities){
     tasks.push(
-      bigquery
+      bigQuery
       .dataset('app_analytics')
       .table('user_post_view')
       .insert({

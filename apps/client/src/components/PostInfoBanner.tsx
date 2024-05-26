@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import {
   formatDistanceToNow,
   isPast,
@@ -26,7 +27,9 @@ export const PostInfoBanner: React.FC<post & {onNavigate: () => void}> = (props)
     <IonItem detail={true}>
       <IonLabel>
 	<h2>
-	  {postInfo.title}
+	  <span className={classnames({feature: postInfo.feature})}>
+	    {postInfo.title}
+	  </span>
 	</h2>
 	{!postInfo.evergreen &&
 	 <p>

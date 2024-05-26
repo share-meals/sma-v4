@@ -6,6 +6,7 @@ const basePostSchema = z.object({
   communities: z.array(z.string()).nonempty(),
   details: z.string().max(500).min(5),
   evergreen: z.boolean().optional(),
+  featured: z.boolean().optional(),
   id: z.string(),
   location: locationSchema,
   servings: z.number().optional().nullable(),
@@ -71,4 +72,17 @@ export const postCreateServerSchema = z.intersection(
     user_id: true
   }),
   startsEndsAsStrings
+);
+
+export const postCloseSchema = basePostSchema.pick({
+  id: true
+});
+
+export const postActionSchema = z.intersection(
+  basePostSchema.pick({
+    id: true
+  }),
+  z.object({
+    value: z.any()
+  })
 );
