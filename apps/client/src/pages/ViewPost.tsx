@@ -242,7 +242,7 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
   
   return <div className='ion-padding'>
     <div style={{display: 'flex'}}>
-    <IonText style={{flexGrow: '1'}}>
+    <IonText style={{flexGrow: '1', wordWrap: 'anywhere'}}>
       <h1 className='ion-text-center ion-no-margin'>
 	<span className={classnames({feature: post.feature})}>
 	  {post.title}
