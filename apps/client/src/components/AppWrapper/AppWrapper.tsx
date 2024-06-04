@@ -23,7 +23,7 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
     }
   }, [isProfileLoading]);
 
-  // doesn't work?
+  // todo: doesn't work?
   if(!isProfileLoading
      || language === undefined
      || dateFnsLocale === undefined){
