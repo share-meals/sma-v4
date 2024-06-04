@@ -55,7 +55,6 @@ const functions = getFunctions();
 const signupFunction = httpsCallable(functions, 'user-create');
 
 const SignupForm: React.FC = () => {
-  //const auth = useAuth();
   const intl = useIntl();
   const [error, setError] = useState<string | null>(null);
   const getMessage = useCallback((code: string, message?: string) => {
@@ -243,7 +242,7 @@ export const Signup: React.FC = () => {
 	<IonCol size-xs='6' push-xs='3' push-sm='0'>
 	  <img src={SignupSVG} className='square responsive' />
 	</IonCol>
-	<IonCol size-xs='12' size-sm='6'>
+	<IonCol size-xs='12' size-sm='6' className='pt-2'>
 	  <LanguageSwitcher
 	    fill='outline'
 	    labelPlacement='stacked'

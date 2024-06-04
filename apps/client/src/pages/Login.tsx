@@ -16,7 +16,6 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
-  //IonImg, // don't use since lazy loading causes flickering
   IonItem,
   IonList,
   IonModal,
