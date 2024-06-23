@@ -20,10 +20,10 @@ export const logUserCreate: logUserCreate = ({
       .dataset('app_analytics')
       .table('user_create')
       .insert({
-        email_domain: emailDomain.toLowerCase(),
-        ip_address: ipAddress,
+        emailDomain: emailDomain.toLowerCase(),
+        ipAddress: ipAddress,
         timestamp: new Date(),
-        user_id: userId,
+        userId: userId,
       }).catch((error:any) => {
 	console.log(JSON.stringify(error));
       });
@@ -49,11 +49,11 @@ export const logUserCommunityAdd: logUserCommunityAdd = ({
       .dataset('app_analytics')
       .table('user_community')
       .insert({
-        user_id: userId,
+        userId: userId,
         timestamp: new Date(),
         action: 'add',
         community: communityId,
-        ip_address: ipAddress,
+        ipAddress: ipAddress,
         code: code,
         level: level,
       });
@@ -80,11 +80,11 @@ export const logMessagingTokenAction: logMessagingTokenAction = ({
   .table('messaging_tokens')
   .insert({
     action,
-    ip_address: ipAddress,
+    ipAddress: ipAddress,
     platform,
     reason,
     timestamp: new Date(),
-    user_id: uid,
+    userId: uid,
   }).catch((error:any) => {
     console.log(JSON.stringify(error));
   });
@@ -93,9 +93,9 @@ export const logMessagingTokenAction: logMessagingTokenAction = ({
 type logUserAction = (args: {
   action: string,
   communities: string[],
-  ip_address: string,
+  ipAddress: string,
   payload: string,
-  user_id: string,
+  userId: string,
 }) => Promise<any>;
 
 

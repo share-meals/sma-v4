@@ -64,7 +64,7 @@
         "@material-design-icons/svg": "^0.14.13",
         "@material-symbols/svg-400": "^0.16.0",
         "@material-symbols/svg-700": "^0.18.0",
-        "@share-meals/frg-ui": "^0.0.15",
+        "@share-meals/frg-ui": "^0.0.17",
         "@types/react-router": "^5.1.20",
         "@types/react-router-dom": "^5.3.3",
         "classnames": "^2.5.1",
@@ -82,7 +82,8 @@
         "react-router": "^5.3.4",
         "react-router-dom": "^5.3.4",
         "react-toastify": "^10.0.5",
-        "suspend-react": "^0.1.3"
+        "suspend-react": "^0.1.3",
+        "swr": "^2.2.5"
     },
     "devDependencies": {
         "@capacitor/assets": "^3.0.4",

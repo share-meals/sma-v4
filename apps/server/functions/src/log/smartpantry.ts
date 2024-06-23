@@ -5,26 +5,26 @@ import {
 import {generateBigQueryClient} from './bigQueryClient';
 
 type logSmartPantrySurveyResponse = (args: {
-  survey_id: string,
-  response_json: string,
-  user_id: string,
-  machine_id: string
+  surveyId: string,
+  responseJson: string,
+  userId: string,
+  machineId: string
 }) => Promise<InsertRowsResponse>;
 
 // @ts-ignore
 const SurveyResponseSchema = [
     {
-	"name": "machine_id",
+	"name": "machineId",
 	"type": "string",
 	"mode": "required"
     },
     {
-	"name": "response_json",
+	"name": "responseJson",
 	"type": "string",
 	"mode": "required"
     },
     {
-	"name": "survey_id",
+	"name": "surveyId",
 	"type": "string",
 	"mode": "required"
     },
@@ -34,7 +34,7 @@ const SurveyResponseSchema = [
 	"mode": "required"
     },
     {
-	"name": "user_id",
+	"name": "userId",
 	"type": "string",
 	"mode": "required"
     }
@@ -57,27 +57,27 @@ export const logSmartPantrySurveyResponse: logSmartPantrySurveyResponse = (args)
 };
 
 type logSmartPantryVend = (args: {
-  item_number?: number,
-  item_price?: number,
-  machine_id: string,
+  itemNumber?: number,
+  itemPrice?: number,
+  machineId: string,
   status: 'approved' | 'canceled' | 'denied',
-  user_id: string,
+  userId: string,
 }) => Promise<InsertRowsResponse>;
 
 // @ts-ignore
 const vendSchema = [
     {
-	"name": "item_number",
+	"name": "itemNumber",
 	"type": "numeric",
 	"mode": "nullable"
     },
     {
-	"name": "item_price",
+	"name": "itemPrice",
 	"type": "numeric",
 	"mode": "nullable"
     },
     {
-	"name": "machine_id",
+	"name": "machineId",
 	"type": "string",
 	"mode": "required"
     },
@@ -92,7 +92,7 @@ const vendSchema = [
 	"mode": "required"
     },
     {
-	"name": "user_id",
+	"name": "userId",
 	"type": "string",
 	"mode": "required"
     }
