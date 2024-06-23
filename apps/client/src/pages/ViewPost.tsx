@@ -323,7 +323,7 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
     && <>
       <IonList className='ion-no-padding'>
 	<IonListHeader color='dark'>
-	  <FormattedMessage id='pages.account.settings' />
+	  <FormattedMessage id='pages.viewPost.chat' />
 	</IonListHeader>
       </IonList>
       <div className='ion-padding'>

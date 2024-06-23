@@ -1,6 +1,5 @@
 const MESSAGE_BLOCK_THRESHOLD_IN_MINUTES = 10;
 
-
 import {chatSchema} from '@sma-v4/schema';
 import classnames from 'classnames';
 import {
@@ -212,7 +211,7 @@ const ChatMessages: React.FC<ChatProps> = ({
   }, [messages]);
   if(messages === undefined
      || messages.length === 0){
-    return <div className='ion-text-center'>
+    return <div className='ion-text-center mv-1'>
       <FormattedMessage id='components.chat.noMessages' />
     </div>;
   }
