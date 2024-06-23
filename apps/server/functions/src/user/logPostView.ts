@@ -29,9 +29,9 @@ export const logPostView = onCall(
     if(postRef.exists){
       await log({
 	communities: postRef.data()!.communities,
-	ip_address: request.rawRequest.ip,
-	post_id: request.data.id,
-	user_id: uid,
+	ipAddress: request.rawRequest.ip,
+	postId: request.data.id,
+	userId: uid,
       });
     }
 });

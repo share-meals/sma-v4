@@ -13,6 +13,7 @@ import {MessagingProvider} from '@/hooks/Messaging';
 import {ProfileProvider} from '@/hooks/Profile';
 import {Router} from '@/components/Router';
 import {ToastContainer} from 'react-toastify';
+import {UsersProvider} from '@/hooks/Users';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -50,7 +51,9 @@ export const App: React.FC = () => {
 	    <ProfileProvider>
 	      <AppWrapper>
 		<GeolocationProvider>
-		  <Router />
+		  <UsersProvider>
+		    <Router />
+		  </UsersProvider>
 		</GeolocationProvider>
 	      </AppWrapper>
 	    </ProfileProvider>

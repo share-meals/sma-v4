@@ -28,13 +28,13 @@ export const close = onCall(
       throw new HttpsError('not-found', 'not-found');
     }
 
-    const {uid: user_id} = request.auth!;
+    const {uid: userId} = request.auth!;
     const data = post.data();
     const isAdmin = await isAdminOf({
       communities: data!.communities,
-      user_id,
+      userId,
     });
-    const isOwner = data!.user_id === user_id;
+    const isOwner = data!.userId === userId;
     if(!isAdmin && !isOwner){
       throw new HttpsError('unauthenticated', 'unauthenticated');
     }
@@ -43,9 +43,9 @@ export const close = onCall(
       logUserAction({
 	action: 'post close',
 	communities: data!.communities,
-	ip_address: request.rawRequest.ip ?? '',
+	ipAddress: request.rawRequest.ip ?? '',
 	payload: request.data.id,
-	user_id,
+	userId,
       }),
     ]);
 });

@@ -1,3 +1,4 @@
+export * from './chat';
 export * from './community';
 export * from './error-codes';
 export * from './location';

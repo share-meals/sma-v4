@@ -35,7 +35,7 @@ export const signupSchema = userSchema
 })
 .extend({
   confirmPassword: password,
-  communityCode: communityCodeSchema.optional().or(z.literal(''))
+  communityCode: communityCodeSchema.optional().or(z.literal('')).nullable()
 })
 .refine((data) => data.password === data.confirmPassword, {
   message: 'must match password',

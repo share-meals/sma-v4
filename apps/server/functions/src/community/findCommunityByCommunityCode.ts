@@ -20,9 +20,10 @@ export const findCommunityByCommunityCode = async ({
 }: findCommunityByCommunityCodeProps) => {
   const firestore: Firestore = getFirestore();
   const communitiesCollection: CollectionReference<DocumentData> = firestore.collection('communities');
+  const normalizedCommunityCode = communityCode ? communityCode.toLowerCase() : ['NULL'];
   const matchedCommunityQueries: Promise<QuerySnapshot<DocumentData>[]> = Promise.all([
-    communitiesCollection.where('codes.member', 'array-contains', communityCode.toLowerCase() || ['NULL']).get(),
-    communitiesCollection.where('codes.admin', 'array-contains', communityCode.toLowerCase() || ['NULL']).get(),
+    communitiesCollection.where('codes.member', 'array-contains', normalizedCommunityCode).get(),
+    communitiesCollection.where('codes.admin', 'array-contains', normalizedCommunityCode).get(),
   ]);
   const matchedCommunitySnapshots: QuerySnapshot<DocumentData>[] = await matchedCommunityQueries;
   const payload = matchedCommunitySnapshots.map((match, index) => {

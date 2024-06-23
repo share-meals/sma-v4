@@ -10,10 +10,10 @@ export async function internalClose(id: string){
     return;
   }
   const tasks: Promise<any>[] = [];
-
+  
   
   // todo: delete photos
-  // todo: delete chats
+  const chatReference = firestore.collection('chats').doc(id);
 
 
   // clean up all subscriptions
@@ -28,9 +28,9 @@ export async function internalClose(id: string){
     tasks.push(database.ref().update(updates));
   }
 
-  // delete the post
   tasks.push(postReference.delete());
-
+  tasks.push(chatReference.delete());
+  
   // roll it all together
   return Promise.all(tasks);
 }
