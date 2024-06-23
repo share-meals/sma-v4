@@ -2,13 +2,12 @@
     --message-block-border-radius: 1rem;
 }
 
-/*
-// todo: get scrolling logic to work as expected
+
+/* todo: get scrolling logic to work as expected */
 .chatMessagesWrapper {
     max-height: 200px;
     overflow-y: auto;
 }
-*/
 
 .messageBlock{
     display: flex;
