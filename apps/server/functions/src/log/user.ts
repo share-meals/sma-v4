@@ -80,7 +80,7 @@ export const logMessagingTokenAction: logMessagingTokenAction = ({
   .table('messaging_tokens')
   .insert({
     action,
-    ipAddress: ipAddress,
+    ipAddress,
     platform,
     reason,
     timestamp: new Date(),
