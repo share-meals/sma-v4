@@ -34,11 +34,11 @@ export const approved = onCall(
       }),
       // log it
       logSmartPantryVend({
-	item_number: itemNumber,
-	item_price: itemPrice,
-	machine_id: machineId,
+	itemNumber: itemNumber,
+	itemPrice: itemPrice,
+	machineId: machineId,
 	status: 'approved',
-	user_id: userId
+	userId: userId
       }),
       // send message to user
       database.ref(`/smsp/${machineId}/outbox`).set({

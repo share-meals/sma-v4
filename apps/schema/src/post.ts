@@ -1,8 +1,10 @@
+import {chatSchema} from './chat';
 import {locationSchema} from './location';
 import {z} from 'zod';
 
 const basePostSchema = z.object({
-  cannot_chat: z.boolean().optional(),
+  cannotChat: z.boolean().optional(),
+  chat: chatSchema.array().optional(),
   communities: z.array(z.string()).nonempty(),
   details: z.string().max(500).min(5),
   evergreen: z.boolean().optional(),
@@ -13,7 +15,7 @@ const basePostSchema = z.object({
   tags: z.array(z.enum([
     '-dairy',
     '-nuts',
-    '+gluten_free',
+    '+glutenFree',
     '+halal',
     '+kosher',
     '+vegan',
@@ -23,7 +25,7 @@ const basePostSchema = z.object({
   .nullable(),
   title: z.string().max(250).min(5),
   type: z.enum(['event']),
-  user_id: z.string()
+  userId: z.string()
 });
 
 const startsEndsAsStrings = z.object({
@@ -61,7 +63,7 @@ export const postCreateClientSchema = z.intersection(
   basePostSchema.omit({
     id: true,
     type: true,
-    user_id: true
+    userId: true
   }),
   startsEndsAsStrings
 );
@@ -69,7 +71,7 @@ export const postCreateClientSchema = z.intersection(
 export const postCreateServerSchema = z.intersection(
   basePostSchema.omit({
     id: true,
-    user_id: true
+    userId: true
   }),
   startsEndsAsStrings
 );
@@ -84,5 +86,14 @@ export const postActionSchema = z.intersection(
   }),
   z.object({
     value: z.any()
+  })
+);
+
+export const postChatCreateSchema = z.intersection(
+  z.object({
+    postId: z.string(),
+  }),
+  chatSchema.pick({
+    text: true
   })
 );

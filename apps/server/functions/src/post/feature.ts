@@ -28,13 +28,13 @@ export const feature = onCall(
       throw new HttpsError('not-found', 'not-found');
     }
 
-    const {uid: user_id} = request.auth!;
+    const {uid: userId} = request.auth!;
     const data = post.data();
     await requireAdminOf({
       communities: data!.communities,
-      user_id,
+      userId,
     });
-    if(data!.user_id !== data!.user_id){
+    if(data!.userId !== userId){
       // is not owner
       throw new HttpsError('unauthenticated', 'unauthenticated');
     }
@@ -46,9 +46,9 @@ export const feature = onCall(
       logUserAction({
 	action: request.data.value ? 'post feature' : 'post unfeature',
 	communities: data!.communities,
-	ip_address: request.rawRequest.ip ?? '',
+	ipAddress: request.rawRequest.ip ?? '',
 	payload: request.data.id,
-	user_id,
+	userId,
       }),
     ]);
 });

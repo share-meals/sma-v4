@@ -3,6 +3,7 @@ import {community} from './community';
 import {create} from './create';
 import {logPostView} from './logPostView';
 import {messagingToken} from './messagingToken';
+import {profile} from './profile';
 
 export const user = {
   close,
@@ -13,5 +14,6 @@ export const user = {
       view: logPostView
     }
   },
-  messagingToken
+  messagingToken,
+  profile,
 };
