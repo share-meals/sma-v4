@@ -42,21 +42,25 @@ export const validateSchema: (args: ValidateSchema) => void = ({data, schema}) =
   }
 };
 
-interface AdminOrMemberOfSchema {
+interface AdminOfSchema {
   communities: (typeof unfixedCommunityIdSchema)[],
-  userId: string // todo: grab from @sma-v4/schema
+  user_id: string // todo: grab from @sma-v4/schema
 }
 
 type IsAdminOfSchema = (
-  args: AdminOrMemberOfSchema
+  args: AdminOfSchema
 ) => Promise<boolean>;
+
+type RequireAdminOfSchema = (
+  args: AdminOfSchema
+) => Promise<void>;
 
 export const isAdminOf: IsAdminOfSchema = async({
   communities,
-  userId,
+  user_id,
 }) => {
   const auth: Auth = getAuth();
-  const user: UserRecord = await auth.getUser(userId);
+  const user: UserRecord = await auth.getUser(user_id);
   return communities
   .filter((c: typeof unfixedCommunityIdSchema) => {
     return user.customClaims ? user.customClaims[`community-${c}`] === 'admin' : false;
@@ -64,42 +68,8 @@ export const isAdminOf: IsAdminOfSchema = async({
   .length > 0;
 };
 
-type RequireAdminOfSchema = (
-  args: AdminOrMemberOfSchema
-) => Promise<void>;
-
 export const requireAdminOf: RequireAdminOfSchema = async (props) => {
   if(!isAdminOf(props)){
     throw new HttpsError('unauthenticated', 'unauthenticated');
   }
 };
-
-
-
-type IsAdminOrMemberOfSchema = (
-  args: AdminOrMemberOfSchema
-) => Promise<boolean>;
-
-export const isAdminOrMemberOf: IsAdminOrMemberOfSchema = async({
-  communities,
-  userId,
-}) => {
-  const auth: Auth = getAuth();
-  const user: UserRecord = await auth.getUser(userId);
-  return communities
-  .filter((c: typeof unfixedCommunityIdSchema) => {
-    return user.customClaims ? ['admin', 'member'].includes(user.customClaims[`community-${c}`]) : false;
-  })
-  .length > 0;
-};
-
-
-type RequireAdminOrMemberOfSchema = (
-  args: AdminOrMemberOfSchema
-) => Promise<void>;
-
-export const requireAdminOrMemberOf: RequireAdminOrMemberOfSchema = async (props) => {
-  if(!isAdminOrMemberOf(props)){
-    throw new HttpsError('unauthenticated', 'unauthenticated');
-  }
-}

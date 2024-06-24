@@ -19,10 +19,10 @@ export const create = onCall(
       const firestore: Firestore = getFirestore();
       const tasks: Promise<InsertRowsResponse | WriteResult>[] = [
         logSmartPantrySurveyResponse({
-          surveyId: request.data.surveyId,
-          responseJson: JSON.stringify(request.data.responses),
-          userId: request.auth!.uid, // todo: validate
-          machineId: request.data.machineId,
+          survey_id: request.data.surveyId,
+          response_json: JSON.stringify(request.data.responses),
+          user_id: request.auth!.uid, // todo: validate
+          machine_id: request.data.machineId,
         }),
         firestore.collection('users').doc(request.auth!.uid).set({
           private: {

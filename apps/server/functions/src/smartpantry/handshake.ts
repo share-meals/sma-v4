@@ -27,7 +27,7 @@ This is explainer text`,
       {
         // question 1
         module: "question",
-        name: "screener1",
+        name: "screener_1",
         type: "multipleChoice",
         text: `We worried whether our food would run out before we got money to buy more.  
 In the last 12 months, this statement was:`,
@@ -43,7 +43,7 @@ In the last 12 months, this statement was:`,
       {
       // question 1
         module: "question",
-        name: "screener2",
+        name: "screener_2",
         type: "multipleChoice",
         text: `The food we bought just didn't last and we didn't have money to get more.  
 In the last 12 months, this statement was:`,

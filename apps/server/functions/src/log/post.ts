@@ -5,51 +5,15 @@ import {
   BigQuery,
   InsertRowsResponse,
 } from '@google-cloud/bigquery';
-//import {chatSchema} from '@sma-v4/schema';
 import {generateBigQueryClient} from './bigQueryClient';
 import {postSchema} from '@sma-v4/schema';
 import {z} from 'zod';
 
-interface LogPostChatCreateArgs {
-  communities: string[],
-  ipAddress?: string,
-  postId: string,
-  text: string,
-  userId: string
-};
-
-type LogPostChatCreate = (args: LogPostChatCreateArgs) => Promise<(void | InsertRowsResponse)[]>;
-
-export const logPostChatCreate: LogPostChatCreate = async ({communities, ...data}) => {
-  const bigQuery: BigQuery = generateBigQueryClient();
-  const now = new Date();
-  const tasks: Promise<void | InsertRowsResponse>[] = [];
-  for(const community of communities){
-    tasks.push(
-      bigQuery
-      .dataset('app_analytics')
-      .table('post_chat')
-      .insert({
-	community: `community-${community}`,
-	ipAddress: data.ipAddress,
-	postId: data.postId,
-	text: data.text,
-	timestamp: now,
-	userId: data.userId
-      })
-      .catch((error: any) => {
-	console.log(JSON.stringify(error));
-      })
-    );
-  }
-  return Promise.all(tasks); 
-};
-
 type LogPostCreateParams = z.infer<typeof postSchema>
 			 & {
-			   ipAddress?: string,
+			   ip_address: string,
 			   photos: any, // todo: implement photos
-			   postId: string
+			   post_id: string
 			 }
 
 type LogPostCreate = (args: LogPostCreateParams) => Promise<(void | InsertRowsResponse)[]>;
@@ -68,19 +32,19 @@ export const logPostCreate: LogPostCreate = async ({communities, ...data}) => {
 	community: `community-${community}`,
 	details: data.details,
 	ends: new Date(data.ends),
-	ipAddress: data.ipAddress,
+	ip_address: data.ip_address,
 	lat: data.location.lat,
 	lng: data.location.lng,
-	locationName: data.location.name,
+	location_name: data.location.name,
 	photos: data.photos || [],
-	postId: data.postId,
+	post_id: data.post_id,
 	room: data.location.room,
 	servings: data.servings,
 	starts: new Date(data.starts),
 	tags: data.tags || [],
 	timestamp: now,
 	title: data.title,
-	userId: data.userId
+	user_id: data.user_id
       })
       .catch((error: any) => {
 	console.log(JSON.stringify(error));

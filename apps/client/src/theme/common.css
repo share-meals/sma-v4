@@ -1,11 +1,12 @@
 .frg-ui-map-lock {
     color: rgba(255, 255, 255, 0.4);
+    
 }
 
 .no-select {
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 ion-card{

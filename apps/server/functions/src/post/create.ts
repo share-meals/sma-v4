@@ -88,7 +88,7 @@ export const create = onCall(
       // add new post to firestore 
       firestore.collection('posts').doc(id).set({
 	...request.data,
-	userId: uid,
+	user_id: uid,
 	// convert starts and ends to dates so we can use firestore TTL
 	starts: new Date(request.data.starts),
 	ends: new Date(request.data.ends)
@@ -115,9 +115,9 @@ export const create = onCall(
     if(!process.env.FUNCTIONS_EMULATOR){
       // log new post
       tasks.push(logPostCreate({
-	ipAddress: request.rawRequest.ip,
-	postId: id,
-	userId: uid,
+	ip_address: request.rawRequest.ip,
+	post_id: id,
+	user_id: uid,
 	...request.data
       }));
     }

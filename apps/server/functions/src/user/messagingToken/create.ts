@@ -25,7 +25,7 @@ export const create = onCall(
 	token: request.data.messagingToken,
 	platform: request.data.platform,
 	created: now,
-	lastValidated: now
+	last_validated: now
       })
     ];
     if(!process.env.FUNCTIONS_EMULATOR){

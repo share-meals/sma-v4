@@ -5,17 +5,13 @@ import {
   IonCol,
   IonGrid,
   IonIcon,
-  IonList,
-  IonListHeader,
   IonRow,
   IonText,
   useIonAlert,
   useIonViewWillEnter,
 } from '@ionic/react';
-import {Chat} from '@/components/Chat';
 import classnames from 'classnames';
 import {CommunityTags} from '@/components/CommunityTags';
-import {DateTimeDisplay} from '@/components/DateTimeDisplay';
 import {DietaryTags} from '@/components/DietaryTags';
 import {
   FormattedMessage,
@@ -201,8 +197,8 @@ const MoreActions: React.FC<MoreActionsProps> = ({
     ]);
   }
   buttons.push({
-    icon: CancelIcon,
-    text: intl.formatMessage({id: 'buttons.label.cancel'}),
+	icon: CancelIcon,
+	text: intl.formatMessage({id: 'buttons.label.cancel'}),
   });
   return <IonActionSheet
 	   trigger='openMoreActions'
@@ -240,99 +236,78 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
     type: 'vector'
   }), [post.location.lat, post.location.lng]);
   
-  return <>
-  <div className='ion-padding'>
-  <div style={{display: 'flex'}}>
-  <IonText style={{flexGrow: '1', wordWrap: 'anywhere'}}>
-  <h1 className='ion-text-center ion-no-margin'>
-  <span className={classnames({feature: post.feature})}>
-  {post.title}
-  </span>
-  </h1>
-  </IonText>
-  <IonButton
-  aria-label='more'
-  id='openMoreActions'
-  size='small'
-  fill='clear'
-  >
-  <IonIcon
-  aria-hidden='true'
-  slot='icon-only'
-  src={MoreVertIcon}
-  />
-  </IonButton>
-  <MoreActions
-  communities={post.communities}
-  evergreen={post.evergreen}
-  feature={post.feature}
-  postId={post.id}
-  userId={post.userId}
-  />
-  </div>
-  {!post.evergreen
-&& <p>
-  {isPast(post.starts)
-  ? <FormattedMessage id='common.label.started' />
-  : <FormattedMessage id='common.label.starts' />}
-    {' '}
-    <DateTimeDisplay timestamp={post.starts} />
-  <br />
-  {isPast(post.ends)
-  ? <FormattedMessage id='common.label.ended' />
-  : <FormattedMessage id='common.label.ends' />}
-    {' '}
-    <DateTimeDisplay timestamp={post.ends} />
-</p>
-  }
-  <p>
-  {post.location.name ? <>{post.location.name}<br /></> : <></>}
-  {post.location.address}
-  <br />
-  <a className='text-button' onClick={() => {setShowMap(!showMap);}}>
-  {showMap
- ? <FormattedMessage id='pages.viewPost.hideMap' />
- : <FormattedMessage id='pages.viewPost.showMap' />}
-  </a>
-  </p>
-  {showMap && <div style={{height: '20rem'}}>
-    <Map
-    center={{lat: post.location.lat, lng: post.location.lng}}
-    layers={[layer]}
-    zoom={17}
+  return <div className='ion-padding'>
+    <div style={{display: 'flex'}}>
+    <IonText style={{flexGrow: '1', wordWrap: 'anywhere'}}>
+      <h1 className='ion-text-center ion-no-margin'>
+	<span className={classnames({feature: post.feature})}>
+	  {post.title}
+	</span>
+      </h1>
+    </IonText>
+    <IonButton
+      aria-label='more'
+      id='openMoreActions'
+      size='small'
+      fill='clear'
+    >
+      <IonIcon
+	aria-hidden='true'
+	slot='icon-only'
+	src={MoreVertIcon}
+      />
+    </IonButton>
+    <MoreActions
+      communities={post.communities}
+      evergreen={post.evergreen}
+      feature={post.feature}
+      postId={post.id}
+      userId={post.user_id}
     />
-  </div>}
-  {post.tags && <div>
-    <DietaryTags tags={post.tags} />
-  </div>}
-  <div>
-  <CommunityTags communities={post.communities} />
-  </div>
-  {post.servings && <IonText>
-    <p>
-      <FormattedMessage id='common.label.servingsWithValue' values={{number: post.servings}} />
-    </p>
-  </IonText>}
-  <IonText>
-  <Markdown>
-  {post.details}
-      </Markdown>
-      </IonText>
     </div>
-    {post.cannotChat !== true
-    && <>
-      <IonList className='ion-no-padding'>
-	<IonListHeader color='dark'>
-	  <FormattedMessage id='pages.viewPost.chat' />
-	</IonListHeader>
-      </IonList>
-      <div className='ion-padding'>
-	<Chat
-	  collection='posts'
-	  documentId={post.id}
-	/>
-      </div>
-    </>
+    {!post.evergreen
+    && <p>
+      {isPast(post.starts)
+      ? <FormattedMessage id='common.label.started' />
+      : <FormattedMessage id='common.label.starts' />} {format(post.starts, 'PPpp', {locale: dateFnsLocale})}
+      <br />
+      {isPast(post.ends)
+      ? <FormattedMessage id='common.label.ended' />
+      : <FormattedMessage id='common.label.ends' />} {format(post.ends, 'PPpp', {locale: dateFnsLocale})}
+    </p>
     }
-  </>;
+    <p>
+    {post.location.name ? <>{post.location.name}<br /></> : <></>}
+      {post.location.address}
+      <br />
+      <a className='text-button' onClick={() => {setShowMap(!showMap);}}>
+	{showMap
+	? <FormattedMessage id='pages.viewPost.hideMap' />
+	: <FormattedMessage id='pages.viewPost.showMap' />}
+      </a>
+    </p>
+      {showMap && <div style={{height: '20rem'}}>
+	<Map
+	center={{lat: post.location.lat, lng: post.location.lng}}
+	layers={[layer]}
+	zoom={17}
+	/>
+      </div>}
+    {post.tags && <div>
+      <DietaryTags tags={post.tags} />
+    </div>}
+    <div>
+      <CommunityTags communities={post.communities} />
+    </div>
+    {post.servings && <IonText>
+      <p>
+	<FormattedMessage id='common.label.servingsWithValue' values={{number: post.servings}} />
+      </p>
+    </IonText>}
+    <IonText>
+      <Markdown>
+	{post.details}
+      </Markdown>
+    </IonText>
+  </div>;
 };

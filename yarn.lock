@@ -5189,9 +5189,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@share-meals/frg-ui@npm:^0.0.17":
-  version: 0.0.17
-  resolution: "@share-meals/frg-ui@npm:0.0.17::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.17%2Fee7688b0c80208a52e061afed7e743bb7635c387"
+"@share-meals/frg-ui@npm:^0.0.15":
+  version: 0.0.15
+  resolution: "@share-meals/frg-ui@npm:0.0.15::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.15%2Fe4455935504591eedc892184b48f4eb3baee7572"
   dependencies:
     dayjs: "npm:^1.11.10"
     deepmerge: "npm:^4.3.1"
@@ -5204,7 +5204,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-hook-form: "*"
-  checksum: 10c0/fcf842824f623f034a11296f74eb0deb838ebe633be78934e560dbe6c362e2e688f4f83e8c802dd541b707619bfaa71e44716747f04bdc3e5525ed53c63d4fa2
+  checksum: 10c0/58f8d00f7d7e1e7e7ac9e3ab70e4183688e6b942717187bf0af9e9ef9dabf0a7c284ce87c033d0c66af9c5ace55fb6cf2c7f1c710fe70882412d96c5f629f479
   languageName: node
   linkType: hard
 
@@ -5261,7 +5261,7 @@ __metadata:
     "@material-design-icons/svg": "npm:^0.14.13"
     "@material-symbols/svg-400": "npm:^0.16.0"
     "@material-symbols/svg-700": "npm:^0.18.0"
-    "@share-meals/frg-ui": "npm:^0.0.17"
+    "@share-meals/frg-ui": "npm:^0.0.15"
     "@storybook/addon-a11y": "npm:^8.0.2"
     "@storybook/addon-actions": "npm:^8.0.4"
     "@storybook/addon-console": "npm:^3.0.0"
@@ -5310,7 +5310,6 @@ __metadata:
     storybook: "npm:^8.0.2"
     storybook-dark-mode: "npm:^4.0.1"
     suspend-react: "npm:^0.1.3"
-    swr: "npm:^2.2.5"
     terser: "npm:^5.4.0"
     typescript: "npm:^5.1.6"
     vite: "npm:^5.0.0"
@@ -9109,13 +9108,6 @@ __metadata:
     slice-ansi: "npm:^3.0.0"
     string-width: "npm:^4.2.0"
   checksum: 10c0/dfaa3df675bcef7a3254773de768712b590250420345a4c7ac151f041a4bacb4c25864b1377bee54a39b5925a030c00eabf014e312e3a4ac130952ed3b3879e9
-  languageName: node
-  linkType: hard
-
-"client-only@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "client-only@npm:0.0.1"
-  checksum: 10c0/9d6cfd0c19e1c96a434605added99dff48482152af791ec4172fb912a71cff9027ff174efd8cdb2160cc7f377543e0537ffc462d4f279bc4701de3f2a3c4b358
   languageName: node
   linkType: hard
 
@@ -19610,18 +19602,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swr@npm:^2.2.5":
-  version: 2.2.5
-  resolution: "swr@npm:2.2.5"
-  dependencies:
-    client-only: "npm:^0.0.1"
-    use-sync-external-store: "npm:^1.2.0"
-  peerDependencies:
-    react: ^16.11.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/731488d609ac6db60626632e3f76b046f28400b44504b3dfa69231a645127579b1add7a1595e5a6c718e24c80f1399506883bb456ca83c1b621357a0bf5a2a94
-  languageName: node
-  linkType: hard
-
 "symbol-tree@npm:^3.2.4":
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
@@ -20675,15 +20655,6 @@ __metadata:
     querystringify: "npm:^2.1.1"
     requires-port: "npm:^1.0.0"
   checksum: 10c0/bd5aa9389f896974beb851c112f63b466505a04b4807cea2e5a3b7092f6fbb75316f0491ea84e44f66fed55f1b440df5195d7e3a8203f64fcefa19d182f5be87
-  languageName: node
-  linkType: hard
-
-"use-sync-external-store@npm:^1.2.0":
-  version: 1.2.2
-  resolution: "use-sync-external-store@npm:1.2.2"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/23b1597c10adf15b26ade9e8c318d8cc0abc9ec0ab5fc7ca7338da92e89c2536abd150a5891bf076836c352fdfa104fc7231fb48f806fd9960e0cbe03601abaf
   languageName: node
   linkType: hard
 

@@ -20,15 +20,15 @@ export const denied = onCall(
       machineId,
       sessionId,
     } = request.data;
-    const userId: string = request.auth!.uid!;
+    const user_id: string = request.auth!.uid!;
     const tasks: Promise<InsertRowsResponse | void>[] = [
       // log it
       logSmartPantryVend({
-	itemNumber: itemNumber,
-	itemPrice: itemPrice,
-	machineId: machineId,
+	item_number: itemNumber,
+	item_price: itemPrice,
+	machine_id: machineId,
 	status: 'denied',
-	userId
+	user_id
       }),
       // send message to user
       database.ref(`/smsp/${machineId}/outbox`).set({
