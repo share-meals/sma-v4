@@ -10,6 +10,7 @@ import type {
 import {latlngSchema} from '@sma-v4/schema';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Notice} from '@/components/Notice';
+import styles from './styles.json';
 import {useGeolocation} from '@/hooks/Geolocation';
 import {z} from 'zod';
 
@@ -22,6 +23,7 @@ interface MapProps {
   locked?: boolean;
   maxZoom?: number;
   minZoom?: number;
+  onFeatureClick?: any;
   zoom?: number;
 }
 
@@ -45,12 +47,11 @@ const GeolocationError: React.FC = () => (
 
 export const Map: React.FC<MapProps> = ({
   center,
-  controls,
   layers = [],
-  locked,
   maxZoom = 20,
   minZoom = 10,
-  zoom
+  zoom,
+  ...props
 }) => {
   const {
     permissionState
@@ -65,8 +66,9 @@ export const Map: React.FC<MapProps> = ({
       {permissionState === 'denied'
       && <GeolocationError />}
       <FRGMap
-	controls={controls}
-	locked={locked}
+	protomapsApiKey='ae34778d2c4dad97'
+	protomapsStyles={styles}
+	{...props}
       />
     </MapProvider>
   </div>;
