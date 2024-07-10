@@ -66,7 +66,7 @@ export const Map: React.FC<MapProps> = ({
       {permissionState === 'denied'
       && <GeolocationError />}
       <FRGMap
-	protomapsApiKey='ae34778d2c4dad97'
+	protomapsApiKey={import.meta.env.VITE_PROTOMAPS_API_KEY}
 	protomapsStyles={styles}
 	{...props}
       />
