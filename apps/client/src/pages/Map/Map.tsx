@@ -17,6 +17,7 @@ import {
   postSchema
 } from '@sma-v4/schema';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
+import {Map as FRGMap} from '@/components/Map';
 import {Point} from 'ol/geom';
 import {PostInfoBanner} from '@/components/PostInfoBanner';
 import {
@@ -40,15 +41,6 @@ type post = z.infer<typeof postSchema>;
 import CloseSharpIcon from '@material-design-icons/svg/sharp/close.svg';
 
 const defaultLocation: latlng = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
-
-const convertToFeature = (post: post): Feature => {
-  return new Feature({
-    geometry: new Point(fromLonLat([post.location.lng, post.location.lat])),
-    name: post.title, // todo: is this necessary?
-    properties: post,
-    uid: post.id
-  });
-};
 
 const InfoModal: React.FC<{posts: post[]}> = ({posts}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -104,13 +96,34 @@ export const Map: React.FC = () => {
   const [clickedPosts, setClickedPosts] = useState<post[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   // todo: || [] is a hack
-  const features = useMemo(() => Object.values(posts || []).map((f: any) => (
-    <RFeature
-      key={f.id}
-      feature={convertToFeature(f)}
-    />
-  )), [posts]);
-
+  const featuresLayer = useMemo(() => {
+    const geojson = {
+      type: 'FeatureCollection',
+      features: Object.values(posts || []).map((post: any) => {
+	return {
+	  type: 'Feature',
+	  geometry: {
+	    coordinates: [post.location.lng, post.location.lat],
+	    type: 'Point'
+	  },
+	  properties: post
+	};
+      })
+    };
+    return {
+      name: 'Posts',
+      geojson,
+      featureWidth: 4,
+      fillColor: 'rgba(11, 167, 100, 0.5)',
+      strokeColor: 'rgba(255, 255, 255, 1)',
+      textScale: 1.5,
+      textFillColor: '#ffffff',
+      textStrokeColor: '#000000',
+      textStrokeWidth: 4,
+      type: 'cluster' as 'cluster',
+      clusterDistance: 50
+    };
+  }, [posts]);
   if(
     posts === null
     || permissionState === 'prompt'
@@ -124,35 +137,20 @@ export const Map: React.FC = () => {
       <LoadingIndicator />
     </div>;
   }
-  
-  //const center: latlng = lastGeolocation || defaultLocation;
   return <div style={{
     height: 'calc(100vh - 113px)',
     position: 'relative'
   }}>
-    <RMap
-      height='100%'
-      initial={{
-	center: fromLonLat([
-	  lastGeolocation!.lng,
-	  lastGeolocation!.lat
-	]),
-	zoom: 14
+    <FRGMap
+      center={{
+	lat: lastGeolocation!.lat,
+	lng: lastGeolocation!.lng
       }}
-      minZoom={6}
-      maxZoom={16}
-    >
-      <ROSM />
-      <RLayerCluster
-	onClick={(event) => {
-	  const posts = event.target.get('features').map((p: Feature) => p.getProperties().properties);
-	  setClickedPosts(posts);
-	}}
-	distance={50}>
-	{features}
-	<ClusterLayerStyle />
-      </RLayerCluster>
-    </RMap>
+      layers={[featuresLayer]}
+      onFeatureClick={({data}) => {
+	setClickedPosts(data);
+      }}
+    />
     <InfoModal
       posts={clickedPosts}
     />
