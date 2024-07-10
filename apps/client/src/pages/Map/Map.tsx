@@ -147,7 +147,7 @@ export const Map: React.FC = () => {
 	lng: lastGeolocation!.lng
       }}
       layers={[featuresLayer]}
-      onFeatureClick={({data}) => {
+      onFeatureClick={({data}: any) => {
 	setClickedPosts(data);
       }}
       zoom={14}
