@@ -150,6 +150,7 @@ export const Map: React.FC = () => {
       onFeatureClick={({data}) => {
 	setClickedPosts(data);
       }}
+      zoom={14}
     />
     <InfoModal
       posts={clickedPosts}
