@@ -72,14 +72,19 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
 	getBackupGeolocation();
 	break;
       case 'granted':
-	const position: GeolocationPosition = await Geolocation.getCurrentPosition();
-	if(permissionState !== 'granted'){
-	  setPermissionState('granted');
+	try{
+	  const position: GeolocationPosition = await Geolocation.getCurrentPosition();
+	  if(permissionState !== 'granted'){
+	    setPermissionState('granted');
+	  }
+	  setLastGeolocation({
+	    lat: position.coords.latitude,
+	    lng: position.coords.longitude
+	  });
+	}catch(error){
+	  // has permission but for whatever reason, cannot get current position
+	  getBackupGeolocation();
 	}
-	setLastGeolocation({
-	  lat: position.coords.latitude,
-	  lng: position.coords.longitude
-	});
 	break;
       case 'prompt':
       case 'prompt-with-rationale':
