@@ -124,15 +124,14 @@ export const Map: React.FC = () => {
       clusterDistance: 50
     };
   }, [posts]);
-  if(
-    posts === null
-    || permissionState === 'prompt'
-    || permissionState === 'prompt-with-rationale'
-    || (
-      permissionState === 'denied'
-      && lastGeolocation === undefined
-    )
-  ){
+  const postsNotReady = posts === null;
+  const geolocationNoBackup = lastGeolocation === undefined
+  const geolocationDenied = permissionState === 'denied';
+  const geolocationAwaitingPrompt = permissionState === 'prompt'
+				 || permissionState === 'prompt-with-rationale';
+  if(postsNotReady
+     || (geolocationDenied && geolocationNoBackup)
+     || (geolocationAwaitingPrompt && geolocationNoBackup)){
     return <div style={{height: 'calc(100vh - 113px)'}}>
       <LoadingIndicator />
     </div>;
