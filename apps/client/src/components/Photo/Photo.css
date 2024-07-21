@@ -1,0 +1,28 @@
+.photo {
+    border-radius: 2px;
+    img {
+	aspect-ratio: 1;
+	display: block;
+	width: 100%;
+    }
+}
+
+.photo-modal {
+    ion-content {
+	position: relative;
+	--overflow: hidden;
+    }
+    ion-content::-webkit-scrollbar {
+	display: none;
+    }
+    img {
+	aspect-ratio: 1;
+	display: block;
+	width: 100%;
+    }
+    ion-button {
+	position: absolute;
+	right: 0;
+	top: 0;
+    }
+}

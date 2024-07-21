@@ -5,6 +5,10 @@ import {
 } from 'date-fns';
 import {FormattedMessage} from 'react-intl';
 import {
+  getDownloadURL,
+  ref,
+} from 'firebase/storage';
+import {
   IonCol,
   IonGrid,
   IonItem,
@@ -14,7 +18,9 @@ import {
 } from '@ionic/react';
 import {Link} from 'react-router-dom';
 import Markdown from 'react-markdown';
+import {Photo} from '@/components/Photo';
 import {postSchema} from '@sma-v4/schema';
+import {storage} from '@/components/Firebase';
 import {useI18n} from '@/hooks/I18n';
 import {z} from 'zod';
 
@@ -49,7 +55,9 @@ export const PostInfoBanner: React.FC<post & {onNavigate: () => void}> = (props)
 	</div>
       </IonLabel>
       <IonThumbnail slot='start'>
-	<img src='https://sharemeals.org/assets/img/og_image.png' />
+	{postInfo.photos
+	? <Photo path={`postPhotos/${postInfo.id}-${postInfo.photos[0]}.png`} />
+	: <img src='https://sharemeals.org/assets/img/og_image.png' />}
       </IonThumbnail>
     </IonItem>
   </Link>;

@@ -20,9 +20,9 @@ import {postCreateClientSchema} from '@sma-v4/schema';
 import {zodResolver} from '@hookform/resolvers/zod';
 
 interface PostFormState {
-  isWherePickerReady: boolean,
-  resetWhenPickerToNow: () => void,
-  setIsWherePickerReady: Dispatch<SetStateAction<boolean>>
+  isWherePickerReady: boolean;
+  resetWhenPickerToNow: () => void;
+  setIsWherePickerReady: Dispatch<SetStateAction<boolean>>;
 };
 
 const PostFormContext = createContext<PostFormState>({} as PostFormState);
@@ -46,7 +46,7 @@ export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) 
   const {reset, ...methods} = useForm({
     defaultValues: {
       starts: nowAndLater[0],
-      ends: nowAndLater[1]
+      ends: nowAndLater[1],
     },
     mode: 'onSubmit',
     resolver: zodResolver(postCreateClientSchema),
@@ -70,7 +70,7 @@ export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) 
 	   value={{
 	     isWherePickerReady,
 	     resetWhenPickerToNow,
-	     setIsWherePickerReady
+	     setIsWherePickerReady,
 	   }}>
     <FormProvider {...methods}
 		  reset={internalReset}>

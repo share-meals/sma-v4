@@ -24,8 +24,14 @@
 	<string>public.app-category.food-and-drink</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We allow you to attach photos of the food when you make a new post</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your geolocation to make it easier to find and create posts</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We allow you to attach photos of the food when you make a new post</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We allow you to attach photos of the food when you make a new post</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

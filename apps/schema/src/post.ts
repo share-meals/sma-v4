@@ -1,3 +1,6 @@
+// todo: remove intersection commentes
+// todo: test if adding refine to end of merge will work
+
 import {chatSchema} from './chat';
 import {locationSchema} from './location';
 import {z} from 'zod';
@@ -11,6 +14,7 @@ const basePostSchema = z.object({
   feature: z.boolean().optional(),
   id: z.string(),
   location: locationSchema,
+  photos: z.array(z.string()).optional().nullable(),
   servings: z.number().optional().nullable(),
   tags: z.array(z.enum([
     '-dairy',
@@ -50,24 +54,48 @@ const startsEndsAsStrings = z.object({
 const startsEndsAsDates = z.object({
   ends: z.date(),
   starts: z.date()
-}).refine(
+});
+
+export const postSchema = basePostSchema.merge(startsEndsAsDates).refine(
   (data) => data.ends > data.starts, {message: 'must end after starts'}
 );
 
+/*
 export const postSchema = z.intersection(
   basePostSchema,
   startsEndsAsDates
 );
+*/
 
+export const postCreateClientSchema = basePostSchema.omit({
+  id: true,
+  type: true,
+  userId: true
+}).merge(
+  startsEndsAsStrings
+)
+
+/*
 export const postCreateClientSchema = z.intersection(
   basePostSchema.omit({
     id: true,
     type: true,
     userId: true
   }),
+  z.object({
+    photos: z.array(z.instanceof(Blob)).optional().nullable()
+  }),
   startsEndsAsStrings
 );
+*/
 
+
+export const postCreateServerSchema = basePostSchema.omit({
+  id: true,
+  userId: true
+}).merge(startsEndsAsStrings);
+
+/*
 export const postCreateServerSchema = z.intersection(
   basePostSchema.omit({
     id: true,
@@ -75,11 +103,19 @@ export const postCreateServerSchema = z.intersection(
   }),
   startsEndsAsStrings
 );
+*/
 
 export const postCloseSchema = basePostSchema.pick({
   id: true
 });
 
+
+export const postActionSchema = basePostSchema.pick({
+  id: true
+}).merge(z.object({
+  value: z.any()
+}));
+/*
 export const postActionSchema = z.intersection(
   basePostSchema.pick({
     id: true
@@ -88,12 +124,23 @@ export const postActionSchema = z.intersection(
     value: z.any()
   })
 );
+*/
 
+export const postChatCreateSchema = z.object({
+  postId: z.string(),
+}).merge(chatSchema.pick({
+  text: true
+})
+);
+
+
+/*
 export const postChatCreateSchema = z.intersection(
-  z.object({
+   z.object({
     postId: z.string(),
   }),
   chatSchema.pick({
     text: true
   })
 );
+*/
