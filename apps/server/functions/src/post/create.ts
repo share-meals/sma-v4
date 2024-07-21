@@ -9,6 +9,7 @@ import {
   getFirestore,
 } from 'firebase-admin/firestore';
 import {getDatabase} from 'firebase-admin/database';
+import {getStorage} from 'firebase-admin/storage';
 import {getMessaging} from 'firebase-admin/messaging';
 import {logPostCreate} from '@/log';
 import {postCreateServerSchema} from '@sma-v4/schema';
@@ -16,6 +17,7 @@ import {
   requireAuthed,
   validateSchema
 } from '@/common';
+import stream from 'stream';
 
 interface SendNewPostMessage {
   communities: string[],
@@ -50,6 +52,35 @@ const sendNewPostMessage = async ({
   });
 }
 
+interface uploadPhotoArgs {
+  dataUrl: string,
+  path: string,
+}
+
+const uploadPhoto = ({
+  dataUrl,
+  path
+}: uploadPhotoArgs) => {
+  return new Promise<void>(async (resolve, reject) => {
+    const [mimeType, base64String] = dataUrl.split(',');
+
+    const bufferStream = new stream.PassThrough();
+    bufferStream.end(Buffer.from(base64String, 'base64'));
+    const file = getStorage().bucket().file(path);
+    bufferStream.pipe(file.createWriteStream({
+      metadata: {
+	contentType: mimeType
+      }
+    }).on('error', (error: any) => {
+      console.log(error);
+      reject(error);
+    }).on('finish', () => {
+      resolve();
+    })
+    );
+  });
+};
+
 export const create = onCall(
   async (request: CallableRequest<any>) => {
     requireAuthed(request.auth);
@@ -83,11 +114,24 @@ export const create = onCall(
     const {id} = firestore.collection('posts').doc();
     const {uid} = request.auth!;
 
+    // handle photos
+    let photoIds = [];
+    if(request.data.photos){
+      for(const photo of request.data.photos){
+	const photoId = firestore.collection('tmp').doc().id;
+	photoIds.push(photoId);
+	uploadPhoto({
+	  dataUrl: photo,
+	  path: `postPhotos/${id}-${photoId}.png`,
+	});
+      }
+    }
 
     const tasks: Promise<any>[] = [
       // add new post to firestore 
       firestore.collection('posts').doc(id).set({
 	...request.data,
+	photos: photoIds,
 	userId: uid,
 	// convert starts and ends to dates so we can use firestore TTL
 	starts: new Date(request.data.starts),
@@ -101,7 +145,7 @@ export const create = onCall(
 	body: request.data.location.name || request.data.location.address
       })
     ];
-
+    
     const database = getDatabase();
 
     // add initial subscriptions
