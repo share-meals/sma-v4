@@ -1,5 +1,6 @@
 import {getDatabase} from 'firebase-admin/database';
 import {getFirestore} from 'firebase-admin/firestore';
+import {getStorage} from 'firebase-admin/storage';
 
 export async function internalClose(id: string){
   const database = getDatabase();
@@ -11,10 +12,18 @@ export async function internalClose(id: string){
   }
   const tasks: Promise<any>[] = [];
   
+  const data = post.data();
   
-  // todo: delete photos
-  const chatReference = firestore.collection('chats').doc(id);
+  // clean up photos
+  if(data!.photos){
+    for(const photo of data!.photos){
+      tasks.push(
+	getStorage().bucket().file(`postPhotos/${id}-${photo}.png`).delete()
+      );
+    }
+  }
 
+  const chatReference = firestore.collection('chats').doc(id);
 
   // clean up all subscriptions
   const subscribers = (await database.ref(`/subscriptions/post-users/${id}`)

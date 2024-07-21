@@ -31,11 +31,11 @@ export const logPostChatCreate: LogPostChatCreate = async ({communities, ...data
       .table('post_chat')
       .insert({
 	community: `community-${community}`,
-	ipAddress: data.ipAddress,
-	postId: data.postId,
-	text: data.text,
-	timestamp: now,
-	userId: data.userId
+	      ipAddress: data.ipAddress,
+	      postId: data.postId,
+	      text: data.text,
+	      timestamp: now,
+	      userId: data.userId
       })
       .catch((error: any) => {
 	console.log(JSON.stringify(error));
@@ -66,21 +66,21 @@ export const logPostCreate: LogPostCreate = async ({communities, ...data}) => {
       .insert({
 	address: data.location.address,
 	community: `community-${community}`,
-	details: data.details,
-	ends: new Date(data.ends),
-	ipAddress: data.ipAddress,
-	lat: data.location.lat,
-	lng: data.location.lng,
-	locationName: data.location.name,
-	photos: data.photos || [],
-	postId: data.postId,
-	room: data.location.room,
-	servings: data.servings,
-	starts: new Date(data.starts),
-	tags: data.tags || [],
-	timestamp: now,
-	title: data.title,
-	userId: data.userId
+	      details: data.details,
+	      ends: new Date(data.ends),
+	      ipAddress: data.ipAddress,
+	      lat: data.location.lat,
+	      lng: data.location.lng,
+	      locationName: data.location.name,
+	      photos: data.photos,
+	      postId: data.postId,
+	      room: data.location.room,
+	      servings: data.servings,
+	      starts: new Date(data.starts),
+	      tags: data.tags || [],
+	      timestamp: now,
+	      title: data.title,
+	      userId: data.userId
       })
       .catch((error: any) => {
 	console.log(JSON.stringify(error));

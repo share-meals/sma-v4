@@ -18,6 +18,7 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import {
+  Datetime,
   Input,
   Select,
   StateButton,
@@ -27,6 +28,7 @@ import {toast} from 'react-toastify';
 import {WhenPicker} from '@/components/WhenPicker';
 import {WherePicker} from '@/components/WherePicker';
 import {Notice} from '@/components/Notice';
+import {PhotoPicker} from '@/components/PhotoPicker';
 import {
   useEffect,
   useMemo,
@@ -65,7 +67,6 @@ export const Post: React.FC = () => {
     control,
     formState,
     handleSubmit,
-    watch,
     reset
   } = useFormContext();
   const {communities, features} = useProfile();
@@ -121,7 +122,6 @@ export const Post: React.FC = () => {
       reset();
     }
   }, [formState]);
-
   const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
     postFunction({
@@ -221,14 +221,15 @@ export const Post: React.FC = () => {
       </div>
     </IonListHeader>
     <div className='ion-padding'>
-      <WhenPicker isLoading={isLoading} />
+      <WhenPicker isLoading={false} />
     </div>
     <IonListHeader color='dark'>
       <FormattedMessage id='pages.post.where' />
     </IonListHeader>
     <div className='ion-padding'>
-      <WherePicker isLoading={isLoading} rerenderTrigger={wherePickerRerenderTrigger}/>
+      <WherePicker isLoading={isLoading} rerenderTrigger={wherePickerRerenderTrigger} />
     </div>
+    <PhotoPicker isLoading={isLoading} />
     <div className='pt-3 ion-text-center'>
       <StateButton
 	isLoading={isLoading || !isWherePickerReady}

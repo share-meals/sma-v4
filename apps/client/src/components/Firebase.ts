@@ -13,6 +13,10 @@ import {
   getFunctions
 } from 'firebase/functions';
 import {
+  connectStorageEmulator,
+  getStorage
+} from 'firebase/storage';
+import {
   connectAuthEmulator,
   getAuth,
   indexedDBLocalPersistence,
@@ -43,11 +47,13 @@ export const auth = getFirebaseAuth(app);
 export const database = getDatabase(app);
 export const firestore = getFirestore(app);
 export const functions = getFunctions(app);
+export const storage = getStorage(app);
 
 if(import.meta.env.VITE_ENVIRONMENT === 'emulator'){
   connectAuthEmulator(auth, 'http://localhost:9099');
   connectDatabaseEmulator(database, 'localhost', 9000)
   connectFirestoreEmulator(firestore, 'localhost', 8080);
   connectFunctionsEmulator(functions, 'localhost', 5001);
+  connectStorageEmulator(storage, 'localhost', 9199);
 }
 export default app;
