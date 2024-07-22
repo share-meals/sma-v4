@@ -48,7 +48,7 @@ const GeolocationError: React.FC = () => (
 export const Map: React.FC<MapProps> = ({
   center,
   layers = [],
-  maxZoom = 20,
+  maxZoom = 16,
   minZoom = 10,
   zoom,
   ...props
