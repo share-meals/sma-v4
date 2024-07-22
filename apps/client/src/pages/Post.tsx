@@ -76,14 +76,13 @@ export const Post: React.FC = () => {
   const postFunction = httpsCallable(functions, 'post-create');
 
   // todo: filter those that can post and mustwhitelistpost and is admin
-  const community_options = useMemo(
-    () => Object.entries(communities).map(
-      ([id, data]: [string, any]) => ({
-	value: id,
-	label: data.name
-      })
-    ), [communities]);
-  const dietary_tag_options = useMemo(() => ([
+  const communityOptions = useMemo(
+    () => features.canPost.map((id: string) => ({
+      value: id,
+      label: communities[id].name
+    })
+    ), [communities, features]);
+  const dietaryTagOptions = useMemo(() => ([
     {
       value: '-dairy',
       label: intl.formatMessage({id: 'common.dietary_tags.-dairy'})
@@ -114,7 +113,7 @@ export const Post: React.FC = () => {
     }
   ]), []);
   useIonViewWillEnter(() => {
-    if(!features.canPost){
+    if(features.canPost.length === 0){
       history.replace('/map');
       return;
     }
@@ -175,14 +174,14 @@ export const Post: React.FC = () => {
       <Select
 	cancelText={intl.formatMessage({id: 'buttons.label.cancel'})}
 	control={control}
-	disabled={isLoading}
+	disabled={isLoading || communityOptions.length === 1}
 	fill='outline'
 	label={intl.formatMessage({id: 'common.label.communities'})}
 	labelPlacement='floating'
 	multiple={true}
 	name='communities'
 	okText={intl.formatMessage({id: 'buttons.label.ok'})}
-	options={community_options}
+	options={communityOptions}
 	required={true}
       />
       <Select
@@ -195,7 +194,7 @@ export const Post: React.FC = () => {
 	multiple={true}
 	name='tags'
 	okText={intl.formatMessage({id: 'buttons.label.ok'})}
-	options={dietary_tag_options}
+	options={dietaryTagOptions}
       />
       <Input
 	control={control}
