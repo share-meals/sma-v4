@@ -79,7 +79,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   rerenderTrigger,
 }) => {
   const intl = useIntl();
-  const {communities} = useProfile();
+  const {communities, features} = useProfile();
   const {
     control,
     formState,
@@ -99,11 +99,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     // todo: better typing
     let payload: {[key: string]: any} = {};
     Object.values(communities).forEach((community: any) => {
-      if(community.features.canPost
-	 && (community.features.mustWhitelistPost === false
-	  || (community.features.mustWhitelistPost === true
-	   && community.myMembership === 'admin')
-      )){
+      if(features.canPost.includes(community.id)){
 	community.locations?.forEach((location: locationType) => {
 	  if(payload[location.name!] === undefined){
 	    payload[location.name! ] = location;
