@@ -210,7 +210,7 @@ export const Router: React.FC = () => {
 	    <FormattedMessage id='pages.map.title' />
 	  </IonLabel>
 	</IonTabButton>
-	{features.canPost &&
+	{features.canPost.length > 0 &&
 	 <IonTabButton data-testid='map button' tab='post' href='/post' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
 	   <IonIcon aria-hidden='true' src={MapIcon} />
 	   <IonLabel>

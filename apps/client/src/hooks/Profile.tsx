@@ -97,19 +97,23 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	));
 	
 	const communitiesUnsub = onSnapshot(communitiesQuery, (snapshot) => {
-	  let canPost = false;
-	  let canShare = false;
-	  let canSmartPantry = false;
+	  let canPost: string[] = [];
+	  let canShare: string[] = [];
+	  let canSmartPantry: string[] = [];
 	  const comms = Object.fromEntries(snapshot.docs.map((doc) => {
 	    const {codes, ...data} = doc.data();
 	    // todo: typing
 	    const membership = profile.private.communities[`community-${doc.id}`];
-	    canPost = canPost || (
-	      (data.features.canPost && !data.features.mustWhitelistPost)
-	      || (data.features.canPost && data.features.mustWhitelistPost && membership === 'admin')
-	    );
-	    canShare = canShare || data.features.canShare;
-	    canSmartPantry = canSmartPantry || data.features.canSmartPantry;
+	    if((data.features.canPost && !data.features.mustWhitelistPost)
+	       || (data.features.canPost && data.features.mustWhitelistPost && membership === 'admin')){
+	      canPost.push(doc.id);
+	    }
+	    if(data.features.canShare){
+	      canShare.push(doc.id);
+	    }
+	    if(data.features.canSmartPantry){
+	      canSmartPantry.push(doc.id);
+	    }
 	    return [doc.id, {
 	      id: doc.id,
 	      myMembership: membership,
@@ -158,9 +162,9 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	setCommunities([]);
 	setPosts({});
 	setFeatures({
-	  canPost: false,
-	  canShare: false,
-	  canSmartPantry: false,
+	  canPost: [],
+	  canShare: [],
+	  canSmartPantry: [],
 	});
       }
     }else{
@@ -175,9 +179,9 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	}
 	setPosts(null);
 	setFeatures({
-	  canPost: false,
-	  canShare: false,
-	  canSmartPantry: false,
+	  canPost: [],
+	  canShare: [],
+	  canSmartPantry: [],
 	});
       }
     }

@@ -17,6 +17,7 @@ import {
   useState,
 } from 'react';
 import {postCreateClientSchema} from '@sma-v4/schema';
+import {useProfile} from '@/hooks/Profile';
 import {zodResolver} from '@hookform/resolvers/zod';
 
 interface PostFormState {
@@ -43,8 +44,10 @@ const whenPickerSetValueOptions = {
 
 export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) => {
   const nowAndLater = getNowAndLater();
+  const {communities} = useProfile();
   const {reset, ...methods} = useForm({
     defaultValues: {
+      communities: ['-KToWXEHyChwfsppc47y'],
       starts: nowAndLater[0],
       ends: nowAndLater[1],
     },
