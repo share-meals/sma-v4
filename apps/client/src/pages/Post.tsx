@@ -184,27 +184,35 @@ export const Post: React.FC = () => {
 	options={communityOptions}
 	required={true}
       />
-      <Select
-	cancelText={intl.formatMessage({id: 'buttons.label.cancel'})}
-	control={control}
-	disabled={isLoading}
-	fill='outline'
-	label={intl.formatMessage({id: 'common.label.dietary_tags'})}
-	labelPlacement='floating'
-	multiple={true}
-	name='tags'
-	okText={intl.formatMessage({id: 'buttons.label.ok'})}
-	options={dietaryTagOptions}
-      />
-      <Input
-	control={control}
-	disabled={isLoading}
-	fill='outline'
-	label={intl.formatMessage({id: 'common.label.servings'})}
-	labelPlacement='floating'
-	name='servings'
-	type='number'
-      />
+      <IonGrid className='ion-no-padding'>
+	<IonRow>
+	  <IonCol style={{paddingRight: '0.5rem'}}>
+	    <Select
+	      cancelText={intl.formatMessage({id: 'buttons.label.cancel'})}
+	      control={control}
+	      disabled={isLoading}
+	      fill='outline'
+	      label={intl.formatMessage({id: 'common.label.dietary_tags'})}
+	      labelPlacement='floating'
+	      multiple={true}
+	      name='tags'
+	      okText={intl.formatMessage({id: 'buttons.label.ok'})}
+	      options={dietaryTagOptions}
+	    />
+	  </IonCol>
+	  <IonCol style={{paddingLeft: '0.5rem'}}>
+	    <Input
+	      control={control}
+	      disabled={isLoading}
+	      fill='outline'
+	      label={intl.formatMessage({id: 'common.label.servings'})}
+	      labelPlacement='floating'
+	      name='servings'
+	    type='number'
+	    />
+	  </IonCol>
+	</IonRow>
+      </IonGrid>
     </div>
     <IonListHeader color='dark'>
       <div className='ion-align-items-center ion-justify-content-between' style={{display: 'flex', width: '100%'}}>
