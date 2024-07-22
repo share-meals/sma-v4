@@ -214,6 +214,7 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 
 const PostContent: React.FC<{post: Post}> = ({post}) => {
   const {dateFnsLocale} = useI18n();
+  const {communities} = useProfile();
   const [showMap, setShowMap] = useState<boolean>(false);
   const layer: MapLayer = useMemo(() => ({
     fillColor: 'red',
@@ -308,9 +309,11 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
       {post.tags && <div>
 	<DietaryTags tags={post.tags} />
       </div>}
-      <div>
-	<CommunityTags communities={post.communities} />
-      </div>
+      {Object.keys(communities).length > 1 &&
+       <div>
+	 <CommunityTags communities={post.communities} />
+       </div>
+      }
       {post.servings && <IonText>
 	<p>
 	  <FormattedMessage id='common.label.servingsWithValue' values={{number: post.servings}} />
