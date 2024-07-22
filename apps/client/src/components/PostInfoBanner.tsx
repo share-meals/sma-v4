@@ -55,7 +55,7 @@ export const PostInfoBanner: React.FC<post & {onNavigate: () => void}> = (props)
 	</div>
       </IonLabel>
       <IonThumbnail slot='start'>
-	{postInfo.photos
+	{postInfo.photos && postInfo.photos.length > 0
 	? <Photo path={`postPhotos/${postInfo.id}-${postInfo.photos[0]}.png`} />
 	: <img src='https://sharemeals.org/assets/img/og_image.png' />}
       </IonThumbnail>
