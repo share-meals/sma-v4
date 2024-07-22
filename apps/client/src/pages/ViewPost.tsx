@@ -240,7 +240,6 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
     strokeColor: 'green',
     type: 'vector'
   }), [post.location.lat, post.location.lng]);
-  
   return <>
     <div className='ion-padding'>
       <div style={{display: 'flex'}}>
@@ -298,9 +297,12 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
       </p>
       {showMap && <div style={{height: '20rem'}}>
 	<Map
-	  center={{lat: post.location.lat, lng: post.location.lng}}
+	  center={{
+	    lat: post.location.lat,
+	    lng: post.location.lng
+	  }}
 	  layers={[layer]}
-	  zoom={17}
+	  zoom={14}
 	/>
       </div>}
       {post.tags && <div>
