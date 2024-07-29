@@ -34,3 +34,5 @@ export const communitySchema = z.object({
 });
 
 export const myMembershipSchema = z.enum(['admin', 'member']);
+
+export type Community = z.infer<typeof communitySchema>;
