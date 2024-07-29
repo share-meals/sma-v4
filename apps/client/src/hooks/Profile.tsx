@@ -86,7 +86,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
       if(profile.private && profile.private.communities){
 	// communityIds are fixed
 	const communityIds = Object.keys(profile.private.communities);
-	const unfixedCommunityIds = communityIds.map((id) => id.replace(/^community-/i, ''));
+	const unfixedCommunityIds = communityIds.length === 0 ? ['NULL'] : communityIds.map((id) => id.replace(/^community-/i, ''));
 	const communitiesCollection = collection(firestore, 'communities');
 	const communitiesQuery = query(
 	  communitiesCollection,

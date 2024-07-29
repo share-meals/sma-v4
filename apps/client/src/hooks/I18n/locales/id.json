@@ -66,6 +66,7 @@
   "pages.account.logsModal": "Catatan",
   "pages.account.messagingToken": "Tanda Pesan",
   "pages.account.newPassword": "Kata Sandi Baru",
+  "pages.account.noCommunities": "Anda belum bergabung dengan komunitas mana pun.",
   "pages.account.settings": "Pengaturan",
   "pages.account.showLogs": "Tampilkan Catatan",
   "pages.account.title": "Akun",

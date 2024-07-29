@@ -66,6 +66,7 @@
   "pages.account.logsModal": "Registros",
   "pages.account.messagingToken": "Ficha de Mensajería",
   "pages.account.newPassword": "Nueva Contraseña",
+  "pages.account.noCommunities": "No te has unido a ninguna comunidad.",
   "pages.account.settings": "Ajustes",
   "pages.account.showLogs": "Mostrar Registros",
   "pages.account.title": "Cuenta",

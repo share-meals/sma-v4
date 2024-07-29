@@ -222,7 +222,6 @@ const JoinCommunityForm: React.FC = () => {
       </IonGrid>
       {hasSuccess !== null
       && <Notice color='success' className='ion-margin'>
-	<IonLabel>
 	  {hasSuccess.map((m) => {
 	    switch(m.level){
 	      case 'admin':
@@ -238,11 +237,10 @@ const JoinCommunityForm: React.FC = () => {
 		break;
 	    }
 	  }).map((m, index) => {
-	    return <div key={index}>
+	    return <IonLabel key={index}>
 	      {m}
-	    </div>
+	    </IonLabel>
 	  })}
-	</IonLabel>
       </Notice>}
       
       {hasError
@@ -318,6 +316,8 @@ export const Account: React.FC = () => {
   const [showLogs, setShowLogs] = useState<boolean>(false);
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
   const [showJoinCommunity, setShowJoinCommunity] = useState<boolean>(false);
+  const functions = getFunctions();
+  const removeFromCommunityFunction = httpsCallable(functions, 'user-community-remove');
   useIonViewDidLeave(() => {
     setShowDebugTaps(0);
   });
@@ -357,8 +357,10 @@ export const Account: React.FC = () => {
 	</div>
       </IonListHeader>
       <div className='mv-1 ph-1'>
-	{/* todo: add onClose param to allow removing a user from the community */}
-	<CommunityTags communities={Object.keys(communities)} />
+	<CommunityTags communities={Object.keys(communities)} onClose={(communityId) => {
+	  removeFromCommunityFunction({communityId});
+	}}/>
+	{Object.keys(communities).length === 0 && <FormattedMessage id='pages.account.noCommunities' />}
       </div>
       <IonListHeader color='dark'>
       </IonListHeader>
