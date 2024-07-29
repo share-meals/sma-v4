@@ -66,6 +66,7 @@
   "pages.account.logsModal": "Logs",
   "pages.account.messagingToken": "Messaging Token",
   "pages.account.newPassword": "New Password",
+  "pages.account.noCommunities": "You have not joined any communities.",
   "pages.account.settings": "Settings",
   "pages.account.showLogs": "Show Logs",
   "pages.account.title": "Account",

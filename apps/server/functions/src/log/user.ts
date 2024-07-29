@@ -59,6 +59,31 @@ export const logUserCommunityAdd: logUserCommunityAdd = ({
       });
 };
 
+type logUserCommunityRemove = (args: {
+  communityId: string,
+  ipAddress?: string,
+  userId: string
+}) => Promise<InsertRowsResponse>
+
+export const logUserCommunityRemove: logUserCommunityRemove = ({
+  communityId,
+  ipAddress,
+  userId,
+}) => {
+  const bigQuery: BigQuery = generateBigQueryClient();
+  return bigQuery
+      .dataset('app_analytics')
+      .table('user_community')
+      .insert({
+        userId: userId,
+        timestamp: new Date(),
+        action: 'remove',
+        community: communityId,
+        ipAddress: ipAddress,
+      });
+};
+
+
 type logMessagingTokenAction = (args: {
   action: 'create' | 'delete',
   ipAddress?: string,
