@@ -31,10 +31,11 @@ export const addByCommunityCode = onCall(async (
   }
   const tasks = matchedCommunities.map((community) => {
     return addUserToCommunity({
-      userId: request.auth!.uid,
       code: community.code,
       communityId: `community-${community.communityId}`,
-			      level: <'admin' | 'member'> community.level // todo: pull admin | member from schema
+      ipAddress: request.rawRequest.ip,
+      level: <'admin' | 'member'> community.level, // todo: pull admin | member from schema
+      userId: request.auth!.uid,
     });
   });
   await Promise.all(tasks);
