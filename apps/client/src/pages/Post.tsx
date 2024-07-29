@@ -174,7 +174,7 @@ export const Post: React.FC = () => {
       <Select
 	cancelText={intl.formatMessage({id: 'buttons.label.cancel'})}
 	control={control}
-	disabled={isLoading || communityOptions.length === 1}
+	disabled={isLoading}
 	fill='outline'
 	label={intl.formatMessage({id: 'common.label.communities'})}
 	labelPlacement='floating'
