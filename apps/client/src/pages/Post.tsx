@@ -1,3 +1,10 @@
+import {
+  Datetime,
+  Input,
+  Select,
+  StateButton,
+  Textarea
+} from '@share-meals/frg-ui';
 import {FirebaseError} from '@firebase/util';
 import {
   FormattedMessage,
@@ -15,15 +22,9 @@ import {
   IonListHeader,
   IonRow,
   IonText,
+  isPlatform,
   useIonViewWillEnter,
 } from '@ionic/react';
-import {
-  Datetime,
-  Input,
-  Select,
-  StateButton,
-  Textarea
-} from '@share-meals/frg-ui';
 import {toast} from 'react-toastify';
 import {WhenPicker} from '@/components/WhenPicker';
 import {WherePicker} from '@/components/WherePicker';
@@ -236,7 +237,9 @@ export const Post: React.FC = () => {
     <div className='ion-padding'>
       <WherePicker isLoading={isLoading} rerenderTrigger={wherePickerRerenderTrigger} />
     </div>
-    <PhotoPicker isLoading={isLoading} />
+    {!isPlatform('android') &&
+     <PhotoPicker isLoading={isLoading} />
+    }
     <div className='pt-3 ion-text-center'>
       <StateButton
 	isLoading={isLoading || !isWherePickerReady}
