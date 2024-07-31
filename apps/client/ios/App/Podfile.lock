@@ -5,7 +5,7 @@ PODS:
     - Capacitor
   - CapacitorAppLauncher (5.0.7):
     - Capacitor
-  - CapacitorCamera (6.0.1):
+  - CapacitorCamera (5.0.10):
     - Capacitor
   - CapacitorCordova (5.7.0)
   - CapacitorDevice (5.0.7):
@@ -131,7 +131,7 @@ SPEC CHECKSUMS:
   Capacitor: fc155ee2ee45a2093d716f13cf5aa5a865e2d85a
   CapacitorApp: 17fecd0e6cb23feafac7eb0939417389038b0979
   CapacitorAppLauncher: 7b2705481a74cbe322441bd374f56194de59ab1a
-  CapacitorCamera: 3b77b3e8311b98220de65e63445c0e4d0b30ce3a
+  CapacitorCamera: d333715364b5d85422c627aae6db87ef6161352c
   CapacitorCordova: e825fce1a2e14e4b5730641c7e098dccf74397b7
   CapacitorDevice: fc91bdb484dc0e70755e9b621cd557afe642613a
   CapacitorFirebaseMessaging: ff3b2e81e11f1e20e4e349dc9a920516cf649345
