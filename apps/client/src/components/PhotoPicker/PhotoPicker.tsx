@@ -61,8 +61,8 @@ const AddPhotoButton: React.FC = () => {
   const addPhoto = async () => {
     // get the photo
     const photo = await Camera.getPhoto({
-      allowEditing: true,
-      quality: 100,
+      allowEditing: false,
+      quality: 50,
       resultType: CameraResultType.Base64,
       source: CameraSource.Camera,
     });
