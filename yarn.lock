@@ -2439,12 +2439,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@capacitor/android@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@capacitor/android@npm:6.0.0"
+"@capacitor/android@npm:^5.7.7":
+  version: 5.7.7
+  resolution: "@capacitor/android@npm:5.7.7"
   peerDependencies:
-    "@capacitor/core": ^6.0.0
-  checksum: 10c0/a65b73be301afc565b345b6972b9fc8afae122ba6cb85d1274d4bdb0528c11cbfd7f67ca92d361c5914ccbd00232f257b0132880e854f0fe199d977d92248c4b
+    "@capacitor/core": ^5.7.0
+  checksum: 10c0/f12fe997e5792c3f10d29d82179ea5ba7e01d41a46889c10e1d50da12d408b250c6c7ff00ab36ccf81843bccd2d19656aad4331c18111fbf778dd7453f66e7b2
   languageName: node
   linkType: hard
 
@@ -2488,12 +2488,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@capacitor/camera@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@capacitor/camera@npm:6.0.1"
+"@capacitor/camera@npm:^5.0.10":
+  version: 5.0.10
+  resolution: "@capacitor/camera@npm:5.0.10"
   peerDependencies:
-    "@capacitor/core": ^6.0.0
-  checksum: 10c0/aa15bdb653afac3a98a4acf74bd956c4d9e81728d335c97c30872f4703d73c01a8f921f50a33325ead5fdbdbe75d90dcb6c640aa74cd3aba94e8dbe6ddb78a04
+    "@capacitor/core": ^5.0.0
+  checksum: 10c0/1915bd74e16873ca858453302699655398435fbf5d142f16c5cbca48f992ceb2f6fd60ec443bc86595e7b890ebc6fb753f63300616d47cc3499c17b32fa12ddd
   languageName: node
   linkType: hard
 
@@ -5297,11 +5297,11 @@ __metadata:
   resolution: "@sma-v4/client@workspace:apps/client"
   dependencies:
     "@capacitor-firebase/messaging": "npm:^5.4.1"
-    "@capacitor/android": "npm:^6.0.0"
+    "@capacitor/android": "npm:^5.7.7"
     "@capacitor/app": "npm:5.0.7"
     "@capacitor/app-launcher": "npm:^5.0.7"
     "@capacitor/assets": "npm:^3.0.4"
-    "@capacitor/camera": "npm:^6.0.1"
+    "@capacitor/camera": "npm:^5.0.10"
     "@capacitor/cli": "npm:5.7.0"
     "@capacitor/core": "npm:5.7.0"
     "@capacitor/device": "npm:^5.0.7"
