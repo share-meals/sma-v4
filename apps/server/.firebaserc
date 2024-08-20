@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "share-meals-9477b"
+    "live": "share-meals-9477b",
+    "development": "share-meals-dev"
   }
 }
