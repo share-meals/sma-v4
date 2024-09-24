@@ -28,7 +28,7 @@ fs.readFile(jsonFilePath, 'utf8', (err, data) => {
       
       // Display results
       console.log('Matching records:');
-      console.log(results);
+	console.log(JSON.stringify(results, null, 4));
 
       // Close the readline interface
       rl.close();
