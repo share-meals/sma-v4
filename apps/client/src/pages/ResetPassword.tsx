@@ -32,11 +32,26 @@ export const ResetPassword: React.FC = () => {
     ),
     reValidateMode: 'onSubmit'
   });
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
-    await sendPasswordResetEmail(auth, data.email);
-    setShowNotice(true);
-    setIsLoading(false);
+    sendPasswordResetEmail(auth, data.email)
+      .then(() => {
+
+      })
+      .catch((error) => {
+	switch(error.code){
+	  case 'auth/user-not-found':
+	    // do nothing; this is fine
+	    break;
+	  default:
+	    // TODO: what should we do with other errors?
+	    break;
+	}
+      })
+      .finally(() => {
+	setIsLoading(false);
+	setShowNotice(true);
+      });
   });
   return <form
 	   noValidate
