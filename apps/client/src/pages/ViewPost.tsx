@@ -30,7 +30,7 @@ import {
   httpsCallable,
 } from 'firebase/functions';
 import {Map} from '@/components/Map';
-import {MapLayer} from '@share-meals/frg-ui';
+import {MapLayerProps} from '@share-meals/frg-ui';
 import Markdown from 'react-markdown';
 import {Photo} from '@/components/Photo';
 import {postSchema} from '@sma-v4/schema';
@@ -216,7 +216,7 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
   const {dateFnsLocale} = useI18n();
   const {communities} = useProfile();
   const [showMap, setShowMap] = useState<boolean>(false);
-  const layer: MapLayer = useMemo(() => ({
+  const layer: MapLayerProps = useMemo(() => ({
     fillColor: 'red',
     geojson: {
       type: 'FeatureCollection',
