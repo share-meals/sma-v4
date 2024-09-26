@@ -8,7 +8,7 @@ import {
 } from 'react-hook-form';
 import {
   Input,
-  MapLayer,
+  MapLayerProps,
   Select,
   SelectOption,
 } from '@share-meals/frg-ui';
@@ -18,12 +18,13 @@ import {
   IonInput,
 } from '@ionic/react';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
+import {ManualAddressPicker} from '@/components/ManualAddressPicker';
 import {Map} from '@/components/Map';
 import {
+  fromLatLng,
   OutputFormat,
   setDefaults,
   setLocationType,
-  fromLatLng,
 } from 'react-geocode';
 import {
   useCallback,
@@ -39,7 +40,6 @@ import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
-
 import LocationIcon from '@material-symbols/svg-400/rounded/location_on-fill.svg';
 import LockIcon from '@material-symbols/svg-400/rounded/lock-fill.svg';
 import RefreshIcon from '@material-symbols/svg-400/rounded/refresh.svg';
@@ -53,6 +53,7 @@ const internalForm = z.object({
   method: z.enum([
     'currentLocation',
     'commonList',
+    'manualAddress',
     'virtual'
   ])
 });
@@ -240,7 +241,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     }
   }, [permissionState, lastGeolocation, isWherePickerReady, setIsWherePickerReady]);
 
-  const layer: MapLayer = useMemo(() => ({
+  const layer: MapLayerProps = useMemo(() => ({
     fillColor: 'red',
     geojson: {
       type: 'FeatureCollection',
@@ -306,6 +307,10 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	  label: intl.formatMessage({id: 'components.wherePicker.commonList'}),
 	  value: 'commonList',
 	},
+	{
+	  label: intl.formatMessage({id: 'components.wherePicker.manualAddress'}),
+	  value: 'manualAddress',
+	},
 	/*
 	   // todo: implement virtual checking
 	{
@@ -358,6 +363,13 @@ export const WherePicker: React.FC<WherePickerProps> = ({
        </IonButton>
      </IonInput>
     }
+    
+    {method === 'manualAddress' &&
+     <ManualAddressPicker
+
+     />
+    }
+    
     <div className='mt-2 a' style={{height: '20rem'}}>
       {(internalLat === undefined
       || internalLng === undefined) &&

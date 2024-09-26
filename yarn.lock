@@ -4832,17 +4832,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@material-symbols/svg-400@npm:^0.16.0":
-  version: 0.16.0
-  resolution: "@material-symbols/svg-400@npm:0.16.0"
-  checksum: 10c0/8bc59cc77229bbd9e722907d86ce5deca6b04063a47260731629577217a0587a0e74cade5aa948565ba6719bc2c6db9d8ab32bfb8c071f5996aabbe4c13e1304
+"@material-symbols/svg-400@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "@material-symbols/svg-400@npm:0.23.0"
+  checksum: 10c0/7e23431496121375b19f86cf09a63ca6b7f583f53c171b7be960166ec3d0d718b8b3f9e66f85cb6e866c92a02d9d57c3a0390dd2d3f8f4d8c89ed914d9deaa75
   languageName: node
   linkType: hard
 
-"@material-symbols/svg-700@npm:^0.18.0":
-  version: 0.18.0
-  resolution: "@material-symbols/svg-700@npm:0.18.0"
-  checksum: 10c0/a3e3f1043fa964280aa67642f9662c492e4ad909338f259bd9180330f1e2e6efdc23f03ecc9d497888c8b63f1a1fbefe7549db89051dafeb5814e4e5f08f46fe
+"@material-symbols/svg-700@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "@material-symbols/svg-700@npm:0.23.0"
+  checksum: 10c0/b5d2e19bd97875878501fa70636a02a6a7aa4bd7ba0a853e137ed5138cd561266f3f93e1f30fb65797c762dda8a3ff5f37e7f8c3f6a801443e600a97af52b779
   languageName: node
   linkType: hard
 
@@ -5247,9 +5247,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@share-meals/frg-ui@npm:^0.0.18":
-  version: 0.0.18
-  resolution: "@share-meals/frg-ui@npm:0.0.18::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.18%2Fadbc33f304e4df60d1583fde1e8eb9f34c28e588"
+"@share-meals/frg-ui@npm:^0.0.19":
+  version: 0.0.19
+  resolution: "@share-meals/frg-ui@npm:0.0.19::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.19%2F99f88edb0de44396774cafa0f47763f9ddd69864"
   dependencies:
     dayjs: "npm:^1.11.10"
     deepmerge: "npm:^4.3.1"
@@ -5263,7 +5263,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-hook-form: "*"
-  checksum: 10c0/432cb449092b5b33a5c61ae687dc1b65ac4f1f4cc2fd661196b9e36533b0f9f00713683a2cd2ba5b3bf1bf4dc94bcebfc469a2402f934a3d478887dcf1c8995e
+  checksum: 10c0/bae3d3d87ff1466f607deba2f588bec1d62c6a341110bbd98eb78efb17843a79a3b9b90a1ba67ef5fda2b2c7fb365bb8208d1fc54340eb6c0767f5cbe16a564e
   languageName: node
   linkType: hard
 
@@ -5320,9 +5320,9 @@ __metadata:
     "@ionic/react": "npm:^7.0.0"
     "@ionic/react-router": "npm:^7.0.0"
     "@material-design-icons/svg": "npm:^0.14.13"
-    "@material-symbols/svg-400": "npm:^0.16.0"
-    "@material-symbols/svg-700": "npm:^0.18.0"
-    "@share-meals/frg-ui": "npm:^0.0.18"
+    "@material-symbols/svg-400": "npm:^0.23.0"
+    "@material-symbols/svg-700": "npm:^0.23.0"
+    "@share-meals/frg-ui": "npm:^0.0.19"
     "@storybook/addon-a11y": "npm:^8.0.2"
     "@storybook/addon-actions": "npm:^8.0.4"
     "@storybook/addon-console": "npm:^3.0.0"
@@ -10005,9 +10005,9 @@ __metadata:
   linkType: hard
 
 "dayjs@npm:^1.11.10":
-  version: 1.11.11
-  resolution: "dayjs@npm:1.11.11"
-  checksum: 10c0/0131d10516b9945f05a57e13f4af49a6814de5573a494824e103131a3bbe4cc470b1aefe8e17e51f9a478a22cd116084be1ee5725cedb66ec4c3f9091202dc4b
+  version: 1.11.13
+  resolution: "dayjs@npm:1.11.13"
+  checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
   languageName: node
   linkType: hard
 
@@ -15321,9 +15321,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^10.2.0":
-  version: 10.4.2
-  resolution: "lru-cache@npm:10.4.2"
-  checksum: 10c0/5d990e30853890cc1f0150b83586a3e680664e938d782a9747a7bc7ebebfd6b74a11739add21ffa319bb05a3db249c4c2b6ec38ed8d4e3084bb7338be1acafc5
+  version: 10.4.3
+  resolution: "lru-cache@npm:10.4.3"
+  checksum: 10c0/ebd04fbca961e6c1d6c0af3799adcc966a1babe798f685bb84e6599266599cd95d94630b10262f5424539bc4640107e8a33aa28585374abf561d30d16f4b39fb
   languageName: node
   linkType: hard
 
@@ -15486,9 +15486,9 @@ __metadata:
   linkType: hard
 
 "mapbox-to-css-font@npm:^2.4.1":
-  version: 2.4.4
-  resolution: "mapbox-to-css-font@npm:2.4.4"
-  checksum: 10c0/049b074eef23812810d4792d76a2834266653357241e179c794d7d044b104f101233bef9e9cfbb098d05871c6ad88a2e3fcf152d1fb59ae1d788a02733eda0a2
+  version: 2.4.5
+  resolution: "mapbox-to-css-font@npm:2.4.5"
+  checksum: 10c0/07f2b6e6fa56c2f206a95255b80c14242a7ebef604498d4700f1bfb92d4dde3ebfbe178a516271ae2286b58f8df2222a97738784bc9407783b62da6ec9cec87a
   languageName: node
   linkType: hard
 

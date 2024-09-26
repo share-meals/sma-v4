@@ -75,7 +75,6 @@ export const Post: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const functions = getFunctions();
   const postFunction = httpsCallable(functions, 'post-create');
-
   // todo: filter those that can post and mustwhitelistpost and is admin
   const communityOptions = useMemo(
     () => features.canPost.map((id: string) => ({
@@ -144,10 +143,12 @@ export const Post: React.FC = () => {
     console.log(error);
   });
 
-  return <form
+  return <>
+    <form
+	   id='post-form'
 	   noValidate
 	   onSubmit={onSubmit}
-	   ref={formRef}>
+	   ref={formRef} />
     <IonListHeader color='dark'>
       <FormattedMessage id='pages.post.what' />
     </IonListHeader>
@@ -155,7 +156,8 @@ export const Post: React.FC = () => {
       <Input
 	control={control}
 	disabled={isLoading}
-	fill='outline'
+      fill='outline'
+      form='post-form'
 	label={intl.formatMessage({id: 'common.label.title'})}
 	labelPlacement='floating'
 	name='title'
@@ -166,6 +168,7 @@ export const Post: React.FC = () => {
 	control={control}
 	disabled={isLoading}
 	fill='outline'
+	form='post-form'
 	label={intl.formatMessage({id: 'common.label.details'})}
 	labelPlacement='floating'
 	name='details'
@@ -177,6 +180,7 @@ export const Post: React.FC = () => {
 	control={control}
 	disabled={isLoading}
 	fill='outline'
+	form='post-form'
 	label={intl.formatMessage({id: 'common.label.communities'})}
 	labelPlacement='floating'
 	multiple={true}
@@ -193,6 +197,7 @@ export const Post: React.FC = () => {
 	      control={control}
 	      disabled={isLoading}
 	      fill='outline'
+	      form='post-form'
 	      label={intl.formatMessage({id: 'common.label.dietary_tags'})}
 	      labelPlacement='floating'
 	      multiple={true}
@@ -206,6 +211,7 @@ export const Post: React.FC = () => {
 	      control={control}
 	      disabled={isLoading}
 	      fill='outline'
+	    form='post-form'
 	      label={intl.formatMessage({id: 'common.label.servings'})}
 	      labelPlacement='floating'
 	      name='servings'
@@ -242,6 +248,7 @@ export const Post: React.FC = () => {
     }
     <div className='pt-3 ion-text-center'>
       <StateButton
+	form='post-form'
 	isLoading={isLoading || !isWherePickerReady}
 	size='large'
 	type='submit'>
@@ -267,5 +274,5 @@ export const Post: React.FC = () => {
 	<FormattedMessage id='common.label.reset' />
       </IonButton>
     </div>
-  </form>;
+  </>;
 };
