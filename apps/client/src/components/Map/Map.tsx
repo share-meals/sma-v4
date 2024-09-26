@@ -5,7 +5,7 @@ import {
   MapProvider,
 } from '@share-meals/frg-ui';
 import type {
-  MapLayer
+  MapLayerProps
 } from '@share-meals/frg-ui';
 import {latlngSchema} from '@sma-v4/schema';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
@@ -19,7 +19,7 @@ type latlngType = z.infer<typeof latlngSchema>;
 interface MapProps {
   center: latlngType;
   controls?: React.ReactElement;
-  layers?: MapLayer[];
+  layers?: MapLayerProps[];
   locked?: boolean;
   maxZoom?: number;
   minZoom?: number;
