@@ -11,17 +11,18 @@ import {FormattedMessage} from 'react-intl';
 
 //type Tags = Pick<z.infer(typeof postSchema), 'tags'> | undefined | null;
 
-export const DietaryTags: React.FC<{tags?: any[] | null}> = ({
-  tags = []
+interface DietaryTagsProps {
+  tags: any[],
+}
+
+export const DietaryTags: React.FC<DietaryTagsProps> = ({
+  tags
 }) => {
   return <>
-    {(tags ?? []).map(
+    {tags.map(
       (t) => <IonChip
 	key={t}
-	       style={{
-		 '--background': t.startsWith('-') ? 'var(--ion-color-danger)' : 'var(--ion-color-success)',
-		 '--color': '#ffffff'
-	       }}>
+	color={t.startsWith('-') ? 'danger' : 'success'}>
 	<IonLabel>
 	  <FormattedMessage id={`common.dietary_tags.${t}`} />
 	</IonLabel>

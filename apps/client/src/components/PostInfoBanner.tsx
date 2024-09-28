@@ -1,4 +1,5 @@
 import classnames from 'classnames';
+import {DietaryTags} from '@/components/DietaryTags';
 import {
   formatDistanceToNow,
   isPast,
@@ -48,6 +49,9 @@ export const PostInfoBanner: React.FC<post & {onNavigate: () => void}> = (props)
 	   : <FormattedMessage id='common.label.ends' />} {formatDistanceToNow(postInfo.ends, {addSuffix: true, locale: dateFnsLocale})}
 	 </p>
 	}
+	{postInfo.tags && <div>
+	  <DietaryTags tags={postInfo.tags} />
+	</div>}
 	<div className='truncate-lines-3 mt-1'>
 	  <Markdown>
 	    {postInfo.details}
