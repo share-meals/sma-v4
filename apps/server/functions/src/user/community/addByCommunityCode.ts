@@ -1,4 +1,5 @@
 import {addUserToCommunity} from './addUserToCommunity';
+import admin from 'firebase-admin';
 import {
   CallableRequest,
   HttpsError,
@@ -29,7 +30,20 @@ export const addByCommunityCode = onCall(async (
       'no matched communities'
     );
   }
-  const tasks = matchedCommunities.map((community) => {
+  const {customClaims: customClaimsRaw} = await admin.auth().getUser(request.auth!.uid);
+  const customClaims = customClaimsRaw ?? {};
+  const filteredCommunities = matchedCommunities.filter((c) => (
+    !customClaims[`community-${c.communityId}`]
+    || (c.level === 'admin' && customClaims[`community-${c.communityId}`] === 'member')
+  ));
+  
+  if(filteredCommunities.length === 0){
+    throw new HttpsError(
+      'already-exists',
+      'no new communities to join'
+    );
+  }
+  const tasks = filteredCommunities.map((community) => {
     return addUserToCommunity({
       code: community.code,
       communityId: `community-${community.communityId}`,
@@ -39,5 +53,5 @@ export const addByCommunityCode = onCall(async (
     });
   });
   await Promise.all(tasks);
-  return matchedCommunities;
+  return filteredCommunities;
 });
