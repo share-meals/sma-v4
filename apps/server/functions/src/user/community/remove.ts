@@ -35,7 +35,7 @@ export const remove = onCall(async (
     .update({[`private.communities.community-${communityId}`]: FieldValue.delete()}),
     removeCustomClaim({
       id: userId,
-      key: communityId,
+      key: `community-${communityId}`,
     })
   ];
   if(!process.env.FUNCTIONS_EMULATOR){

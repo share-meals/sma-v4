@@ -149,11 +149,19 @@ interface JoinCommunitySuccessMessage {
   level: 'admin' | 'member'
 }
 
-const JoinCommunityForm: React.FC = () => {
+type JoinCommunityErrorMessage = 'no new communities to join' | 'no matched communities';
+
+interface JoinCommunityFormProps {
+  setHasError: Dispatch<SetStateAction<JoinCommunityErrorMessage | null>>,
+  setHasSuccess: Dispatch<SetStateAction<JoinCommunitySuccessMessage[] | null>>
+}
+
+const JoinCommunityForm: React.FC<JoinCommunityFormProps> = ({
+  setHasError,
+  setHasSuccess
+}) => {
   const intl = useIntl();
   const functions = getFunctions();
-  const [hasError, setHasError] = useState<boolean>(false);
-  const [hasSuccess, setHasSuccess] = useState<JoinCommunitySuccessMessage[] | null>(null);
   const addByCommunityCodeFunction = httpsCallable(functions, 'user-community-addByCommunityCode');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
@@ -172,21 +180,21 @@ const JoinCommunityForm: React.FC = () => {
   });
   useIonViewDidLeave(() => {
     setHasSuccess(null);
-    setHasError(false);
+    setHasError(null);
     reset();
   });
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
     setHasSuccess(null);
-    setHasError(false);
+    setHasError(null);
     addByCommunityCodeFunction(data)
       .then((response) => {
+	    console.log(response);
 	setHasSuccess(response.data as JoinCommunitySuccessMessage[]);
 	reset();
       })
       .catch((error) => {
-	setHasError(true);
-	console.log(error);
+	setHasError(error.message);
       }).finally(() => {
 	setIsLoading(false);
       });
@@ -220,6 +228,82 @@ const JoinCommunityForm: React.FC = () => {
 	  </IonCol>
 	</IonRow>
       </IonGrid>
+    </form>
+  </>;
+}
+
+const JoinCommunityByEmailDomain: React.FC<JoinCommunityFormProps> = ({
+  setHasError,
+  setHasSuccess,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const functions = getFunctions();
+  const addByEmailDomainFunction = httpsCallable(functions, 'user-community-addByEmailDomain');
+  return <>
+    <StateButton
+      fill='clear'
+      isLoading={isLoading}
+      onClick={() => {
+	setIsLoading(true);
+	setHasSuccess(null);
+	setHasError(null);
+	addByEmailDomainFunction()
+	  .then((response) => {
+	    setHasSuccess(response.data as JoinCommunitySuccessMessage[]);
+	  })
+	  .catch((error) => {
+	    setHasError(error.message);
+	  }).finally(() => {
+	    setIsLoading(false);
+	  });
+
+//	setIsLoading(false);
+      }}
+    >
+      <FormattedMessage id='pages.account.joinByEmailDomain' />
+    </StateButton>
+  </>;
+}
+
+interface JoinCommunityModalProps {
+  setShowJoinCommunity: Dispatch<SetStateAction<boolean>>,
+  showJoinCommunity: boolean,
+}
+
+const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
+  setShowJoinCommunity,
+  showJoinCommunity
+}) => {
+  const [hasError, setHasError] = useState<JoinCommunityErrorMessage | null>(null);
+  const [hasSuccess, setHasSuccess] = useState<JoinCommunitySuccessMessage[] | null>(null);
+  return <IonModal isOpen={showJoinCommunity} onDidDismiss={() => {
+    setHasError(null);
+    setHasSuccess(null);
+    setShowJoinCommunity(false);
+  }}>
+    <IonHeader className='ion-no-border'>
+      <IonToolbar color='primary'>
+	<IonTitle>
+	  <FormattedMessage id='pages.account.joinCommunity' />
+	</IonTitle>
+	<IonButtons slot='end'>
+	  <IonButton onClick={() => {setShowJoinCommunity(false);}}>
+	    <IonIcon src={CloseIcon}/>
+	  </IonButton>
+	</IonButtons>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent className='ion-padding'>
+  <JoinCommunityForm
+  setHasError={setHasError}
+  setHasSuccess={setHasSuccess}
+  />
+      <div className='ion-text-right mt-2'>
+	<JoinCommunityByEmailDomain
+	  setHasError={setHasError}
+	  setHasSuccess={setHasSuccess}
+	/>
+      </div>
       {hasSuccess !== null
       && <Notice color='success' className='ion-margin'>
 	  {hasSuccess.map((m) => {
@@ -242,67 +326,14 @@ const JoinCommunityForm: React.FC = () => {
 	    </IonLabel>
 	  })}
       </Notice>}
-      
-      {hasError
+
+      {hasError !== null
       && <Notice color='danger' className='ion-margin'>
 	<IonLabel>
-	  <FormattedMessage id='common.errors.noCommunitiesFound' />
+	  {hasError === 'no matched communities' && <FormattedMessage id='common.errors.noCommunitiesFound' />}
+	  {hasError === 'no new communities to join' && <FormattedMessage id='common.errors.noNewCommunitiesToJoin' />}
 	</IonLabel>
       </Notice>}
-    </form>
-  </>;
-}
-
-const JoinCommunityByEmailAddress: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const joinCommunityByEmailAddress = () => {
-    setIsLoading(true);
-    // make call
-    // display image if needed
-    
-  };
-  return <>
-    <StateButton
-      isLoading={isLoading}
-      onClick={joinCommunityByEmailAddress}
-    >
-      Join by Your Email Address
-    </StateButton>
-  </>;
-}
-
-interface JoinCommunityModalProps {
-  setShowJoinCommunity: Dispatch<SetStateAction<boolean>>,
-  showJoinCommunity: boolean,
-}
-
-const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
-  setShowJoinCommunity,
-  showJoinCommunity
-}) => {
-  return <IonModal isOpen={showJoinCommunity} onDidDismiss={() => {setShowJoinCommunity(false);}}>
-    <IonHeader className='ion-no-border'>
-      <IonToolbar color='primary'>
-	<IonTitle>
-	  <FormattedMessage id='pages.account.joinCommunity' />
-	</IonTitle>
-	<IonButtons slot='end'>
-	  <IonButton onClick={() => {setShowJoinCommunity(false);}}>
-	    <IonIcon src={CloseIcon}/>
-	  </IonButton>
-	</IonButtons>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent className='ion-padding'>
-      <JoinCommunityForm />
-      <span className='ion-hide'>
-      <div className='ion-text-center mv-1'>
-	or
-      </div>
-      <div className='ion-text-center'>
-	<JoinCommunityByEmailAddress />
-      </div>
-      </span>
     </IonContent>
   </IonModal>
 }
