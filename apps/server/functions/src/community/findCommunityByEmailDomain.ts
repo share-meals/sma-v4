@@ -24,6 +24,7 @@ export const findCommunityByEmailDomain = async ({
     return {
       code: emailDomain,
       communityId: doc.id,
+      communityName: doc.data().name,
       level: 'member'
     };
   });

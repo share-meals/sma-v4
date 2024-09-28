@@ -5,25 +5,14 @@ import {
   HttpsError,
   onCall,
 } from 'firebase-functions/v2/https';
-import {communityCodeSchema} from '@sma-v4/schema';
-import {findCommunityByCommunityCode} from '@/community/findCommunityByCommunityCode';
-import {
-  requireAuthed,
-  validateSchema
-} from '@/common';
-import {z} from 'zod';
+import {findCommunityByEmailDomain} from '@/community/findCommunityByEmailDomain';
+import {requireAuthed} from '@/common';
 
-export const addByCommunityCode = onCall(async (
+export const addByEmailDomain = onCall(async (
   request: CallableRequest<any>
 ) => {
   requireAuthed(request.auth);
-  validateSchema({
-    data: request.data,
-    schema: z.object({
-      communityCode: communityCodeSchema
-    })
-  });
-  const matchedCommunities = await findCommunityByCommunityCode({communityCode: request.data.communityCode});
+  const matchedCommunities = await findCommunityByEmailDomain({emailDomain: request.auth!.token.email!.split('@')[1]});
   if(matchedCommunities.length === 0){
     throw new HttpsError(
       'invalid-argument',
@@ -32,11 +21,7 @@ export const addByCommunityCode = onCall(async (
   }
   const {customClaims: customClaimsRaw} = await admin.auth().getUser(request.auth!.uid);
   const customClaims = customClaimsRaw ?? {};
-  const filteredCommunities = matchedCommunities.filter((c) => (
-    !customClaims[`community-${c.communityId}`]
-    || (c.level === 'admin' && customClaims[`community-${c.communityId}`] === 'member')
-  ));
-  
+  const filteredCommunities = matchedCommunities.filter((c) => (!customClaims[`community-${c.communityId}`]));
   if(filteredCommunities.length === 0){
     throw new HttpsError(
       'already-exists',
