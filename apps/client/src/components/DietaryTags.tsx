@@ -4,15 +4,10 @@ import {
   IonLabel,
 } from '@ionic/react';
 import {FormattedMessage} from 'react-intl';
-
-// todo: pull from postSchema
-//import {postSchema} from '@sma-v4/schema';
-//import {z} from 'zod';
-
-//type Tags = Pick<z.infer(typeof postSchema), 'tags'> | undefined | null;
+import {Tag} from '@sma-v4/schema';
 
 interface DietaryTagsProps {
-  tags: any[],
+  tags: Tag[],
 }
 
 export const DietaryTags: React.FC<DietaryTagsProps> = ({

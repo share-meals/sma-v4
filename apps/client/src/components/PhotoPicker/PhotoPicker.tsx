@@ -104,7 +104,7 @@ export const PhotoPicker: React.FC<PhotoPickerProps> = ({
     <div className='ion-no-padding'>
       <IonGrid className='ion-no-padding'>
 	<IonRow>
-	  {photos && photos.map((photo: any, index: number) => (
+	  {photos && photos.map((photo: string, index: number) => (
 	    <IonCol className='photopicker-tile' key={photo.slice(-10) + index}>
 	      <IonButton
 		color='danger'

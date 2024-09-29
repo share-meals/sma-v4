@@ -112,10 +112,14 @@ const MoreActions: React.FC<MoreActionsProps> = ({
   postId,
   userId,
 }) => {
-  const {communities: myCommunities, user: {uid}} = useProfile();
+  const {
+    communities: myCommunities,
+    profile,
+    user: {uid}
+  } = useProfile();
   const history = useHistory();
   const isOwner = uid === userId;
-  const isAdmin = communities.filter((c) => myCommunities[c]?.myMembership === 'admin').length > 0;
+  const isAdmin = communities.filter((c) => profile.private.communities[`community-${c}`] === 'admin').length > 0;
   const intl = useIntl();
   const [presentAlert] = useIonAlert();
   let buttons: ActionSheetButton[] = [];
