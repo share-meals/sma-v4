@@ -1,6 +1,6 @@
 import {
-  communitySchema,
-  myMembershipSchema
+  Community,
+  membershipSchema
 } from '@sma-v4/schema';
 import {
   IonChip,
@@ -15,14 +15,19 @@ import {z} from 'zod';
 import StarSVG from '@material-design-icons/svg/filled/star.svg';
 import CloseSVG from '@material-symbols/svg-400/rounded/close.svg';
 
-const affiliatedCommunitySchema = communitySchema.extend({
-  myMembership: myMembershipSchema
-});
-
-type Community = z.infer<typeof affiliatedCommunitySchema>;
 type OnClose = (communityId: string) => void;
 
-const CommunityTag: React.FC<{community: Community, onClose?: OnClose}> = ({community, onClose}) => {
+interface CommunityTagProps {
+  community: Community;
+  membership: z.infer<typeof membershipSchema>;
+  onClose?: OnClose;
+}
+
+const CommunityTag: React.FC<CommunityTagProps> = ({
+  community,
+  membership,
+  onClose,
+}) => {
   const theme = community.colors ? community.colors[0] : {
     color: '#000000',
     type: 'dark'
@@ -33,7 +38,7 @@ const CommunityTag: React.FC<{community: Community, onClose?: OnClose}> = ({comm
   }}>
     <IonIcon
       aria-hidden='true'
-      icon={community.myMembership === 'admin' ? StarSVG : person}
+      icon={membership === 'admin' ? StarSVG : person}
       style={{
 	'color': theme.type === 'dark' ? '#ffffff' : '#000000'
       }}
@@ -54,8 +59,16 @@ const CommunityTag: React.FC<{community: Community, onClose?: OnClose}> = ({comm
   </IonChip>;
 }
 
-export const CommunityTags: React.FC<{communities: string[], onClose?: OnClose}> = ({communities, onClose}) => {
-  const {communities: communityData} = useProfile();
+interface CommunityTagsProps {
+  communities: string[]; // TODO: pull communityId from schema
+  onClose?: OnClose;
+}
+
+export const CommunityTags: React.FC<CommunityTagsProps> = ({
+  communities,
+  onClose
+}) => {
+  const {communities: communityData, profile} = useProfile();
   return <>
     {communities!
       .sort((a, b) => {
@@ -65,6 +78,12 @@ export const CommunityTags: React.FC<{communities: string[], onClose?: OnClose}>
 	  return 1;
 	}
       })
-      .map((c) => <CommunityTag key={c} community={communityData[c]} onClose={onClose}/>)}
+      .map((c) => <CommunityTag
+		    community={communityData[c]}
+		    key={c}
+		    membership={profile.private.communities[`community-${c}`]}
+		    onClose={onClose}
+      />
+    )}
   </>;
 }
