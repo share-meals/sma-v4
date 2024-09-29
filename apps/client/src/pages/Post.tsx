@@ -93,7 +93,7 @@ export const Post: React.FC = () => {
     },
     {
       value: '+glutenFree',
-      label: intl.formatMessage({id: 'common.dietary_tags.+gluten_free'})
+      label: intl.formatMessage({id: 'common.dietary_tags.+glutenFree'})
     },
     {
       value: '+halal',
