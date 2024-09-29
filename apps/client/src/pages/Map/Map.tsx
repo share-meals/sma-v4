@@ -95,7 +95,6 @@ export const Map: React.FC = () => {
   const {posts} = useProfile();
   const [clickedPosts, setClickedPosts] = useState<post[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  // todo: || [] is a hack
   const featuresLayer = useMemo(() => {
     const geojson = {
       type: 'FeatureCollection',

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import {
   Control,
   useForm
@@ -75,9 +73,13 @@ export const ManualAddressPicker: React.FC<ManualAddressPicker> = () => {
 
 	  break;
       }
-    }catch(error: any){
-      if(error.message.includes('ZERO_RESULTS')){
-	setInternalError('address', {message: 'no results found', type: 'zero_results'});
+    }catch(error: unknown){
+      if(error instanceof Error){
+	if(error.message.includes('ZERO_RESULTS')){
+	  setInternalError('address', {message: 'no results found', type: 'zero_results'});
+	}else{
+	  // TODO: something
+	}
       }else{
 	// TODO: something
       }

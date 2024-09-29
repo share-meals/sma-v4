@@ -1,5 +1,5 @@
 import {
-  communitySchema,
+  Community,
   locationSchema,
 } from '@sma-v4/schema';
 import {
@@ -45,7 +45,6 @@ import LockIcon from '@material-symbols/svg-400/rounded/lock-fill.svg';
 import RefreshIcon from '@material-symbols/svg-400/rounded/refresh.svg';
 import UnlockIcon from '@material-symbols/svg-400/rounded/lock_open-fill.svg';
 
-type communityType = z.infer<typeof communitySchema>;
 type locationType = z.infer<typeof locationSchema>;
 
 const internalForm = z.object({
@@ -99,7 +98,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   const locations: SelectOption[] = useMemo(() => {
     // todo: better typing
     let payload: {[key: string]: any} = {};
-    Object.values(communities).forEach((community: any) => {
+    Object.values(communities).forEach((community: Community) => {
       if(features.canPost.includes(community.id)){
 	community.locations?.forEach((location: locationType) => {
 	  if(payload[location.name!] === undefined){
@@ -193,7 +192,8 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	      // todo: something
 	      break;
 	  }
-	  }catch(error: any){
+	  }catch(error: unknown){
+	    // TODO: more error checking
 	    // typically no results from geocode?
 	    setValue('location.address', `(${lastGeolocation!.lat}, ${lastGeolocation!.lng})`);
 	    setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);

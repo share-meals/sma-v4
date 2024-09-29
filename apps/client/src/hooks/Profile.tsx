@@ -13,6 +13,7 @@ import {
   Unsubscribe,
   where,
 } from 'firebase/firestore';
+import type {Community} from '@sma-v4/schema';
 import {
   createContext,
   useCallback,
@@ -29,8 +30,19 @@ import {postSchema} from '@sma-v4/schema';
 import {signOut} from 'firebase/auth';
 import {useMessaging} from '@/hooks/Messaging';
 
+interface Profile {
+  communities: {[key: string]: Community};
+  features: any;
+  isLoading: boolean;
+  isLoggedIn: boolean;
+  user: any;
+  posts: any;
+  profile: any;
+  signout: () => void;
+}
+
 // todo: remove any typing
-const ProfileContext = createContext<any>({} as any);
+const ProfileContext = createContext<Profile>({} as Profile);
 
 export const useProfile = () => useContext(ProfileContext);
 
@@ -116,7 +128,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	    }
 	    return [doc.id, {
 	      id: doc.id,
-	      myMembership: membership,
+	      //myMembership: membership,
 	      ...data
 	    }];
 	  }));
@@ -223,7 +235,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	     communities,
 	     features,
 	     isLoading,
-	     isLoggedIn: user,
+	     isLoggedIn: user !== undefined,
 	     user,
 	     posts,
 	     profile,

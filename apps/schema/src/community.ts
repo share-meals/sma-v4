@@ -33,6 +33,6 @@ export const communitySchema = z.object({
   verified: z.boolean()
 });
 
-export const myMembershipSchema = z.enum(['admin', 'member']);
+export const membershipSchema = z.enum(['admin', 'member']);
 
 export type Community = z.infer<typeof communitySchema>;
