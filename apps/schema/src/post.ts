@@ -5,6 +5,18 @@ import {chatSchema} from './chat';
 import {locationSchema} from './location';
 import {z} from 'zod';
 
+const tagSchema = z.enum([
+  '-dairy',
+  '-nuts',
+  '+glutenFree',
+  '+halal',
+  '+kosher',
+  '+vegan',
+  '+vegetarian'
+]);
+
+export type Tag = z.infer<typeof tagSchema>;
+
 const basePostSchema = z.object({
   cannotChat: z.boolean().optional(),
   chat: chatSchema.array().optional(),
@@ -16,17 +28,7 @@ const basePostSchema = z.object({
   location: locationSchema,
   photos: z.array(z.string()).optional().nullable(),
   servings: z.number().optional().nullable(),
-  tags: z.array(z.enum([
-    '-dairy',
-    '-nuts',
-    '+glutenFree',
-    '+halal',
-    '+kosher',
-    '+vegan',
-    '+vegetarian'
-  ]))
-  .optional()
-  .nullable(),
+  tags: z.array(tagSchema).optional().nullable(),
   title: z.string().max(250).min(5),
   type: z.enum(['event']),
   userId: z.string()
@@ -50,7 +52,6 @@ const startsEndsAsStrings = z.object({
   */
 })//.refine((data) => data.ends > data.starts, {path: ['ends'], message: 'must end after starts'});
 
-
 const startsEndsAsDates = z.object({
   ends: z.date(),
   starts: z.date()
@@ -60,13 +61,6 @@ export const postSchema = basePostSchema.merge(startsEndsAsDates).refine(
   (data) => data.ends > data.starts, {message: 'must end after starts'}
 );
 
-/*
-export const postSchema = z.intersection(
-  basePostSchema,
-  startsEndsAsDates
-);
-*/
-
 export const postCreateClientSchema = basePostSchema.omit({
   id: true,
   type: true,
@@ -75,35 +69,10 @@ export const postCreateClientSchema = basePostSchema.omit({
   startsEndsAsStrings
 )
 
-/*
-export const postCreateClientSchema = z.intersection(
-  basePostSchema.omit({
-    id: true,
-    type: true,
-    userId: true
-  }),
-  z.object({
-    photos: z.array(z.instanceof(Blob)).optional().nullable()
-  }),
-  startsEndsAsStrings
-);
-*/
-
-
 export const postCreateServerSchema = basePostSchema.omit({
   id: true,
   userId: true
 }).merge(startsEndsAsStrings);
-
-/*
-export const postCreateServerSchema = z.intersection(
-  basePostSchema.omit({
-    id: true,
-    userId: true
-  }),
-  startsEndsAsStrings
-);
-*/
 
 export const postCloseSchema = basePostSchema.pick({
   id: true
@@ -115,16 +84,6 @@ export const postActionSchema = basePostSchema.pick({
 }).merge(z.object({
   value: z.any()
 }));
-/*
-export const postActionSchema = z.intersection(
-  basePostSchema.pick({
-    id: true
-  }),
-  z.object({
-    value: z.any()
-  })
-);
-*/
 
 export const postChatCreateSchema = z.object({
   postId: z.string(),
@@ -132,15 +91,3 @@ export const postChatCreateSchema = z.object({
   text: true
 })
 );
-
-
-/*
-export const postChatCreateSchema = z.intersection(
-   z.object({
-    postId: z.string(),
-  }),
-  chatSchema.pick({
-    text: true
-  })
-);
-*/
