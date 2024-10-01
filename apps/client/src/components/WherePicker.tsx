@@ -244,8 +244,8 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   }, [permissionState, lastGeolocation, isWherePickerReady, setIsWherePickerReady]);
 
   const layer: MapLayerProps = useMemo(() => ({
-    featureRadius: 40,
-    featureWidth: 40,
+    featureRadius: 20,
+    featureWidth: 20,
     fillColor: '#106535',
     geojson: {
       type: 'FeatureCollection',
