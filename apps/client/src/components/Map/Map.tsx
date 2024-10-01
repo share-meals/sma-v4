@@ -1,16 +1,14 @@
 import {FormattedMessage} from 'react-intl';
 import {IonLabel} from '@ionic/react';
 import {
+  getMapStyle,
   Map as FRGMap,
+  MapLayerProps,
   MapProvider,
-} from '@share-meals/frg-ui';
-import type {
-  MapLayerProps
 } from '@share-meals/frg-ui';
 import {latlngSchema} from '@sma-v4/schema';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Notice} from '@/components/Notice';
-import styles from './styles.json';
 import {useGeolocation} from '@/hooks/Geolocation';
 import {z} from 'zod';
 
@@ -45,8 +43,18 @@ const GeolocationError: React.FC = () => (
   </div>
 );
 
+export const controlsRightStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  position: 'absolute',
+  right: '1rem',
+  top: '1rem',
+  zIndex: 999,
+}
+
 export const Map: React.FC<MapProps> = ({
   center,
+  controls,
   layers = [],
   maxZoom = 16,
   minZoom = 10,
@@ -66,8 +74,12 @@ export const Map: React.FC<MapProps> = ({
       {permissionState === 'denied'
       && <GeolocationError />}
       <FRGMap
+	controls={controls}
 	protomapsApiKey={import.meta.env.VITE_PROTOMAPS_API_KEY}
-	protomapsStyles={styles}
+	protomapsStyles={getMapStyle({
+	  apiKey: import.meta.env.VITE_PROTOMAPS_API_KEY,
+	  theme: 'grayscale'
+	})}
 	{...props}
       />
     </MapProvider>

@@ -7,6 +7,16 @@ import {
   useForm
 } from 'react-hook-form';
 import {
+  controlsRightStyle,
+  Map
+} from '@/components/Map';
+import {
+  fromLatLng,
+  OutputFormat,
+  setDefaults,
+  setLocationType,
+} from 'react-geocode';
+import {
   Input,
   MapLayerProps,
   Select,
@@ -19,13 +29,6 @@ import {
 } from '@ionic/react';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {ManualAddressPicker} from '@/components/ManualAddressPicker';
-import {Map} from '@/components/Map';
-import {
-  fromLatLng,
-  OutputFormat,
-  setDefaults,
-  setLocationType,
-} from 'react-geocode';
 import {
   useCallback,
   useEffect,
@@ -40,7 +43,6 @@ import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
-import LocationIcon from '@material-symbols/svg-400/rounded/location_on-fill.svg';
 import LockIcon from '@material-symbols/svg-400/rounded/lock-fill.svg';
 import RefreshIcon from '@material-symbols/svg-400/rounded/refresh.svg';
 import UnlockIcon from '@material-symbols/svg-400/rounded/lock_open-fill.svg';
@@ -221,9 +223,9 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     }
   }, [rerenderTrigger]);
 
-  const controls = <div style={{position: 'absolute', right: '1rem', top: '1rem', zIndex: 999}}>
-    <IonButton onClick={() => {setIsLocked(!isLocked);}}>
-      <IonIcon src={isLocked ? UnlockIcon : LockIcon} />
+  const controls = <div style={controlsRightStyle}>
+    <IonButton className='square' onClick={() => {setIsLocked(!isLocked);}}>
+      <IonIcon slot='icon-only' src={isLocked ? UnlockIcon : LockIcon} />
     </IonButton>
   </div>;
 
@@ -242,7 +244,9 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   }, [permissionState, lastGeolocation, isWherePickerReady, setIsWherePickerReady]);
 
   const layer: MapLayerProps = useMemo(() => ({
-    fillColor: 'red',
+    featureRadius: 40,
+    featureWidth: 40,
+    fillColor: '#106535',
     geojson: {
       type: 'FeatureCollection',
       features: [
@@ -258,12 +262,8 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	}
       ]
     },
-    icon: {
-      src: LocationIcon,
-      scale: 3
-    },
     name: 'marker',
-    strokeColor: 'green',
+    strokeColor: 'rgba(255, 255, 255, 0.5)',
     type: 'vector'
   }), [internalLat, internalLng]);
 
@@ -365,9 +365,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     }
     
     {method === 'manualAddress' &&
-     <ManualAddressPicker
-
-     />
+     <ManualAddressPicker />
     }
     
     <div className='mt-2 a' style={{height: '20rem'}}>
