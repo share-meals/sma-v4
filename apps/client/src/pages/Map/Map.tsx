@@ -3,6 +3,7 @@ import {Feature} from 'ol';
 import {FormattedMessage} from 'react-intl';
 import {fromLonLat} from 'ol/proj';
 import {
+  IonBadge,
   IonButton,
   IonButtons,
   IonContent,
@@ -17,7 +18,10 @@ import {
   postSchema
 } from '@sma-v4/schema';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
-import {Map as FRGMap} from '@/components/Map';
+import {
+  LocateMeControl,
+  Map as FRGMap,
+} from '@/components/Map';
 import {Point} from 'ol/geom';
 import {PostInfoBanner} from '@/components/PostInfoBanner';
 import {
@@ -27,6 +31,7 @@ import {
   ROSM
 } from 'rlayers';
 import {
+  useCallback,
   useEffect,
   useMemo,
   useState
@@ -35,14 +40,16 @@ import {useGeolocation} from '@/hooks/Geolocation';
 import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 
-type latlng = z.infer<typeof latlngSchema>;
-type post = z.infer<typeof postSchema>;
+type LatLngType = z.infer<typeof latlngSchema>;
+type PostType = z.infer<typeof postSchema>;
 
-import CloseSharpIcon from '@material-design-icons/svg/sharp/close.svg';
+import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
+import ListsIcon from '@material-symbols/svg-400/rounded/lists.svg';
+import LocationMarkerIcon from '@/assets/svg/locationMarker.svg';
 
-const defaultLocation: latlng = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
+const defaultLocation: LatLngType = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
 
-const InfoModal: React.FC<{posts: post[]}> = ({posts}) => {
+const InfoModal: React.FC<{posts: PostType[]}> = ({posts}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
     if(posts.length > 0){
@@ -64,7 +71,7 @@ const InfoModal: React.FC<{posts: post[]}> = ({posts}) => {
 	  </IonTitle>
 	  <IonButtons slot='end'>
 	    <IonButton onClick={() => {setIsOpen(false);}}>
-	      <IonIcon src={CloseSharpIcon}/>
+	      <IonIcon src={CloseIcon}/>
 	    </IonButton>
 	  </IonButtons>
 	</IonToolbar>
@@ -81,19 +88,23 @@ export const Map: React.FC = () => {
     lastGeolocation,
     permissionState
   } = useGeolocation();
-  
+  const [center, setCenter] = useState<LatLngType | null>(null);
+
   useEffect(() => {
     (async () => {
-      if(lastGeolocation === undefined){
+      if(center === null){
 	getGeolocation()
-	  .catch((error) => {
-	    console.log(error);
-	  });
+	  .then(setCenter)
+	  .catch((error: unknown) => {
+	    // TODO: error checking
+	  })
+      }else{
+	
       }
     })();
-  }, [lastGeolocation]);
+  }, [center, getGeolocation]);
   const {posts} = useProfile();
-  const [clickedPosts, setClickedPosts] = useState<post[]>([]);
+  const [clickedPosts, setClickedPosts] = useState<PostType[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const featuresLayer = useMemo(() => {
     const geojson = {
@@ -119,15 +130,60 @@ export const Map: React.FC = () => {
       textFillColor: '#ffffff',
       textStrokeColor: '#000000',
       textStrokeWidth: 4,
-      type: 'cluster' as 'cluster',
-      clusterDistance: 50
+      type: 'cluster',
+      clusterDistance: 50,
+      zIndex: 2
     };
   }, [posts]);
+  const currentLocationLayer = {
+    fillColor: '#ffffff',
+    icon: LocationMarkerIcon,
+    geojson: {
+      type: 'FeatureCollection',
+      features: [{
+	type: 'Feature',
+	geometry: {
+	  coordinates: lastGeolocation ? [lastGeolocation.lng, lastGeolocation.lat] : defaultLocation,
+	  type: 'Point'
+	},
+	properties: {}
+      }]
+    },
+    name: 'Current Location',
+    strokeColor: '#ffffff',
+    type: 'vector',
+    zIndex: 1
+  };
   const postsNotReady = posts === null;
-  const geolocationNoBackup = lastGeolocation === undefined
+  const geolocationNoBackup = lastGeolocation === undefined;
   const geolocationDenied = permissionState === 'denied';
   const geolocationAwaitingPrompt = permissionState === 'prompt'
 				 || permissionState === 'prompt-with-rationale';
+  const changeCenter = useCallback((location: LatLngType) => {
+    setCenter(location);
+  }, [setCenter]);
+  const showAllPosts = useCallback(() => {
+    setClickedPosts(Object.values(posts));
+  }, [posts, setClickedPosts]);
+  const postsLength = Object.keys(posts).length;
+  const controls = <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'absolute',
+    right: '1rem',
+    top: '1rem',
+    zIndex: 999
+  }}>
+    <LocateMeControl setCurrentLocation={changeCenter} />
+    {postsLength > 0 &&
+     <IonButton className='square has-badge' onClick={showAllPosts}>
+       <IonIcon slot='icon-only' src={ListsIcon} />
+       <IonBadge color='light'>
+	 {postsLength}
+       </IonBadge>
+     </IonButton>
+    }
+  </div>;
   if(postsNotReady
      || (geolocationDenied && geolocationNoBackup)
      || (geolocationAwaitingPrompt && geolocationNoBackup)){
@@ -140,13 +196,17 @@ export const Map: React.FC = () => {
     position: 'relative'
   }}>
     <FRGMap
-      center={{
-	lat: lastGeolocation!.lat,
-	lng: lastGeolocation!.lng
-      }}
-      layers={[featuresLayer]}
+      center={center!}
+      controls={controls}
+      layers={[
+	featuresLayer,
+	currentLocationLayer,
+      ]}
       onFeatureClick={({data}: any) => {
-	setClickedPosts(data);
+	// check if data is a list of features or not
+	if(data instanceof Array){
+	  setClickedPosts(data)
+	}
       }}
       zoom={14}
     />
