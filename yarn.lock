@@ -5249,12 +5249,13 @@ __metadata:
 
 "@share-meals/frg-ui@npm:^0.0.19":
   version: 0.0.19
-  resolution: "@share-meals/frg-ui@npm:0.0.19::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.19%2F99f88edb0de44396774cafa0f47763f9ddd69864"
+  resolution: "@share-meals/frg-ui@npm:0.0.19::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.19%2Fcf0f9469b1a300737b9a2c2cb9e1f5ae3159ea68"
   dependencies:
     dayjs: "npm:^1.11.10"
     deepmerge: "npm:^4.3.1"
     ol: "npm:9.1.0"
     ol-mapbox-style: "npm:9.7.0"
+    protomaps-themes-base: "npm:^3.1.0"
     rlayers: "npm:^2.3.2"
   peerDependencies:
     "@hookform/error-message": "*"
@@ -5263,7 +5264,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-hook-form: "*"
-  checksum: 10c0/bae3d3d87ff1466f607deba2f588bec1d62c6a341110bbd98eb78efb17843a79a3b9b90a1ba67ef5fda2b2c7fb365bb8208d1fc54340eb6c0767f5cbe16a564e
+  checksum: 10c0/56c84ca667eaeb2582e4aeb1ffa4bdb21639c8b62138832e9018bb0588074b04f3b2bb352d14660fe739074b261090d96ca9988488f49dd5309a6bdb76044913
   languageName: node
   linkType: hard
 
@@ -17552,6 +17553,13 @@ __metadata:
   version: 3.6.0
   resolution: "protocol-buffers-schema@npm:3.6.0"
   checksum: 10c0/23a08612e5cc903f917ae3b680216ccaf2d889c61daa68d224237f455182fa96fff16872ac94b1954b5dd26fc7e8ce7e9360c54d54ea26218d107b2f059fca37
+  languageName: node
+  linkType: hard
+
+"protomaps-themes-base@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "protomaps-themes-base@npm:3.1.0"
+  checksum: 10c0/934f9c7552bb5cbe11ab5d40522f5ffb70bda68567c8ca0419a7f1e12d737aad2a05cd0cb744e0bc7de66be26be42f6b7bf49723ea7ff43604a6bfd5a55b764f
   languageName: node
   linkType: hard
 
