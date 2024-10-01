@@ -4,7 +4,9 @@ import {
 } from '@capacitor/push-notifications';
 import {AuthGuard} from '@/components/AuthGuard';
 import {Capacitor} from '@capacitor/core';
+import classnames from 'classnames';
 import {
+  IonBadge,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
@@ -40,9 +42,11 @@ import {
 import {VerifyEmail} from '@/pages/VerifyEmail';
 import {ViewPost} from '@/pages/ViewPost';
 
-import ManageAccountsIcon from '@material-design-icons/svg/sharp/manage_accounts.svg';
-import MapIcon from '@material-design-icons/svg/sharp/map.svg';
-import PersonAddAltIcon from '@material-design-icons/svg/sharp/person_add_alt.svg';
+import AccountIcon from '@material-symbols/svg-400/rounded/manage_accounts-fill.svg';
+import LoginIcon from '@material-symbols/svg-400/rounded/security_update_good-fill.svg';
+import MapIcon from '@material-symbols/svg-400/rounded/map-fill.svg';
+import SignupIcon from '@material-symbols/svg-400/rounded/person_add-fill.svg';
+import PostIcon from '@material-symbols/svg-400/rounded/rss_feed.svg';
 
 const PushNotificationActionListener: React.FC = () => {
   const history = useHistory();
@@ -73,7 +77,9 @@ export const Router: React.FC = () => {
   const {
     features,
     isLoggedIn,
+    posts,
   } = useProfile();
+  const postsLength = Object.keys(posts).length;
   return <IonReactRouter>
 	<PushNotificationActionListener />
     <IonTabs>
@@ -188,38 +194,46 @@ export const Router: React.FC = () => {
 	<Route>
 	  <Redirect to='/page-not-found' />
 	</Route>
-	  
-	
+
       </IonRouterOutlet>
       <IonTabBar color='primary' slot='bottom'>
 	<IonTabButton tab='login' href='/login' className={isLoggedIn ? 'ion-hide' : ''}>
-          <IonIcon aria-hidden='true' icon={ManageAccountsIcon} />
+          <IonIcon aria-hidden='true' icon={LoginIcon} />
           <IonLabel>
 	    <FormattedMessage id='pages.login.title' />
 	  </IonLabel>
         </IonTabButton>
 	<IonTabButton data-testid='signup button' tab='signup' href='/signup' className={isLoggedIn ? 'ion-hide' : ''}>
-	  <IonIcon aria-hidden='true' src={PersonAddAltIcon} />
+	  <IonIcon aria-hidden='true' src={SignupIcon} />
 	  <IonLabel>
 	    <FormattedMessage id='pages.signup.title' />
 	  </IonLabel>
 	</IonTabButton>
-	<IonTabButton data-testid='map button' tab='map' href='/map' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
+	<IonTabButton data-testid='map button' tab='map' href='/map' layout='icon-top' className={
+	  classnames({
+	    'ion-hide': !isLoggedIn,
+	    'has-badge': postsLength > 0
+	  })
+	}>
 	  <IonIcon aria-hidden='true' src={MapIcon} />
 	  <IonLabel>
 	    <FormattedMessage id='pages.map.title' />
+	    {postsLength > 0 &&
+	     <IonBadge color='light'>
+	       {postsLength}
+	     </IonBadge>}
 	  </IonLabel>
 	</IonTabButton>
 	{features.canPost.length > 0 &&
-	 <IonTabButton data-testid='map button' tab='post' href='/post' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
-	   <IonIcon aria-hidden='true' src={MapIcon} />
+	 <IonTabButton data-testid='post button' tab='post' href='/post' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
+	   <IonIcon aria-hidden='true' src={PostIcon} />
 	   <IonLabel>
 	     <FormattedMessage id='pages.post.title' />
 	   </IonLabel>
 	 </IonTabButton>
 	}
 	<IonTabButton data-testid='account button' tab='account' href='/account' className={isLoggedIn ? '' : 'ion-hide'}>
-	  <IonIcon aria-hidden='true' src={ManageAccountsIcon} />
+	  <IonIcon aria-hidden='true' src={AccountIcon} />
 	  <IonLabel>
 	    <FormattedMessage id='pages.account.title' />
 	  </IonLabel>
