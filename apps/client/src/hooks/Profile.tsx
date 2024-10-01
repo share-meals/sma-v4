@@ -235,7 +235,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	     communities,
 	     features,
 	     isLoading,
-	     isLoggedIn: user !== undefined,
+	     isLoggedIn: user !== null,
 	     user,
 	     posts,
 	     profile,
