@@ -1,3 +1,5 @@
+// TODO: badge on footer is different color if Map is not active
+
 import {
   ActionPerformed,
   PushNotifications
