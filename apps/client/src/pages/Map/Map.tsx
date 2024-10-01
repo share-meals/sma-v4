@@ -13,10 +13,8 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import {
-  latlngSchema,
-  postSchema
-} from '@sma-v4/schema';
+import {postSchema} from '@sma-v4/schema';
+import {TimestampedLatLng} from '@share-meals/frg-ui';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {
   LocateMeControl,
@@ -40,14 +38,13 @@ import {useGeolocation} from '@/hooks/Geolocation';
 import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 
-type LatLngType = z.infer<typeof latlngSchema>;
 type PostType = z.infer<typeof postSchema>;
 
 import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 import ListsIcon from '@material-symbols/svg-400/rounded/lists.svg';
 import LocationMarkerIcon from '@/assets/svg/locationMarker.svg';
 
-const defaultLocation: LatLngType = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
+const defaultLocation: TimestampedLatLng = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
 
 const InfoModal: React.FC<{posts: PostType[]}> = ({posts}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -88,7 +85,7 @@ export const Map: React.FC = () => {
     lastGeolocation,
     permissionState
   } = useGeolocation();
-  const [center, setCenter] = useState<LatLngType | null>(null);
+  const [center, setCenter] = useState<TimestampedLatLng | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -159,8 +156,11 @@ export const Map: React.FC = () => {
   const geolocationDenied = permissionState === 'denied';
   const geolocationAwaitingPrompt = permissionState === 'prompt'
 				 || permissionState === 'prompt-with-rationale';
-  const changeCenter = useCallback((location: LatLngType) => {
-    setCenter(location);
+  const changeCenter = useCallback((location: TimestampedLatLng) => {
+    setCenter({
+      ...location,
+      timestamp: new Date()
+    });
   }, [setCenter]);
   const showAllPosts = useCallback(() => {
     setClickedPosts(Object.values(posts));
@@ -199,8 +199,8 @@ export const Map: React.FC = () => {
       center={center!}
       controls={controls}
       layers={[
-	featuresLayer,
 	currentLocationLayer,
+	featuresLayer,
       ]}
       onFeatureClick={({data}: any) => {
 	// check if data is a list of features or not
