@@ -81,7 +81,7 @@ export const Router: React.FC = () => {
     isLoggedIn,
     posts,
   } = useProfile();
-  const postsLength = Object.keys(posts).length;
+  const postsLength = posts ? Object.keys(posts).length : 0;
   return <IonReactRouter>
 	<PushNotificationActionListener />
     <IonTabs>
