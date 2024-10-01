@@ -1,3 +1,21 @@
+ion-button.button-has-icon-only.square {
+    --padding: 1rem;
+    --padding-bottom: var(--padding);
+    --padding-end: var(--padding);
+    --padding-start: var(--padding);
+    --padding-top: var(--padding);
+}
+
+ion-button.has-badge {
+    &::part(native) {overflow:visible}
+    ion-badge {
+	border: 3px solid var(--ion-color-primary);
+	position: absolute;
+	top: -90%;
+	right: -90%;
+    }
+}
+
 .frg-ui-map-lock {
     color: rgba(255, 255, 255, 0.4);
 }

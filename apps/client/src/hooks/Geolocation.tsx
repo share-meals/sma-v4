@@ -27,7 +27,7 @@ type communityType = z.infer<typeof communitySchema>;
 type PermissionState = 'prompt' | 'prompt-with-rationale' | 'granted' | 'denied'; // todo: retrieve from @capacitor/geolocation
 
 interface GeolocationState {
-  getGeolocation: () => Promise<void>,
+  getGeolocation: () => Promise<latlngType>,
   lastGeolocation: latlngType | undefined,
   permissionState: PermissionState,
 }
@@ -46,19 +46,23 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
   const getBackupGeolocation = useCallback(() => {
     // try to get center from a community
     // @ts-ignore
-    // todo: don't ignore
+    // TODO: don't ignore
     const communitiesWithCenter: communityType[] = Object.values(communities).filter((community: communityType) => community.center);
     if(communitiesWithCenter.length > 0
        && communitiesWithCenter[0].center){
-      setLastGeolocation({
+      const location: latlngType = {
 	lat: communitiesWithCenter[0].center.lat,
 	lng: communitiesWithCenter[0].center.lng
-      })
+      };
+      setLastGeolocation(location);
+      return location;
     }else{
-      setLastGeolocation({
+      const location: latlngType = {
 	lat: 40.712778,
 	lng: -74.006111
-      });
+      };
+      setLastGeolocation(location);
+      return location;
     }
   }, [communities]);
   const getGeolocation = useCallback(async () => {
@@ -69,7 +73,7 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
 	  setPermissionState('denied');
 	  addAlert('geolocation', {message: 'errors.geolocation.denied'});
 	}
-	getBackupGeolocation();
+	return getBackupGeolocation();
 	break;
       case 'granted':
 	try{
@@ -77,13 +81,15 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
 	  if(permissionState !== 'granted'){
 	    setPermissionState('granted');
 	  }
-	  setLastGeolocation({
+	  const location: latlngType = {
 	    lat: position.coords.latitude,
 	    lng: position.coords.longitude
-	  });
+	  };
+	  setLastGeolocation(location);
+	  return location;
 	}catch(error){
 	  // has permission but for whatever reason, cannot get current position
-	  getBackupGeolocation();
+	  return getBackupGeolocation();
 	}
 	break;
       case 'prompt':
@@ -111,15 +117,26 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
 	    // todo: Geolocation.requestPermissions is not implemented on web
 	    const position: GeolocationPosition = await Geolocation.getCurrentPosition();
 	    setPermissionState('granted');
-	    setLastGeolocation({
+	    const location: latlngType = {
 	      lat: position.coords.latitude,
 	      lng: position.coords.longitude
-	    });
+	    };
+	    setLastGeolocation(location);
+	    return location;
 	  }
 	});
 	break;
+      default:
+	return getBackupGeolocation();
+	break;
     }
-  }, []);
+    return getBackupGeolocation();
+  }, [
+    Geolocation,
+    getBackupGeolocation,
+    setPermissionState,
+    setLastGeolocation,
+  ]);
   return <GeolocationContext.Provider
   children={children}
 	   value={{
