@@ -29,43 +29,50 @@ import {
   getFunctions,
   httpsCallable,
 } from 'firebase/functions';
-import {Map} from '@/components/Map';
-import {MapLayerProps} from '@share-meals/frg-ui';
+import {
+  LocateMeControl,
+  Map,
+} from '@/components/Map';
+import {
+  MapLayerProps,
+  TimestampedLatLng,
+} from '@share-meals/frg-ui';
 import Markdown from 'react-markdown';
 import {Photo} from '@/components/Photo';
 import {postSchema} from '@sma-v4/schema';
 import {toast} from 'react-toastify';
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+} from 'react';
+import {useGeolocation} from '@/hooks/Geolocation';
 import {useHistory} from 'react-router-dom';
 import {useI18n} from '@/hooks/I18n';
 import {useParams} from 'react-router-dom';
 import {useProfile} from '@/hooks/Profile';
-import {
-  useState,
-  useMemo,
-} from 'react';
 import {z} from 'zod';
 
 import {ellipsisVerticalSharp as MoreVertIcon} from 'ionicons/icons';
-import LocationIcon from '@material-symbols/svg-700/rounded/location_on-fill.svg';
 import CancelIcon from '@material-symbols/svg-700/sharp/undo.svg';
 import ClockIcon  from '@material-symbols/svg-700/sharp/schedule.svg';
 import ClockFilledIcon  from '@material-symbols/svg-700/sharp/schedule-fill.svg';
 import CloseIcon from '@material-symbols/svg-700/sharp/close.svg';
+import LocationMarkerIcon from '@/assets/svg/locationMarker.svg';
+import PostLocationIcon from '@material-symbols/svg-400/rounded/location_on-fill.svg';
 import StarIcon from '@material-symbols/svg-700/sharp/star.svg';
 import StarFilledIcon from '@material-symbols/svg-700/sharp/star-fill.svg';
 
-type Post  = z.infer<typeof postSchema>;
+type PostType  = z.infer<typeof postSchema>;
+const defaultLocation: TimestampedLatLng = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
 
-import {useEffect} from 'react';
 
 export const ViewPost: React.FC = () => {
   const {id} = useParams<{id: string}>();
   const {posts: {[id]: post}} = useProfile();
   const functions = getFunctions();
   const logPostViewFunction = httpsCallable(functions, 'user-log-post-view');
-  useIonViewWillEnter(() => {
-    logPostViewFunction({id});
-  });
   if(post){
     return <PostContent post={post} />;
   }else{
@@ -216,12 +223,26 @@ const MoreActions: React.FC<MoreActionsProps> = ({
   />;
 }
 
-const PostContent: React.FC<{post: Post}> = ({post}) => {
+const PostContent: React.FC<{post: PostType}> = ({post}) => {
   const {dateFnsLocale} = useI18n();
   const {communities} = useProfile();
+  const {lastGeolocation} = useGeolocation();
+  const postCenter: TimestampedLatLng = {
+    lat: post.location.lat,
+    lng: post.location.lng
+  };
+  const [center, setCenter] = useState<TimestampedLatLng>(postCenter);
+  const changeCenter = useCallback((location: TimestampedLatLng) => {
+    setCenter({
+      ...location,
+      timestamp: new Date()
+    });
+  }, [setCenter]);
   const [showMap, setShowMap] = useState<boolean>(false);
   const layer: MapLayerProps = useMemo(() => ({
-    fillColor: 'red',
+    featureRadius: 20,
+    featureWidth: 20,
+    fillColor: 'rgba(11, 167, 100, 0.5)',
     geojson: {
       type: 'FeatureCollection',
       features: [
@@ -237,11 +258,42 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
 	}
       ]
     },
-    icon: LocationIcon,
     name: 'marker',
-    strokeColor: 'green',
+    strokeColor: 'rgba(255, 255, 255, 0.5)',
     type: 'vector'
   }), [post.location.lat, post.location.lng]);
+  const currentLocationLayer = {
+    fillColor: '#ffffff',
+    icon: LocationMarkerIcon,
+    geojson: {
+      type: 'FeatureCollection',
+      features: [{
+	type: 'Feature',
+	geometry: {
+	  coordinates: lastGeolocation ? [lastGeolocation.lng, lastGeolocation.lat] : defaultLocation,
+	  type: 'Point'
+	},
+	properties: {}
+      }]
+    },
+    name: 'Current Location',
+    strokeColor: '#ffffff',
+    type: 'vector',
+    zIndex: 1
+  };
+  const controls = <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'absolute',
+    right: '1rem',
+    top: '1rem',
+    zIndex: 999
+  }}>
+    <LocateMeControl setCurrentLocation={changeCenter} />
+    <IonButton className='square' onClick={() => {changeCenter(postCenter);}}>
+      <IonIcon slot='icon-only' src={PostLocationIcon} />
+    </IonButton>
+  </div>;
   return <>
     <div className='ion-padding'>
       <div style={{display: 'flex'}}>
@@ -299,11 +351,12 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
       </p>
       {showMap && <div style={{height: '20rem'}}>
 	<Map
-	  center={{
-	    lat: post.location.lat,
-	    lng: post.location.lng
-	  }}
-	  layers={[layer]}
+	  center={center}
+	  controls={controls}
+	  layers={[
+	    currentLocationLayer,
+	    layer,
+	  ]}
 	  zoom={14}
 	/>
       </div>}
