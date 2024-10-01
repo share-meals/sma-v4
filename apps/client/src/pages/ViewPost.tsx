@@ -237,10 +237,7 @@ const PostContent: React.FC<{post: Post}> = ({post}) => {
 	}
       ]
     },
-    icon: {
-      src: LocationIcon,
-      scale: 1
-    },
+    icon: LocationIcon,
     name: 'marker',
     strokeColor: 'green',
     type: 'vector'
