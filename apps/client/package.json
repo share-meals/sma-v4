@@ -65,7 +65,6 @@
         "@ionic/pwa-elements": "^3.3.0",
         "@ionic/react": "^7.0.0",
         "@ionic/react-router": "^7.0.0",
-        "@material-design-icons/svg": "^0.14.13",
         "@material-symbols/svg-400": "^0.23.0",
         "@material-symbols/svg-700": "^0.23.0",
         "@share-meals/frg-ui": "^0.0.19",

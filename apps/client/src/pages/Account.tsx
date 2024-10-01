@@ -48,8 +48,8 @@ import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
-import CloseIcon from '@material-design-icons/svg/sharp/close.svg';
-import AddIcon from '@material-design-icons/svg/sharp/add.svg';
+import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
+import AddIcon from '@material-symbols/svg-400/rounded/add.svg';
 
 const DEBUG_TAP_COUNT: number = 7;
 

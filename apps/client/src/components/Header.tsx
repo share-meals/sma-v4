@@ -14,8 +14,8 @@ import {
 import {useAlerts} from '@/hooks/Alerts';
 import {useState} from 'react';
 
-import CloseSharpIcon from '@material-design-icons/svg/sharp/close.svg';
-import WarningIcon from '@material-design-icons/svg/outlined/warning.svg';
+import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
+import WarningIcon from '@material-symbols/svg-400/rounded/warning.svg';
 
 
 interface props {
@@ -50,7 +50,7 @@ export const Header: React.FC<React.PropsWithChildren<props>> = ({
 	  </IonTitle>
 	  <IonButtons slot='end'>
 	    <IonButton onClick={() => {setShowAlerts(false);}}>
-	      <IonIcon src={CloseSharpIcon}/>
+	      <IonIcon src={CloseIcon}/>
 	    </IonButton>
 	  </IonButtons>
 	</IonToolbar>
