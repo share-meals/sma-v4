@@ -4825,13 +4825,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@material-design-icons/svg@npm:^0.14.13":
-  version: 0.14.13
-  resolution: "@material-design-icons/svg@npm:0.14.13"
-  checksum: 10c0/373bb7f01d9a89530f4995109ab74bb550a56b86124e37c4c034a995944a2a1e492b06b238a12bcbe99262c6c1d129b8d2224fcb5066ad108f748ac97f1fe401
-  languageName: node
-  linkType: hard
-
 "@material-symbols/svg-400@npm:^0.23.0":
   version: 0.23.0
   resolution: "@material-symbols/svg-400@npm:0.23.0"
@@ -5320,7 +5313,6 @@ __metadata:
     "@ionic/pwa-elements": "npm:^3.3.0"
     "@ionic/react": "npm:^7.0.0"
     "@ionic/react-router": "npm:^7.0.0"
-    "@material-design-icons/svg": "npm:^0.14.13"
     "@material-symbols/svg-400": "npm:^0.23.0"
     "@material-symbols/svg-700": "npm:^0.23.0"
     "@share-meals/frg-ui": "npm:^0.0.19"

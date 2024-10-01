@@ -12,8 +12,8 @@ import {person} from 'ionicons/icons';
 import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 
-import StarSVG from '@material-design-icons/svg/filled/star.svg';
-import CloseSVG from '@material-symbols/svg-400/rounded/close.svg';
+import StarIcon from '@material-symbols/svg-400/rounded/star-fill.svg';
+import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 
 type OnClose = (communityId: string) => void;
 
@@ -38,7 +38,7 @@ const CommunityTag: React.FC<CommunityTagProps> = ({
   }}>
     <IonIcon
       aria-hidden='true'
-      icon={membership === 'admin' ? StarSVG : person}
+      icon={membership === 'admin' ? StarIcon : person}
       style={{
 	'color': theme.type === 'dark' ? '#ffffff' : '#000000'
       }}
@@ -49,7 +49,7 @@ const CommunityTag: React.FC<CommunityTagProps> = ({
     {onClose && 
      <IonIcon
        aria-hidden='true'
-       icon={CloseSVG}
+       icon={CloseIcon}
        onClick={() => {onClose(community.id);}}
        style={{
 	 'color': theme.type === 'dark' ? '#ffffff' : '#000000'

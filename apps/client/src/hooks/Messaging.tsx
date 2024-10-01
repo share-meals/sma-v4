@@ -38,7 +38,7 @@ import {
 } from 'react';
 import {useLogger} from '@/hooks/Logger';
 
-import CloseSharpIcon from '@material-design-icons/svg/sharp/close.svg';
+import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 
 interface MessagingState {
   enable: () => Promise<void>,
@@ -252,7 +252,7 @@ export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children})
 	  </IonTitle>
 	  <IonButtons slot='end'>
 	    <IonButton onClick={() => {setNeedPrompt(false);}}>
-	      <IonIcon src={CloseSharpIcon}/>
+	      <IonIcon src={CloseIcon}/>
 	    </IonButton>
 	  </IonButtons>
 	</IonToolbar>

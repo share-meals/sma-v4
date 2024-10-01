@@ -39,8 +39,8 @@ import {userSchema} from '@sma-v4/schema';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
-import CloseSVG from '@material-symbols/svg-400/rounded/close.svg';
-import LoginSVG from '@/assets/svg/login.svg';
+import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
+import LoginIcon from '@/assets/svg/login.svg';
 
 const LoginForm: React.FC = () => {
   const intl = useIntl();
@@ -156,7 +156,7 @@ export const Login: React.FC = () => {
     <IonGrid>
       <IonRow>
 	<IonCol size-xs='6' push-xs='3' push-sm='0'>
-	  <img src={LoginSVG} className='square responsive' />
+	  <img src={LoginIcon} className='square responsive' />
 	</IonCol>
 	<IonCol size-xs='12' size-sm='6'>
 	  <IonText>
@@ -185,7 +185,7 @@ export const Login: React.FC = () => {
 	  </IonTitle>
           <IonButtons slot='end'>
             <IonButton onClick={() => modal.current?.dismiss()}>
-	      <IonIcon icon={CloseSVG} slot='icon-only' />
+	      <IonIcon icon={CloseIcon} slot='icon-only' />
 	    </IonButton>
           </IonButtons>
         </IonToolbar>

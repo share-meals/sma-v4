@@ -49,7 +49,7 @@ import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
 import SignupSVG from '@/assets/svg/signup.svg';
-import CloseSVG from '@material-symbols/svg-400/rounded/close.svg';
+import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 
 const functions = getFunctions();
 const signupFunction = httpsCallable(functions, 'user-create');
@@ -225,7 +225,7 @@ const SignupForm: React.FC = () => {
             <IonButton
 	      data-testid='button-close'
 	      onClick={() => modal.current?.dismiss()}>
-	      <IonIcon icon={CloseSVG} slot='icon-only' />
+	      <IonIcon icon={CloseIcon} slot='icon-only' />
 	    </IonButton>
           </IonButtons>
         </IonToolbar>
