@@ -47,7 +47,7 @@ export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) 
   const {features} = useProfile();
   const {reset, ...methods} = useForm({
     defaultValues: {
-      communities: features.canPost.length === 1 ? features.canPost[0] : [],
+      communities: features.canPost.length === 1 ? [features.canPost[0]] : [],
       starts: nowAndLater[0],
       ends: nowAndLater[1],
     },
