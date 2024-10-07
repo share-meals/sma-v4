@@ -389,7 +389,10 @@ export const Account: React.FC = () => {
       </IonListHeader>
       <div className='mv-1 ph-1'>
 	<CommunityTags communities={Object.keys(communities)} onClose={(communityId) => {
-	  removeFromCommunityFunction({communityId});
+	  removeFromCommunityFunction({communityId})
+	    .catch((error) => {
+	      console.log(error);
+	    });
 	}}/>
 	{Object.keys(communities).length === 0 && <FormattedMessage id='pages.account.noCommunities' />}
       </div>

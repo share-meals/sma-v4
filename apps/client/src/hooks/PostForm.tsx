@@ -44,10 +44,10 @@ const whenPickerSetValueOptions = {
 
 export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) => {
   const nowAndLater = getNowAndLater();
-  const {communities} = useProfile();
+  const {features} = useProfile();
   const {reset, ...methods} = useForm({
     defaultValues: {
-      communities: ['-KToWXEHyChwfsppc47y'],
+      communities: features.canPost.length === 1 ? features.canPost[0] : [],
       starts: nowAndLater[0],
       ends: nowAndLater[1],
     },
