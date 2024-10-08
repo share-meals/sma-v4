@@ -185,6 +185,7 @@ export const Map: React.FC = () => {
     }
   </div>;
   if(postsNotReady
+     || center === null
      || (geolocationDenied && geolocationNoBackup)
      || (geolocationAwaitingPrompt && geolocationNoBackup)){
     return <div style={{height: 'calc(100vh - 113px)'}}>
@@ -196,7 +197,7 @@ export const Map: React.FC = () => {
     position: 'relative'
   }}>
     <FRGMap
-      center={center!}
+      center={center}
       controls={controls}
       layers={[
 	currentLocationLayer,
