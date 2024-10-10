@@ -79,18 +79,11 @@ const SignupForm: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const modal = useRef<HTMLIonModalElement>(null);
-  const defaultValues = import.meta.env.VITE_ENVIRONMENT === 'emulator' ? {
-    email: `${Math.random()}@test.com`,
-    password: 'passwordpassword',
-    confirmPassword: 'passwordpassword',
-    name: 'test user'
-  } : {};
   const {
     control,
     formState,
     handleSubmit
   } = useForm({
-    defaultValues,
     mode: 'onSubmit',
     resolver: zodResolver(signupSchema),
     reValidateMode: 'onSubmit',
