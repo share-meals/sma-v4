@@ -24,6 +24,7 @@
 	    border-top-left-radius: var(--message-block-border-radius);
 	    border-bottom-left-radius: var(--message-block-border-radius);
 	    padding-left: 1rem;
+	    padding-right: 1rem;
 	}
     }
     &:not(.me) > div {
@@ -37,6 +38,7 @@
 	> div {
 	    border-top-right-radius: var(--message-block-border-radius);
 	    border-bottom-right-radius: var(--message-block-border-radius);
+	    padding-left: 1rem;
 	    padding-right: 1rem;
 	}
     }
