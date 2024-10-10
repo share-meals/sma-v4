@@ -224,6 +224,12 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 }
 
 const PostContent: React.FC<{post: PostType}> = ({post}) => {
+  const {
+    profile,
+    user: {uid}
+  } = useProfile();
+  const isOwner = uid === post.userId;
+  const isAdmin = post.communities.filter((c) => profile.private.communities[`community-${c}`] === 'admin').length > 0;
   const {dateFnsLocale} = useI18n();
   const {communities} = useProfile();
   const {lastGeolocation} = useGeolocation();
@@ -304,6 +310,8 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
 	    </span>
 	  </h1>
 	</IonText>
+	{(isOwner || isAdmin) &&
+	<>
 	<IonButton
 	  aria-label='more'
 	  id='openMoreActions'
@@ -323,6 +331,7 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
 	  postId={post.id}
 	  userId={post.userId}
 	/>
+	</>}
       </div>
       {!post.evergreen
       && <p>
