@@ -84,7 +84,7 @@ const MessageBlock: React.FC<MessageBlockProps> = ({
       </div>)}
       <div className='meta'>
 	<span className='userName'>
-	  <UserName uid={user.uid} />
+	  <UserName uid={userId} />
 	</span>
 	{' · '}
 	<span className='timestamp'>
