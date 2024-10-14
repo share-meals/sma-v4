@@ -91,7 +91,7 @@ export const ManualAddressPicker: React.FC<ManualAddressPicker> = () => {
 	control={control}
 	fill='outline'
 	form='manual-address-form'
-	label={intl.formatMessage({id: 'components.ManualAddressPicker.address'})}
+	label={intl.formatMessage({id: 'components.manualAddressPicker.address'})}
 	labelPlacement='floating'
 	name='address'
 	onBlur={onSubmit}
