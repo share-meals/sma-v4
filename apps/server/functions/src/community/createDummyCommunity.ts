@@ -15,7 +15,7 @@ export const createDummyCommunity: createDummyCommunity = async (emailDomain) =>
   const result: DocumentReference<DocumentData, DocumentData> = await firestore.collection("communities").add({
     domains: [normalizedEmailDomain],
     features: {
-      canPost: false,
+      canPost: true,
       canShare: false,
       canSmartPantry: false,
       mustWhitelistPost: false,
