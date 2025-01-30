@@ -5,17 +5,15 @@ import {
   Map as FRGMap,
   MapLayerProps,
   MapProvider,
+  TimestampedLatLng,
 } from '@share-meals/frg-ui';
-import {latlngSchema} from '@sma-v4/schema';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Notice} from '@/components/Notice';
 import {useGeolocation} from '@/hooks/Geolocation';
 import {z} from 'zod';
 
-type latlngType = z.infer<typeof latlngSchema>;
-
 interface MapProps {
-  center: latlngType;
+  center: TimestampedLatLng;
   controls?: React.ReactElement;
   layers?: MapLayerProps[];
   locked?: boolean;
@@ -66,7 +64,7 @@ export const Map: React.FC<MapProps> = ({
   } = useGeolocation();
   return <div style={{height: '100%', position: 'relative'}}>
     <MapProvider
-      center={center}
+      center={{...center, timestamp: new Date()}}
       layers={layers}
       maxZoom={maxZoom}
       minZoom={minZoom}
