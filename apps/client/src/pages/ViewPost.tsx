@@ -216,11 +216,26 @@ const MoreActions: React.FC<MoreActionsProps> = ({
     icon: CancelIcon,
     text: intl.formatMessage({id: 'buttons.label.cancel'}),
   });
-  return <IonActionSheet
+    return <>
+	<IonButton
+	  aria-label='more'
+	  id='openMoreActions'
+	  size='small'
+	  fill='clear'
+	>
+	  <IonIcon
+	    aria-hidden='true'
+	    slot='icon-only'
+	    src={MoreVertIcon}
+	  />
+	</IonButton>
+	<IonActionSheet
 	   trigger='openMoreActions'
 	   header={intl.formatMessage({id: 'pages.viewPost.moreActions'})}
 	   buttons={buttons}
-  />;
+	/>
+    </>
+    ;
 }
 
 const PostContent: React.FC<{post: PostType}> = ({post}) => {
@@ -312,18 +327,6 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
 	</IonText>
 	{(isOwner || isAdmin) &&
 	<>
-	<IonButton
-	  aria-label='more'
-	  id='openMoreActions'
-	  size='small'
-	  fill='clear'
-	>
-	  <IonIcon
-	    aria-hidden='true'
-	    slot='icon-only'
-	    src={MoreVertIcon}
-	  />
-	</IonButton>
 	<MoreActions
 	  communities={post.communities}
 	  evergreen={post.evergreen}
