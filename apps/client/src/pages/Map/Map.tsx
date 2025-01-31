@@ -1,4 +1,3 @@
-import {ClusterLayerStyle} from './ClusterLayerStyle';
 import {Feature} from 'ol';
 import {FormattedMessage} from 'react-intl';
 import {fromLonLat} from 'ol/proj';
