@@ -376,7 +376,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
       {(internalLat != undefined
       && internalLng != undefined) &&
        <Map
-	 center={{lat: internalLat, lng: internalLng}}
+	 center={{lat: internalLat, lng: internalLng, timestamp: new Date()}}
 	 controls={controls}
 	 layers={[layer]}
 	 locked={isLocked}

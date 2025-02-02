@@ -19,7 +19,7 @@ interface MapProps {
   locked?: boolean;
   maxZoom?: number;
   minZoom?: number;
-  onFeatureClick?: any;
+    onFeatureClick?: any;
   zoom?: number;
 }
 
@@ -52,10 +52,10 @@ export const controlsRightStyle: React.CSSProperties = {
 
 export const Map: React.FC<MapProps> = ({
   center,
-  controls,
+    controls,
   layers = [],
   maxZoom = 16,
-  minZoom = 10,
+    minZoom = 10,
   zoom,
   ...props
 }) => {
@@ -64,7 +64,7 @@ export const Map: React.FC<MapProps> = ({
   } = useGeolocation();
   return <div style={{height: '100%', position: 'relative'}}>
     <MapProvider
-      center={{...center, timestamp: new Date()}}
+      center={{...center}}
       layers={layers}
       maxZoom={maxZoom}
       minZoom={minZoom}
