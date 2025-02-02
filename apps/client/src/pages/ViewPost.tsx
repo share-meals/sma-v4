@@ -354,19 +354,24 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
 	</>}
       </div>
       {!post.evergreen
-      && <p>
-	{isPast(post.starts)
-	? <FormattedMessage id='common.label.started' />
-	: <FormattedMessage id='common.label.starts' />}
-	{' '}
-	<DateTimeDisplay timestamp={post.starts} />
-	<br />
-	{isPast(post.ends)
-	? <FormattedMessage id='common.label.ended' />
-	: <FormattedMessage id='common.label.ends' />}
-	{' '}
-	<DateTimeDisplay timestamp={post.ends} />
-      </p>
+      && <IonGrid>
+	  <IonRow>
+	      <IonCol size='auto' className='ion-text-right pr-1'>
+		  {isPast(post.starts)
+		  ? <FormattedMessage id='common.label.started' />
+		  : <FormattedMessage id='common.label.starts' />}
+		  <br />
+		  {isPast(post.ends)
+		  ? <FormattedMessage id='common.label.ended' />
+		  : <FormattedMessage id='common.label.ends' />}
+	      </IonCol>
+	      <IonCol>
+		  <DateTimeDisplay timestamp={post.starts} />
+		  <br />
+		  <DateTimeDisplay timestamp={post.ends} />
+	      </IonCol>
+	  </IonRow>
+      </IonGrid>
       }
       <p>
 	{post.location.name ? <>{post.location.name}<br /></> : <></>}
