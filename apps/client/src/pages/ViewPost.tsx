@@ -67,24 +67,36 @@ import StarFilledIcon from '@material-symbols/svg-700/sharp/star-fill.svg';
 type PostType  = z.infer<typeof postSchema>;
 const defaultLocation: TimestampedLatLng = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
 
+interface ViewPost {
+    source?: string
+}
 
-export const ViewPost: React.FC = () => {
-  const {id} = useParams<{id: string}>();
-  const {posts: {[id]: post}} = useProfile();
-  const functions = getFunctions();
-  const logPostViewFunction = httpsCallable(functions, 'user-log-post-view');
-  if(post){
-    return <PostContent post={post} />;
-  }else{
-    return <div className='ion-padding'>
-      <IonText>
-	<h1>
-	  <FormattedMessage id='pages.viewPost.notFoundOrNoLongerAvailable' />
-	</h1>
-      </IonText>
-    </div>;
-  }
+export const ViewPost: React.FC<ViewPost> = ({source}) => {
+    const {bundleId, id} = useParams<{bundleId: string, id: string}>();
+    const {bundles, posts} = useProfile();
+    switch(source){
+	case 'bundle':
+	    return (bundles[bundleId]
+		 && bundles[bundleId].posts
+		 && bundles[bundleId].posts[id])
+		 ? <PostContent post={bundles[bundleId].posts[id]} />
+		 : <PostNotFound />;
+	    break;
+	default:
+	    return posts[id]
+		 ? <PostContent post={posts[id]} />
+		 : <PostNotFound />;
+	    break;
+    }
 };
+
+const PostNotFound: React.FC = () => <div className='ion-padding'>
+    <IonText>
+	<h1>
+	    <FormattedMessage id='pages.viewPost.notFoundOrNoLongerAvailable' />
+	</h1>
+    </IonText>
+</div>;
 
 type toastError = (
   code: string,
@@ -239,6 +251,11 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 }
 
 const PostContent: React.FC<{post: PostType}> = ({post}) => {
+    const functions = getFunctions();
+    const logPostViewFunction = httpsCallable(functions, 'user-log-post-view');
+    useEffect(() => {
+	logPostViewFunction({id: post.id});
+    }, []);
   const {
     profile,
     user: {uid}

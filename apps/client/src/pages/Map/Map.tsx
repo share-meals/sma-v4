@@ -99,9 +99,49 @@ export const Map: React.FC = () => {
       }
     })();
   }, [center, getGeolocation]);
-  const {posts} = useProfile();
+    const {
+	bundles,
+	bundlePostsLength,
+	posts,
+	postsLength
+    } = useProfile();
   const [clickedPosts, setClickedPosts] = useState<PostType[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const bundlesLayer = useMemo(() => {
+	if(bundles === undefined){
+	    return [];
+	}
+	return Object.values(bundles).map((bundle: any) => {
+	    const geojson = {
+		type: 'FeatureCollection',
+		features: Object.values(bundle.posts).map((post: any) => {
+		    return {
+			type: 'Feature',
+			geometry: {
+			    coordinates: [post.location.lng, post.location.lat],
+			    type: 'Point'
+			},
+			properties: post
+		    };
+		})
+	    };
+
+	    return {
+		name: bundle.name,
+		geojson,
+		featureWidth: 4,
+		fillColor: 'rgba(11, 167, 100, 0.5)',
+		strokeColor: 'rgba(255, 255, 255, 1)',
+		textScale: 1.5,
+		textFillColor: '#ffffff',
+		textStrokeColor: '#000000',
+		textStrokeWidth: 4,
+		type: 'cluster',
+		clusterDistance: 50,
+		zIndex: 2
+	    }
+	});
+    }, [bundles]);
   const featuresLayer = useMemo(() => {
     const geojson = {
       type: 'FeatureCollection',
@@ -116,6 +156,7 @@ export const Map: React.FC = () => {
 	};
       })
     };
+      
     return {
       name: 'Posts',
       geojson,
@@ -161,27 +202,32 @@ export const Map: React.FC = () => {
       timestamp: new Date()
     });
   }, [setCenter]);
-  const showAllPosts = useCallback(() => {
-    setClickedPosts(Object.values(posts));
-  }, [posts, setClickedPosts]);
-  const postsLength = Object.keys(posts).length;
-  const controls = <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    right: '1rem',
-    top: '1rem',
-    zIndex: 999
-  }}>
-    <LocateMeControl setCurrentLocation={changeCenter} />
-    {postsLength > 0 &&
-     <IonButton className='square has-badge' onClick={showAllPosts}>
-       <IonIcon slot='icon-only' src={ListsIcon} />
-       <IonBadge color='light'>
-	 {postsLength}
-       </IonBadge>
-     </IonButton>
-    }
+
+    const showAllPosts = useCallback(() => {
+	const bundlePosts = Object.values(bundles).map((b: any) => Object.values(b.posts)).flat();
+	setClickedPosts(
+	    // @ts-ignore
+	    Object.values(posts).concat(bundlePosts)
+	);
+  }, [bundles, posts, setClickedPosts]);
+
+    const controls = <div style={{
+	display: 'flex',
+	flexDirection: 'column',
+	position: 'absolute',
+	right: '1rem',
+	top: '1rem',
+	zIndex: 999
+    }}>
+	<LocateMeControl setCurrentLocation={changeCenter} />
+	{(bundlePostsLength + postsLength) > 0 &&
+	 <IonButton className='square has-badge' onClick={showAllPosts}>
+	     <IonIcon slot='icon-only' src={ListsIcon} />
+	     <IonBadge color='light'>
+		 {bundlePostsLength + postsLength}
+	     </IonBadge>
+	 </IonButton>
+	}
   </div>;
   if(postsNotReady
      || center === null
@@ -199,8 +245,9 @@ export const Map: React.FC = () => {
       center={center}
       controls={controls}
       layers={[
-	currentLocationLayer,
-	featuresLayer,
+	  currentLocationLayer,
+	  featuresLayer,
+	  ...bundlesLayer
       ]}
       onFeatureClick={({data}: any) => {
 	// check if data is a list of features or not
