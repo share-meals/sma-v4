@@ -19,6 +19,7 @@ import {
 } from '@ionic/react';
 import {Link} from 'react-router-dom';
 import Markdown from 'react-markdown';
+import {normalizeForUrl} from '@/utilities/normalizeForUrl';
 import {Photo} from '@/components/Photo';
 import {postSchema} from '@sma-v4/schema';
 import {storage} from '@/components/Firebase';
@@ -27,10 +28,19 @@ import {z} from 'zod';
 
 type post = z.infer<typeof postSchema>;
 
+const getLink: (arg: any) => string = (postInfo) => {
+    switch(postInfo.source){
+	case 'bundle':
+	    return `/view-bundle-post/${normalizeForUrl(postInfo.bundleName)}/${postInfo.id}`;
+	default:
+	    return `/view-post/${postInfo.id}`;
+    };
+};
+
 export const PostInfoBanner: React.FC<post & {onNavigate: () => void}> = (props) => {
   const {onNavigate, ...postInfo} = props;
-  const {dateFnsLocale} = useI18n();
-  return <Link to={{pathname: `/view-post/${postInfo.id}`, state: {a: 'asf'}}} style={{textDecoration: 'none'}} onClick={onNavigate}>
+    const {dateFnsLocale} = useI18n();
+  return <Link to={{pathname: getLink(postInfo)}} style={{textDecoration: 'none'}} onClick={onNavigate}>
     <IonItem detail={true}>
       <IonLabel>
 	<h2>
@@ -39,6 +49,7 @@ export const PostInfoBanner: React.FC<post & {onNavigate: () => void}> = (props)
 	  </span>
 	</h2>
 	{!postInfo.evergreen &&
+	 (postInfo.starts && postInfo.ends) &&
 	 <p>
 	   {isPast(postInfo.starts)
 	   ? <FormattedMessage id='common.label.started' />
@@ -52,11 +63,13 @@ export const PostInfoBanner: React.FC<post & {onNavigate: () => void}> = (props)
 	{postInfo.tags && <div>
 	  <DietaryTags tags={postInfo.tags} />
 	</div>}
+	{postInfo.details && postInfo.details !== '' &&
 	<div className='truncate-lines-3 mt-1'>
 	  <Markdown>
 	    {postInfo.details}
 	  </Markdown>
 	</div>
+	}
       </IonLabel>
       <IonThumbnail slot='start'>
 	{postInfo.photos && postInfo.photos.length > 0
