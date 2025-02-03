@@ -65,10 +65,11 @@ interface CommunityTagsProps {
 }
 
 export const CommunityTags: React.FC<CommunityTagsProps> = ({
-  communities,
+  communities: propCommunities,
   onClose
 }) => {
   const {communities: communityData, profile} = useProfile();
+  const communities = propCommunities.filter((c: string) => Object.keys(communityData).includes(c));
   return <>
     {communities!
       .sort((a, b) => {
