@@ -1,9 +1,9 @@
-import {handshake} from './handshake';
-import {surveyresponse} from './surveyresponse';
+import {survey} from './survey';
+import {info} from './info';
 import {vend} from './vend';
 
-export const smartpantry = {
-  handshake,
-  surveyresponse,
+export const smartPantry = {
+  info,
+  survey,
   vend,
 };

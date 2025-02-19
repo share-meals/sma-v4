@@ -13,7 +13,7 @@ import './AppWrapper.css';
 export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
   const {isLoading: isProfileLoading} = useProfile();
   const {dateFnsLocale, language} = useI18n();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     if(!isProfileLoading){
       setTimeout(() => {

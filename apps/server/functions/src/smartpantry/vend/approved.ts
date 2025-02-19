@@ -7,6 +7,7 @@ import {
   getDatabase,
   ServerValue,
 } from 'firebase-admin/database';
+const {error} = require('firebase-functions/logger');
 import {
   FieldValue,
   Firestore,
@@ -26,6 +27,19 @@ export const approved = onCall(
       sessionId,
       userId,
     } = request.data;
+    console.log(JSON.stringify(request.data));
+    try {
+      logSmartPantryVend({
+	item_number: itemNumber,
+	item_price: itemPrice,
+	machine_id: machineId,
+	status: 'approved',
+	user_id: userId
+      })
+
+    }catch(e){
+      error(e);
+    }
     return Promise.all([
       // deduct points
       firestore.collection('users').doc(userId).update({
@@ -33,6 +47,7 @@ export const approved = onCall(
 	'private.smartPantry.points': FieldValue.increment(itemPrice * -1)
       }),
       // log it
+      /*
       logSmartPantryVend({
 	itemNumber: itemNumber,
 	itemPrice: itemPrice,
@@ -40,6 +55,7 @@ export const approved = onCall(
 	status: 'approved',
 	userId: userId
       }),
+      */
       // send message to user
       database.ref(`/smsp/${machineId}/outbox`).set({
 	message: 'approved',

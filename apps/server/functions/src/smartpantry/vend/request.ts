@@ -12,6 +12,7 @@ import {
   Firestore,
   getFirestore,
 } from 'firebase-admin/firestore';
+import {v4 as uuidv4} from 'uuid';
 
 export const request = onCall(
     async (request: CallableRequest<any>) => {
@@ -29,10 +30,12 @@ export const request = onCall(
         );
       }
       // todo: verify schema
-      const spid: string = request.data.spid;
-      return database.ref(`/smsp/${spid}/inbox`).set({
-        message: `addPoints:${points}`,
+      const machineId: string = request.data.machineId;
+      const sessionId: string = uuidv4();
+      await database.ref(`/smsp/${machineId}/inbox`).set({
+        message: `addPoints:${sessionId}:${points}`,
 	userId: request.auth!.uid!,
         timestamp: ServerValue.TIMESTAMP
       });
+      return {sessionId};
 });

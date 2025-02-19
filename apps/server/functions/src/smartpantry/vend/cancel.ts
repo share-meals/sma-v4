@@ -21,9 +21,9 @@ export const cancel = onCall(
       }),
       database.ref(`/smsp/${machineId}/outbox`).remove(),
       logSmartPantryVend({
-	machineId: machineId,
+	machine_id: machineId,
 	status: 'canceled',
-	userId: request.auth!.uid!
+	user_id: request.auth!.uid!
       })
     ]);
 });
