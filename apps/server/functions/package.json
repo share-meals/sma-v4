@@ -25,6 +25,7 @@
         "iso-language-codes": "^2.0.0",
         "legit": "^1.0.9",
         "protobufjs": "^7.2.6",
+        "uuid": "^11.0.5",
         "zod": "^3.22.4"
     },
     "devDependencies": {
