@@ -1,4 +1,5 @@
 import {Redirect} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {useProfile} from '@/hooks/Profile';
 
 export interface AuthGuardProps {
@@ -11,7 +12,18 @@ export const AuthGuard: React.FC<React.PropsWithChildren<AuthGuardProps>> = ({
   children,
   requiredAuth,
 }) => {
-  const {isLoggedIn, user} = useProfile();
+  const {
+    isLoggedIn,
+    requestedUrl,
+    user,    
+  } = useProfile();
+  const {pathname} = useLocation();
+  if(requestedUrl.current !== null
+     && isLoggedIn){
+    const target = requestedUrl.current;
+    requestedUrl.current = null;
+    return <Redirect to={target} />;
+  }
   if(isLoggedIn
      && user.emailVerified === false
      && checkIsEmailVerified === true){
@@ -24,6 +36,9 @@ export const AuthGuard: React.FC<React.PropsWithChildren<AuthGuardProps>> = ({
     return <Redirect to='/map' />;
   }
   if(!isLoggedIn && requiredAuth === 'authed'){
+    if(pathname !== undefined){ // not sure why this is needed
+      requestedUrl.current = pathname;
+    }
     return <Redirect to='/signup' />;
   }
   return children;

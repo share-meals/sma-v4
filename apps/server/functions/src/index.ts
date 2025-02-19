@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase-admin/app";
 import {post} from './post';
-import {smartpantry} from "./smartpantry";
+import {smartPantry} from "./smartPantry";
 import {user} from "./user";
 
 initializeApp();
@@ -8,7 +8,9 @@ initializeApp();
 // community: require('./community'),
 const endpoints = {
   post,
-  smartpantry,
+  smart: {
+    pantry: smartPantry
+  },
   user,
 };
 
