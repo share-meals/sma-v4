@@ -1,2 +1,1 @@
-export * from './SmartPantry';
-export * from './SmartPantrySurvey';
+export * from './Dashboard';
