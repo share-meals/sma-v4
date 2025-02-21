@@ -1,0 +1,30 @@
+#environment: live
+environment: emulator
+community:
+  id: abc123
+  center:
+    address: 300 E St SW, Washington, DC 20546
+    lat: 38.8830649
+    lng: -81.2350286
+  codes:
+    member:
+      - membercode
+    admin:
+      - admincode
+  colors:
+    - color: "#0b3d91"
+      type: dark
+  domains:
+    - nasa.edu
+  features:
+    canPost: true
+    canShare: false
+    canSmartPantry: false
+    mustWhitelistPost: false
+  locations:
+    - name: Patriots Plaza II
+      address: 798-600 E St SW, Washington, DC 20024
+      lat: 38.88354
+      lng: -77.017983
+  name: NASA
+  verified: true
