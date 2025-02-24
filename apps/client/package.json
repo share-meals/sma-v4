@@ -42,7 +42,8 @@
         "storybook": "storybook dev -p 6006",
         "test.e2e": "cypress run",
         "test.e2e:open": "cypress open",
-        "test.unit": "vitest",
+        "test:unit": "vitest",
+        "test:unit:ui": "vitest --ui",
         "build-storybook": "storybook build"
     },
     "dependencies": {
@@ -65,9 +66,9 @@
         "@ionic/pwa-elements": "^3.3.0",
         "@ionic/react": "^7.0.0",
         "@ionic/react-router": "^7.0.0",
-        "@material-symbols/svg-400": "^0.23.0",
+        "@material-symbols/svg-400": "^0.16.0",
         "@material-symbols/svg-700": "^0.23.0",
-        "@share-meals/frg-ui": "^0.0.20",
+        "@share-meals/frg-ui": "^0.0.21",
         "@types/react-router": "^5.1.20",
         "@types/react-router-dom": "^5.3.3",
         "classnames": "^2.5.1",
