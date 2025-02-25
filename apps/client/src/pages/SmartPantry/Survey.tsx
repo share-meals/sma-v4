@@ -30,7 +30,6 @@ export const SmartPantrySurvey: React.FC<SmartPantrySurveyProps> = ({
   const {spid} = useParams<{spid: string}>();
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    /*
     await submitResponses({
       surveyId: json.meta.id,
       responseJson: data,
@@ -39,7 +38,6 @@ export const SmartPantrySurvey: React.FC<SmartPantrySurveyProps> = ({
     modalRef.current?.dismiss();
     toast.success(intl.formatMessage({id: 'pages.smartPantryDashboard.surveySent'}));
     setIsLoading(false);
-    */
   };
   
   return <div className='ion-padding'>
