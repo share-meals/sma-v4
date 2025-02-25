@@ -23,7 +23,6 @@ import {
   useState,
 } from 'react';
 import {FirebaseMessaging} from '@capacitor-firebase/messaging';
-import {merge} from 'lodash';
 import {normalizeForUrl} from '@/utilities/normalizeForUrl';
 import {onAuthStateChanged} from 'firebase/auth';
 import {postSchema} from '@sma-v4/schema';
@@ -109,10 +108,10 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
     if(user){
       const userDoc = doc(firestore, 'users', user.uid);
       const unsub = onSnapshot(userDoc, (d) => {
-	setProfile(merge(
-	  defaultProfile,
-	  d.data()
-	));
+	setProfile({
+	  ...defaultProfile,
+	  ...d.data()
+	});
       });
       profileUnsubscribe.current = unsub;
     }else{
