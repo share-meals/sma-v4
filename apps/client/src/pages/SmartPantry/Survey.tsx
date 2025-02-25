@@ -3,6 +3,7 @@ import {
   getFunctions,
   httpsCallable,
 } from 'firebase/functions';
+import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {toast} from 'react-toastify';
 import {useIntl} from 'react-intl';
 import {
@@ -29,6 +30,7 @@ export const SmartPantrySurvey: React.FC<SmartPantrySurveyProps> = ({
   const {spid} = useParams<{spid: string}>();
   const onSubmit = async (data: any) => {
     setIsLoading(true);
+    /*
     await submitResponses({
       surveyId: json.meta.id,
       responseJson: data,
@@ -37,6 +39,7 @@ export const SmartPantrySurvey: React.FC<SmartPantrySurveyProps> = ({
     modalRef.current?.dismiss();
     toast.success(intl.formatMessage({id: 'pages.smartPantryDashboard.surveySent'}));
     setIsLoading(false);
+    */
   };
   
   return <div className='ion-padding'>
@@ -44,7 +47,6 @@ export const SmartPantrySurvey: React.FC<SmartPantrySurveyProps> = ({
       isLoading={isLoading}
       json={json}
       onSubmit={onSubmit}
-
     />
   </div>;
 };
