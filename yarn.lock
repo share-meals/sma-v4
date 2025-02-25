@@ -5240,9 +5240,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@share-meals/frg-ui@npm:^0.0.20":
-  version: 0.0.20
-  resolution: "@share-meals/frg-ui@npm:0.0.20::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.20%2Fcd6e02cb2264cfa0d4557527241d49278e9aa8a7"
+"@share-meals/frg-ui@npm:^0.0.22":
+  version: 0.0.22
+  resolution: "@share-meals/frg-ui@npm:0.0.22::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.22%2F86915bd5b0388f17fe5812eedf4d72f468d2a90f"
   dependencies:
     dayjs: "npm:^1.11.10"
     deepmerge: "npm:^4.3.1"
@@ -5254,11 +5254,10 @@ __metadata:
   peerDependencies:
     "@hookform/error-message": "*"
     "@ionic/react": "*"
-    "@material-symbols/svg-400": ^0.16.0
     react: "*"
     react-dom: "*"
     react-hook-form: "*"
-  checksum: 10c0/5b7ae83637d6df4c85861f47f6ca1d6ea4703e7f01dc34499aa4427a3a0b36d739eb5ef38533d4a1554fa6c377a91a9a8151adcf7721a519c5b829a2ccef057b
+  checksum: 10c0/e9a4c2a5ebbbc86ab7b8241ce28c7f4355ff4c193af401d39590c42051af6917c8aabd925dbdb09543f6f68628368c77f8ee30dda5e097349dc22fe5588768b7
   languageName: node
   linkType: hard
 
@@ -5316,7 +5315,7 @@ __metadata:
     "@ionic/react-router": "npm:^7.0.0"
     "@material-symbols/svg-400": "npm:^0.23.0"
     "@material-symbols/svg-700": "npm:^0.23.0"
-    "@share-meals/frg-ui": "npm:^0.0.20"
+    "@share-meals/frg-ui": "npm:^0.0.22"
     "@storybook/addon-a11y": "npm:^8.0.2"
     "@storybook/addon-actions": "npm:^8.0.4"
     "@storybook/addon-console": "npm:^3.0.0"
@@ -17983,10 +17982,11 @@ __metadata:
   linkType: hard
 
 "react-markdown@npm:^9.0.0":
-  version: 9.0.3
-  resolution: "react-markdown@npm:9.0.3"
+  version: 9.1.0
+  resolution: "react-markdown@npm:9.1.0"
   dependencies:
     "@types/hast": "npm:^3.0.0"
+    "@types/mdast": "npm:^4.0.0"
     devlop: "npm:^1.0.0"
     hast-util-to-jsx-runtime: "npm:^2.0.0"
     html-url-attributes: "npm:^3.0.0"
@@ -17999,7 +17999,7 @@ __metadata:
   peerDependencies:
     "@types/react": ">=18"
     react: ">=18"
-  checksum: 10c0/7f1aef171b49af9b84896917c033cbc0f45d0d2b4a5db5a339bf96977a143ae19f21cb7a69a6878b718d5578db021e96372fa33621b79bf57a87efb9b3c84166
+  checksum: 10c0/5bd645d39379f776d64588105f4060c390c3c8e4ff048552c9fa0ad31b756bb3ff7c11081542dc58d840ccf183a6dd4fd4d4edab44d8c24dee8b66551a5fd30d
   languageName: node
   linkType: hard
 
