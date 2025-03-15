@@ -4,11 +4,6 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import {
-  addHours,
-  formatISO,
-  roundToNearestMinutes
-} from 'date-fns';
-import {
   createContext,
   Dispatch,
   SetStateAction,
@@ -16,6 +11,7 @@ import {
   useCallback,
   useState,
 } from 'react';
+import {getNowAndLater} from '@/utilities';
 import {postCreateClientSchema} from '@sma-v4/schema';
 import {useProfile} from '@/hooks/Profile';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -29,12 +25,6 @@ interface PostFormState {
 const PostFormContext = createContext<PostFormState>({} as PostFormState);
 
 export const usePostForm = () => useContext(PostFormContext);
-
-const getNowAndLater = () => {
-  const now = roundToNearestMinutes(new Date(), {nearestTo: 15, roundingMethod: 'floor'});
-  const hourFromNow = addHours(now, 1);
-  return [formatISO(now).slice(0, -6), formatISO(hourFromNow).slice(0, -6)];
-}
 
 const whenPickerSetValueOptions = {
   shouldValidate: false,
@@ -50,6 +40,7 @@ export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) 
       communities: features.canPost.length === 1 ? [features.canPost[0]] : [],
       starts: nowAndLater[0],
       ends: nowAndLater[1],
+      type: 'post'
     },
     mode: 'onSubmit',
     resolver: zodResolver(postCreateClientSchema),

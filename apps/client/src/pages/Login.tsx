@@ -161,9 +161,7 @@ export const Login: React.FC = () => {
 	<IonCol size-xs='12' size-sm='6'>
 	  <IonText>
 	    <p className='ion-padding-bottom'>
-	      <FormattedMessage
-	      id='pages.login.greeting'
-	      />
+	      <FormattedMessage id='pages.login.greeting' />
 	    </p>
 	  </IonText>
 	  <LoginForm />
