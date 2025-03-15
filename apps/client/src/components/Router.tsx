@@ -24,6 +24,7 @@ import {
   Redirect,
   Route
 } from 'react-router-dom';
+import {ShareFormProvider} from '@/hooks/ShareForm';
 import {useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useProfile} from '@/hooks/Profile';
@@ -36,6 +37,7 @@ import {PageNotFound} from '@/pages/PageNotFound';
 import {Post} from '@/pages/Post';
 import {PrivacyPolicy} from '@/pages/PrivacyPolicy';
 import {ResetPassword} from '@/pages/ResetPassword';
+import {Share} from '@/pages/Share';
 import {Signup} from '@/pages/Signup';
 import {SmartPantryDashboard} from '@/pages/SmartPantry';
 import {VerifyEmail} from '@/pages/VerifyEmail';
@@ -141,6 +143,16 @@ export const Router: React.FC = () => {
 	    </LayoutWrapper>
 	  </AuthGuard>
 	</Route>
+	<Route exact path='/share'>
+	  <AuthGuard requiredAuth='authed'>
+	    <LayoutWrapper
+	      translatedTitle={<FormattedMessage id='pages.share.title' />}>
+	      <ShareFormProvider>
+		<Share />
+	      </ShareFormProvider>
+	    </LayoutWrapper>
+	  </AuthGuard>
+	</Route>
 	<Route exact path='/signup'>
 	  <AuthGuard requiredAuth='unauthed'>
 	    <LayoutWrapper
@@ -228,6 +240,15 @@ export const Router: React.FC = () => {
 	   <IonIcon aria-hidden='true' src={PostIcon} />
 	   <IonLabel>
 	     <FormattedMessage id='pages.post.title' />
+	   </IonLabel>
+	 </IonTabButton>
+	}
+	{
+	  features.canShare.length > 0 &&
+	 <IonTabButton data-testid='share button' tab='share' href='/share' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
+	   <IonIcon aria-hidden='true' src={PostIcon} />
+	   <IonLabel>
+	     <FormattedMessage id='pages.share.title' />
 	   </IonLabel>
 	 </IonTabButton>
 	}

@@ -17,22 +17,30 @@ const tagSchema = z.enum([
 
 export type Tag = z.infer<typeof tagSchema>;
 
-const basePostSchema = z.object({
+const baseSchema = z.object({
+  communities: z.array(z.string()).nonempty(),
+  id: z.string(),
+  location: locationSchema,
+  userId: z.string()  
+})
+
+const basePostSchema = baseSchema.merge(z.object({
   cannotChat: z.boolean().optional(),
   chat: chatSchema.array().optional(),
-  communities: z.array(z.string()).nonempty(),
   details: z.string().max(500).min(5),
   evergreen: z.boolean().optional(),
   feature: z.boolean().optional(),
-  id: z.string(),
-  location: locationSchema,
   photos: z.array(z.string()).optional().nullable(),
   servings: z.number().optional().nullable(),
   tags: z.array(tagSchema).optional().nullable(),
   title: z.string().max(250).min(5),
-  type: z.enum(['event']),
-  userId: z.string()
-});
+  type: z.literal('event')
+}));
+
+const baseShareSchema = baseSchema.merge(z.object({
+  swipes: z.number().min(1).max(10),
+  type: z.literal('share')
+}));
 
 const startsEndsAsStrings = z.object({
   ends: z.string(),
@@ -61,15 +69,26 @@ export const postSchema = basePostSchema.merge(startsEndsAsDates).refine(
   (data) => data.ends > data.starts, {message: 'must end after starts'}
 );
 
+export const shareSchema = baseShareSchema.merge(startsEndsAsDates).refine(
+  (data) => data.ends > data.starts, {message: 'must end after starts'}
+);
+
 export const postCreateClientSchema = basePostSchema.omit({
   id: true,
-  type: true,
   userId: true
-}).merge(
-  startsEndsAsStrings
-)
+}).merge(startsEndsAsStrings);
+
+export const shareCreateClientSchema = baseShareSchema.omit({
+  id: true,
+  userId: true
+}).merge(startsEndsAsStrings);;
 
 export const postCreateServerSchema = basePostSchema.omit({
+  id: true,
+  userId: true
+}).merge(startsEndsAsStrings);
+
+export const shareCreateServerSchema = baseShareSchema.omit({
   id: true,
   userId: true
 }).merge(startsEndsAsStrings);
