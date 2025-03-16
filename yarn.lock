@@ -5240,9 +5240,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@share-meals/frg-ui@npm:^0.0.21":
-  version: 0.0.21
-  resolution: "@share-meals/frg-ui@npm:0.0.21::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.21%2Fda6d40547262de6efa3d321c1e07d50571567832"
+"@share-meals/frg-ui@npm:^0.0.22":
+  version: 0.0.22
+  resolution: "@share-meals/frg-ui@npm:0.0.22::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.22%2F86915bd5b0388f17fe5812eedf4d72f468d2a90f"
   dependencies:
     dayjs: "npm:^1.11.10"
     deepmerge: "npm:^4.3.1"
@@ -5257,7 +5257,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-hook-form: "*"
-  checksum: 10c0/362d67d3af317c77879ade320d63ba5d089ce7dd18ed01f385359e435949bb9c016f8505c749889d261bcd99d22a4f58cbc13e3b66f92d987dc097e292b016c9
+  checksum: 10c0/e9a4c2a5ebbbc86ab7b8241ce28c7f4355ff4c193af401d39590c42051af6917c8aabd925dbdb09543f6f68628368c77f8ee30dda5e097349dc22fe5588768b7
   languageName: node
   linkType: hard
 
@@ -5315,7 +5315,7 @@ __metadata:
     "@ionic/react-router": "npm:^7.0.0"
     "@material-symbols/svg-400": "npm:^0.16.0"
     "@material-symbols/svg-700": "npm:^0.23.0"
-    "@share-meals/frg-ui": "npm:^0.0.21"
+    "@share-meals/frg-ui": "npm:^0.0.22"
     "@storybook/addon-a11y": "npm:^8.0.2"
     "@storybook/addon-actions": "npm:^8.0.4"
     "@storybook/addon-console": "npm:^3.0.0"

@@ -110,6 +110,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
       const userDoc = doc(firestore, 'users', user.uid);
       const unsub = onSnapshot(userDoc, (d) => {
 	setProfile(merge(
+	  {},
 	  defaultProfile,
 	  d.data()
 	));
@@ -139,7 +140,6 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	    'in',
 	    unfixedCommunityIds
 	));
-	
 	const communitiesUnsub = onSnapshot(communitiesQuery, (snapshot) => {
 	  let canPost: string[] = [];
 	  let canShare: string[] = [];

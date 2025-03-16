@@ -3,6 +3,7 @@ import {
   getFunctions,
   httpsCallable,
 } from 'firebase/functions';
+import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {toast} from 'react-toastify';
 import {useIntl} from 'react-intl';
 import {
@@ -44,7 +45,6 @@ export const SmartPantrySurvey: React.FC<SmartPantrySurveyProps> = ({
       isLoading={isLoading}
       json={json}
       onSubmit={onSubmit}
-
     />
   </div>;
 };

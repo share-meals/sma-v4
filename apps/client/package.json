@@ -68,7 +68,7 @@
         "@ionic/react-router": "^7.0.0",
         "@material-symbols/svg-400": "^0.16.0",
         "@material-symbols/svg-700": "^0.23.0",
-        "@share-meals/frg-ui": "^0.0.21",
+        "@share-meals/frg-ui": "^0.0.22",
         "@types/react-router": "^5.1.20",
         "@types/react-router-dom": "^5.3.3",
         "classnames": "^2.5.1",

@@ -67,10 +67,7 @@ export const VerifyEmail: React.FC = () => {
       <IonCol size-xs='12' size-sm='6'>
 	<IonText>
 	  <p>
-	    <FormattedMessage
-	      id='pages.verifyEmail.greeting'
-	      values={{email: user.email}}
-	    />
+	    <FormattedMessage id='pages.verifyEmail.greeting' values={{email: user.email}} />
 	  </p>
 	</IonText>
 	<StateButton

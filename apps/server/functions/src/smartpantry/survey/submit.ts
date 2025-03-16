@@ -29,7 +29,7 @@ export const submit = onCall(
         },
       }, {merge: true}),
     ];
-    if (process.env.FUNCTIONS_EMULATOR) {
+    if (!process.env.FUNCTIONS_EMULATOR) {
       // emulator
       tasks.push(
 	logSmartPantrySurveyResponse({
