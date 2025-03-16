@@ -12,19 +12,19 @@ import {
   useState,
 } from 'react';
 import {getNowAndLater} from '@/utilities';
-import {postCreateClientSchema} from '@sma-v4/schema';
+import {shareCreateClientSchema} from '@sma-v4/schema';
 import {useProfile} from '@/hooks/Profile';
 import {zodResolver} from '@hookform/resolvers/zod';
 
-interface PostFormState {
+interface ShareFormState {
   isWherePickerReady: boolean;
   resetWhenPickerToNow: () => void;
   setIsWherePickerReady: Dispatch<SetStateAction<boolean>>;
 };
 
-const PostFormContext = createContext<PostFormState>({} as PostFormState);
+const ShareFormContext = createContext<ShareFormState>({} as ShareFormState);
 
-export const usePostForm = () => useContext(PostFormContext);
+export const useShareForm = () => useContext(ShareFormContext);
 
 const whenPickerSetValueOptions = {
   shouldValidate: false,
@@ -32,18 +32,19 @@ const whenPickerSetValueOptions = {
   shouldTouch: false
 }
 
-export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) => {
+export const ShareFormProvider: React.FC<React.PropsWithChildren> = ({children}) => {
   const nowAndLater = getNowAndLater();
   const {features} = useProfile();
   const {reset, ...methods} = useForm({
     defaultValues: {
-      communities: features.canPost.length === 1 ? [features.canPost[0]] : [],
+      communities: features.canShare.length === 1 ? [features.canShare[0]] : [],
       starts: nowAndLater[0],
       ends: nowAndLater[1],
-      type: 'post'
+      swipes: 3,
+      type: 'share',
     },
     mode: 'onSubmit',
-    resolver: zodResolver(postCreateClientSchema),
+    resolver: zodResolver(shareCreateClientSchema),
     reValidateMode: 'onSubmit'
   });
 
@@ -60,7 +61,7 @@ export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) 
     const nowAndLater = getNowAndLater();
     reset();
   }, []);
-  return <PostFormContext.Provider
+  return <ShareFormContext.Provider
 	   value={{
 	     isWherePickerReady,
 	     resetWhenPickerToNow,
@@ -70,5 +71,5 @@ export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) 
 		  reset={internalReset}>
       {children}
     </FormProvider>
-  </PostFormContext.Provider>
+  </ShareFormContext.Provider>
 }
