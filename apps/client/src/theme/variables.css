@@ -5,6 +5,7 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
+    --ion-font-family: "Helvetica Neue", sans-serif; /* Roboto has issues with Firefox visibility level */
     --ion-color-primary: #106535;
     --ion-color-primary-rgb: 16,101,53;
     --ion-color-primary-contrast: #ffffff;
