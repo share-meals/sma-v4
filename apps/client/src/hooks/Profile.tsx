@@ -140,7 +140,6 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	    'in',
 	    unfixedCommunityIds
 	));
-	
 	const communitiesUnsub = onSnapshot(communitiesQuery, (snapshot) => {
 	  let canPost: string[] = [];
 	  let canShare: string[] = [];

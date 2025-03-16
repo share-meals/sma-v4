@@ -96,16 +96,10 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
       case 'prompt-with-rationale':
 	presentAlert({
 	  buttons: [
-	    intl.formatMessage({
-	      id: 'buttons.label.ok'
-	    })
+	    intl.formatMessage({id: 'buttons.label.ok'})
 	  ],
-	  header: intl.formatMessage({
-	    id: 'common.label.attention'
-	  }),
-	  message: intl.formatMessage({
-	    id: 'geolocation.alert.message'
-	  }),
+	  header: intl.formatMessage({id: 'common.label.attention'}),
+	  message: intl.formatMessage({id: 'geolocation.alert.message'}),
 	  onDidDismiss: async () => {
 	    if(Capacitor.isNativePlatform()){
 	      const afterPromptPermissions: any = await Geolocation.requestPermissions({permissions: ['location']});

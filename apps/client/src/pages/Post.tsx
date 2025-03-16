@@ -1,11 +1,9 @@
 import {
-  Datetime,
   Input,
   Select,
   StateButton,
   Textarea
 } from '@share-meals/frg-ui';
-import {FirebaseError} from '@firebase/util';
 import {
   FormattedMessage,
   useIntl,
@@ -14,6 +12,7 @@ import {
   getFunctions,
   httpsCallable,
 } from 'firebase/functions';
+import {getTimezoneOffsetString} from '@/utilities';
 import {
   IonButton,
   IonCol,
@@ -31,7 +30,6 @@ import {WherePicker} from '@/components/WherePicker';
 import {Notice} from '@/components/Notice';
 import {PhotoPicker} from '@/components/PhotoPicker';
 import {
-  useEffect,
   useMemo,
   useState,
   useRef
@@ -41,19 +39,6 @@ import {useHistory} from 'react-router-dom';
 import {usePostForm} from '@/hooks/PostForm';
 import {useProfile} from '@/hooks/Profile';
 
-const getTimezoneOffsetString: () => string = () => {
-    const offsetMinutes = new Date().getTimezoneOffset();
-    
-    // Convert offset to hours and minutes
-    const hours = Math.floor(Math.abs(offsetMinutes) / 60);
-    const minutes = Math.abs(offsetMinutes) % 60;
-    
-    // Construct the UTC offset string
-    const offsetString = (offsetMinutes >= 0 ? '-' : '+') +
-        ('0' + hours).slice(-2) + ':' +
-        ('0' + minutes).slice(-2);
-    return offsetString;
-}
 
 export const Post: React.FC = () => {
   const formRef = useRef<null | HTMLFormElement>(null);
@@ -126,8 +111,7 @@ export const Post: React.FC = () => {
     postFunction({
       ...data,
       starts: data.starts + getTimezoneOffsetString(),
-      ends: data.ends + getTimezoneOffsetString(),
-      type: 'event'
+      ends: data.ends + getTimezoneOffsetString()
     }).then((response) => {
       reset();
       setWherePickerRerenderTrigger(new Date());
@@ -235,7 +219,7 @@ export const Post: React.FC = () => {
       </div>
     </IonListHeader>
     <div className='ion-padding'>
-      <WhenPicker isLoading={false} />
+      <WhenPicker isLoading={isLoading} />
     </div>
     <IonListHeader color='dark'>
       <FormattedMessage id='pages.post.where' />
