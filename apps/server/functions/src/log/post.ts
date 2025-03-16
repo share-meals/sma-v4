@@ -5,7 +5,6 @@ import {
   BigQuery,
   InsertRowsResponse,
 } from '@google-cloud/bigquery';
-//import {chatSchema} from '@sma-v4/schema';
 import {generateBigQueryClient} from './bigQueryClient';
 import {postSchema} from '@sma-v4/schema';
 import {z} from 'zod';

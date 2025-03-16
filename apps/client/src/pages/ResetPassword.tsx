@@ -75,9 +75,7 @@ export const ResetPassword: React.FC = () => {
     </div>
     {showNotice && <Notice color='success'>
       <IonLabel>
-	<FormattedMessage
-	  id='pages.resetPassword.successNotice'
-	/>
+	<FormattedMessage id='pages.resetPassword.successNotice' />
       </IonLabel>
     </Notice>}
   </form>  

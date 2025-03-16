@@ -24,6 +24,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonViewWillLeave,
 } from '@ionic/react';
 import {Link} from 'react-router-dom';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
@@ -36,6 +37,7 @@ import {
 import {StateButton} from '@share-meals/frg-ui';
 import {toast} from 'react-toastify';
 import {
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -55,7 +57,7 @@ export const SmartPantryDashboard: React.FC = () => {
   const {profile} = useProfile();
   const points = profile.private.smartPantry.points;
   const lastSurveyTaken = profile.private.smartPantry.timestamp.toDate();
-  const [spInfo, setSpInfo] = useState<SmartPantryInfo | null>(null);
+  const [spInfo, setSpInfo] = useState<SmartPantryInfo | null | undefined>(undefined);
   const [spState, setSpState] = useState<string | null | undefined>(undefined);
   const [spOutbox, setSpOutbox] = useState<string | null | undefined>(undefined);
   const [sessionId, setSessionId] = useState<string | null | undefined>(undefined);
@@ -67,18 +69,16 @@ export const SmartPantryDashboard: React.FC = () => {
   const cancelVend = httpsCallable(functions, 'smart-pantry-vend-cancel');
   const modalRef = useRef<HTMLIonModalElement>(null);
 
-  console.log(spState);
-  
   useEffect(() => {
     // TODO: listen for outbox
     // TODO: limit access rules for outbox to match user id
     const statusRef = ref(database, `/smsp/${spid.toLowerCase().replace(/[^a-zA-Z0-9]/g, '')}/status`);
     return onValue(statusRef, (snapshot) => {
       const val = snapshot.val();
-      setSpState(val === null ? null : val.state);
+      setSpState(val === null ? null : val);
     });
-  }, []);
-
+  }, [setSpState]);
+  
   useEffect(() => {
     if(sessionId !== undefined
        && sessionId !== null){
@@ -105,9 +105,9 @@ export const SmartPantryDashboard: React.FC = () => {
 	toast.error(
 	  intl.formatMessage({id: 'pages.smartPantryDashboard.vend.denied'})
 	);
-	cancel();
-	//setSendingPoints(false);
-	//setSessionId(null);
+	cancel({silent: false});
+	setSendingPoints(false);
+	setSessionId(null);
     }
   }, [spOutbox]);
   
@@ -117,13 +117,16 @@ export const SmartPantryDashboard: React.FC = () => {
     setSessionId(sessionId);
   };
   
-  const cancel = () => {
+  const cancel = ({silent}: {silent: boolean}) => {
+    // TODO: only cancel if current user at sp
     cancelVend({machineId: spid});
     setSendingPoints(false);
-    toast.success(
-      intl.formatMessage({id: 'pages.smartPantryDashboard.vend.canceled'})
-    );
-  }
+    if(!silent){
+      toast.success(
+	intl.formatMessage({id: 'pages.smartPantryDashboard.vend.canceled'})
+      );
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -132,31 +135,35 @@ export const SmartPantryDashboard: React.FC = () => {
 	setSpInfo(response.data);
       }catch(error: any){
 	console.log(error);
+	setSpInfo(null);
 	// TODO: error checking
       }
     })()
-    return () => {
-      cancel();
-    };
   }, []);
 
+  useIonViewWillLeave(() => {
+    cancel({silent: true});
+  });
+
+  switch(spInfo){
+    case undefined:
+      return <LoadingIndicator />;
+      break;
+    case null:
+      return <InvalidCode />;
+      break;
+  }
+  
   switch(spState){
     case undefined:
       return <div style={{height: 'calc(100vh - 113px)'}}>
 	<LoadingIndicator />
       </div>;
     case null:
-      return <InvalidCode />;
     case 'OFFLINE':
       return <Offline spName={spInfo!.name} />;
     case 'ENABLED':
       // waiting! so use it
-      break;
-  }
-
-  switch(spInfo){
-    case null:
-      return <LoadingIndicator />;
       break;
   }
   
@@ -164,6 +171,7 @@ export const SmartPantryDashboard: React.FC = () => {
     new Date(),
     lastSurveyTaken
   );
+
   const daysRemainingUntilNextSurvey = Math.max(spInfo!.surveyInterval - daysSinceLastSurvey, 0);
   const canSurvey = daysSinceLastSurvey >= spInfo!.surveyInterval;
   return <>
@@ -213,7 +221,7 @@ export const SmartPantryDashboard: React.FC = () => {
        <Notice color='success'>
 	 <span style={{display: 'flex'}} className='ion-align-items-center ion-justify-content-between'>
 	   <FormattedMessage id='pages.smartPantryDashboard.makeChoiceOnMachine' />
-	   <IonButton slot='end' fill='outline' onClick={cancel}>
+	   <IonButton slot='end' fill='outline' onClick={() => {cancel({silent: false});}}>
 	     <FormattedMessage id='buttons.label.cancel' />
 	   </IonButton>
 	 </span>

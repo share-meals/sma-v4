@@ -191,9 +191,7 @@ const SignupForm: React.FC = () => {
 	  id='signup-submit-button'
 	  isLoading={isLoading}
 	  type='submit'>
-	  <FormattedMessage
-	    id='buttons.label.signup'
-	  />
+	  <FormattedMessage id='buttons.label.signup' />
 	</StateButton>
       </div>
       {formState.isSubmitted
