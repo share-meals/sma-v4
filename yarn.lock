@@ -4825,10 +4825,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@material-symbols/svg-400@npm:^0.23.0":
-  version: 0.23.0
-  resolution: "@material-symbols/svg-400@npm:0.23.0"
-  checksum: 10c0/7e23431496121375b19f86cf09a63ca6b7f583f53c171b7be960166ec3d0d718b8b3f9e66f85cb6e866c92a02d9d57c3a0390dd2d3f8f4d8c89ed914d9deaa75
+"@material-symbols/svg-400@npm:^0.16.0":
+  version: 0.16.0
+  resolution: "@material-symbols/svg-400@npm:0.16.0"
+  checksum: 10c0/8bc59cc77229bbd9e722907d86ce5deca6b04063a47260731629577217a0587a0e74cade5aa948565ba6719bc2c6db9d8ab32bfb8c071f5996aabbe4c13e1304
   languageName: node
   linkType: hard
 
@@ -5313,7 +5313,7 @@ __metadata:
     "@ionic/pwa-elements": "npm:^3.3.0"
     "@ionic/react": "npm:^7.0.0"
     "@ionic/react-router": "npm:^7.0.0"
-    "@material-symbols/svg-400": "npm:^0.23.0"
+    "@material-symbols/svg-400": "npm:^0.16.0"
     "@material-symbols/svg-700": "npm:^0.23.0"
     "@share-meals/frg-ui": "npm:^0.0.22"
     "@storybook/addon-a11y": "npm:^8.0.2"
