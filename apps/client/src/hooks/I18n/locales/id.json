@@ -85,6 +85,8 @@
   "pages.map.postsList": "Postingan",
   "pages.map.title": "Peta",
   "pages.map.verifyEmail": "Verifikasi Email",
+  "pages.messagesDashboard.noMessages": "Anda belum memiliki pesan.",
+  "pages.messagesDashboard.title": "Dasbor Pesan",
   "pages.pageNotFound.title": "Halaman tidak ditemukan",
   "pages.post.post": "Posting",
   "pages.post.success": "Postingan Anda telah terkirim!",
