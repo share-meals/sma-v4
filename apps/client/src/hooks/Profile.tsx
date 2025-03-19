@@ -1,6 +1,7 @@
 // todo: user is still undefined
 import {
   auth,
+  database,
   firestore
 } from '@/components/Firebase';
 import {BundleTransformers} from './BundleTransformers';
@@ -13,6 +14,10 @@ import {
   Unsubscribe,
   where,
 } from 'firebase/firestore';
+import {
+  ref,
+  onValue
+} from 'firebase/database';
 import type {Community} from '@sma-v4/schema';
 import {
   createContext,
@@ -26,7 +31,10 @@ import {FirebaseMessaging} from '@capacitor-firebase/messaging';
 import {merge} from 'lodash';
 import {normalizeForUrl} from '@/utilities/normalizeForUrl';
 import {onAuthStateChanged} from 'firebase/auth';
-import {postSchema} from '@sma-v4/schema';
+import {
+  postSchema,
+  shareSchema
+} from '@sma-v4/schema';
 import {signOut} from 'firebase/auth';
 import {Timestamp} from 'firebase/firestore';
 import {useMessaging} from '@/hooks/Messaging';
@@ -51,6 +59,7 @@ interface Profile {
   features: any;
   isLoading: boolean;
   isLoggedIn: boolean;
+  unreadMessagesCount: number;
   user: any;
   posts: any;
   postsLength: number;
@@ -76,6 +85,10 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
   const [features, setFeatures] = useState<any>({});
   const [communities, setCommunities] = useState<any>(undefined);
   const communitiesUnsubscribe = useRef<Unsubscribe>();
+
+  const [chatDashboard, setChatDashboard] = useState<any>(undefined);
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState<number>(0);
+  const chatDashboardUnsubscribe = useRef<Unsubscribe>();
 
   const [posts, setPosts] = useState<any>(undefined);
   const [postsLength, setPostsLength] = useState<number>(0);
@@ -108,24 +121,35 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
   useEffect(() => {
     if(user){
       const userDoc = doc(firestore, 'users', user.uid);
-      const unsub = onSnapshot(userDoc, (d) => {
+      const profileUnsub = onSnapshot(userDoc, (d) => {
 	setProfile(merge(
 	  {},
 	  defaultProfile,
 	  d.data()
 	));
       });
-      profileUnsubscribe.current = unsub;
+      profileUnsubscribe.current = profileUnsub;
+
+      const chatDashboard = ref(database, `/chatDashboard/${user.uid}`);
+      const chatDashboardUnsub = onValue(chatDashboard, (snapshot) => {
+	//console.log(snapshot.val());
+      });
+      chatDashboardUnsubscribe.current = chatDashboardUnsub;
     }else{
       if(user !== undefined){
 	if(profileUnsubscribe.current){
 	  profileUnsubscribe.current();
 	}
 	setProfile(null);
+
+	if(chatDashboardUnsubscribe.current){
+	  chatDashboardUnsubscribe.current();
+	}
+	setChatDashboard(null);
       }
     }
   }, [user]);
-
+  
   useEffect(() => {
     if(profile){
       if(profile.private && profile.private.communities){
@@ -226,11 +250,28 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	    starts: doc.data().starts.toDate(),
 	  }]));
 	  for(const p of Object.values(ps)){
-	    const schemaCompliance = postSchema.safeParse(p);
-	    if(!schemaCompliance.success){
-	      console.log(schemaCompliance.error);
-	      // post retrieved from firebase does not match schema
-	      // todo: better handling
+	    // TODO: better typing - type does not exist on p
+	    // @ts-ignore
+	    switch(p.type){
+	      case 'post':
+		const postSchemaCompliance = postSchema.safeParse(p);
+		if(!postSchemaCompliance.success){
+		  console.log(postSchemaCompliance.error);
+		  // post retrieved from firebase does not match schema
+		  // todo: better handling
+		}
+		break;
+	      case 'share':
+		const shareschemaCompliance = shareSchema.safeParse(p);
+		if(!shareschemaCompliance.success){
+		  console.log(shareschemaCompliance.error);
+		  // post retrieved from firebase does not match schema
+		  // todo: better handling
+		}
+		break;
+	      default:
+		// TODO: throw an error because type has to be one of these
+		break;
 	    }
 	    
 	  }
@@ -324,6 +365,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	     features,
 	     isLoading,
 	     isLoggedIn: user !== null,
+	     unreadMessagesCount,
 	     user,
 	     posts,
 	     postsLength,
