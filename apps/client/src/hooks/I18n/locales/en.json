@@ -85,6 +85,8 @@
   "pages.map.postsList": "Posts",
   "pages.map.title": "Map",
   "pages.map.verifyEmail": "Verify Email",
+  "pages.messagesDashboard.noMessages": "You have no messages yet.",
+  "pages.messagesDashboard.title": "Messages Dashboard",
   "pages.pageNotFound.title": "Page Not Found",
   "pages.post.post": "Post",
   "pages.post.success": "Your post was sent!",
