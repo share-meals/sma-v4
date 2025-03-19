@@ -33,6 +33,9 @@ import {Account} from '@/pages/Account';
 import {CloseAccount} from '@/pages/CloseAccount';
 import {Login} from '@/pages/Login';
 import {Map} from '@/pages/Map';
+import {
+  MessagesDashboard
+} from '@/pages/Messages';
 import {PageNotFound} from '@/pages/PageNotFound';
 import {Post} from '@/pages/Post';
 import {PrivacyPolicy} from '@/pages/PrivacyPolicy';
@@ -124,6 +127,14 @@ export const Router: React.FC = () => {
 	      <PostFormProvider>
 		<Post />
 	      </PostFormProvider>
+	    </LayoutWrapper>
+	  </AuthGuard>
+	</Route>
+	<Route exact path='/messages/dashboard'>
+	  <AuthGuard requiredAuth='authed'>
+	    <LayoutWrapper
+	      translatedTitle={<FormattedMessage id='pages.messagesDashboard.title' />}>
+	      <MessagesDashboard />
 	    </LayoutWrapper>
 	  </AuthGuard>
 	</Route>

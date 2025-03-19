@@ -85,6 +85,8 @@
   "pages.map.postsList": "Publicaciones",
   "pages.map.title": "Mapa",
   "pages.map.verifyEmail": "Verificar Correo Electrónico",
+  "pages.messagesDashboard.noMessages": "No tienes mensajes todavía",
+  "pages.messagesDashboard.title": "Panel de mensajes",
   "pages.pageNotFound.title": "Página No Encontrada",
   "pages.post.post": "Publicar",
   "pages.post.success": "¡Tu publicación fue enviada!",
