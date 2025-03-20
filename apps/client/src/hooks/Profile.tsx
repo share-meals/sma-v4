@@ -66,9 +66,9 @@ interface Profile {
   profile: any;
   signout: () => void;
   requestedUrl: any;
+  requestedUrlSignoutFlag: any;
 }
 
-// todo: remove any typing
 const ProfileContext = createContext<Profile>({} as Profile);
 
 export const useProfile = () => useContext(ProfileContext);
@@ -100,6 +100,8 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 
   // if user wants to go to a page but is not logged in; redirect them once logged in
   const requestedUrl = useRef<string | null>(null);
+  // when signing out, AuthGuard can mistakenly save /account as a requested URL. instead, set and clear this flag as needed
+  const requestedUrlSignoutFlag = useRef<boolean>(false);
   
   useEffect(() => {
     onAuthStateChanged(auth, (userState) => {
@@ -347,6 +349,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
       postsUnsubscribe.current();
       postsUnsubscribe.current = undefined;
     }
+    requestedUrlSignoutFlag.current = true;
     signOut(auth)
       .then(() => {
       });
@@ -371,6 +374,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	     postsLength,
 	     profile,
 	     requestedUrl,
+	     requestedUrlSignoutFlag,
 	     signout,
 	   }}>
     {children}

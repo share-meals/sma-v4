@@ -4,6 +4,7 @@ import {
   ActionPerformed,
   PushNotifications
 } from '@capacitor/push-notifications';
+import {App} from '@capacitor/app';
 import {AuthGuard} from '@/components/AuthGuard';
 import {Capacitor} from '@capacitor/core';
 import classnames from 'classnames';
@@ -77,6 +78,17 @@ const PushNotificationActionListener: React.FC = () => {
   return <></>;
 }
 
+const CustomURLSchemaListener: React.FC = () => {
+  const history = useHistory();
+  useEffect(() => {
+    App.addListener('appUrlOpen', (data) => {
+      const requestedPath = data.url.split('sharemeals://')[1];
+      history.push(requestedPath);
+    });
+  }, []);
+  return <></>;
+};
+
 export const Router: React.FC = () => {
   const {
     bundlePostsLength,
@@ -85,6 +97,7 @@ export const Router: React.FC = () => {
     postsLength,
   } = useProfile();
   return <IonReactRouter>
+    <CustomURLSchemaListener />
     <PushNotificationActionListener />
     <IonTabs>
       <IonRouterOutlet>
