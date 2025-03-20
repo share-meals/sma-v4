@@ -21,6 +21,7 @@ import {
 } from '@/components/Map';
 import {Point} from 'ol/geom';
 import {PostInfoBanner} from '@/components/PostInfoBanner';
+import {Redirect} from 'react-router-dom';
 import {
   RFeature,
   RLayerCluster,
@@ -85,7 +86,9 @@ export const Map: React.FC = () => {
     permissionState
   } = useGeolocation();
   const [center, setCenter] = useState<TimestampedLatLng | null>(null);
-
+  const {
+    requestedUrl,
+  } = useProfile();
   useEffect(() => {
     (async () => {
       if(center === null){
@@ -228,7 +231,16 @@ export const Map: React.FC = () => {
 	     </IonBadge>
 	 </IonButton>
 	}
-  </div>;
+    </div>;
+
+  // /map is the default place to land once you're logged in and verified
+  // if they are trying to access a restricted page, push them as needed
+  if(requestedUrl.current !== null){
+    const targetUrl = requestedUrl.current;
+    requestedUrl.current = null;
+    return <Redirect to={targetUrl} />;
+  }
+  
   if(postsNotReady
      || center === null
      || (geolocationDenied && geolocationNoBackup)

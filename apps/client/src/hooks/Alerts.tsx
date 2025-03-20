@@ -41,4 +41,4 @@ export const AlertsProvider: React.FC<React.PropsWithChildren> = ({children}) =>
 	     alerts
 	   }}
   />
-}
+};
