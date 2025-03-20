@@ -15,15 +15,11 @@ export const AuthGuard: React.FC<React.PropsWithChildren<AuthGuardProps>> = ({
   const {
     isLoggedIn,
     requestedUrl,
+    requestedUrlSignoutFlag,
     user,    
   } = useProfile();
   const {pathname} = useLocation();
-  if(requestedUrl.current !== null
-     && isLoggedIn){
-    const target = requestedUrl.current;
-    requestedUrl.current = null;
-    return <Redirect to={target} />;
-  }
+
   if(isLoggedIn
      && user.emailVerified === false
      && checkIsEmailVerified === true){
@@ -35,9 +31,14 @@ export const AuthGuard: React.FC<React.PropsWithChildren<AuthGuardProps>> = ({
      && checkIsEmailVerified === true){
     return <Redirect to='/map' />;
   }
+  
   if(!isLoggedIn && requiredAuth === 'authed'){
     if(pathname !== undefined){ // not sure why this is needed
-      requestedUrl.current = pathname;
+      if(requestedUrlSignoutFlag.current === false){ 
+	requestedUrl.current = pathname;
+      }else{
+	requestedUrlSignoutFlag.current = false;
+      }
     }
     return <Redirect to='/signup' />;
   }

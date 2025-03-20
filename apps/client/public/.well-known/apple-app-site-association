@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "HNV58UHV96.org.sharemeals.app",
+        "paths": ["*"]
+      }
+    ]
+  }
+}
