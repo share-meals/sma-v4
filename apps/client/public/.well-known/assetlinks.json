@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.sharemeals.app",
+      "sha256_cert_fingerprints": ["7E:2C:B8:22:00:29:56:FD:62:F7:67:95:6A:B2:A9:1F:C8:93:09:0D:C3:93:9D:CF:44:12:86:FC:15:73:9F:60"]
+    }
+  }
+]
