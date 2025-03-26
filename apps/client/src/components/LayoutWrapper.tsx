@@ -1,9 +1,9 @@
+import {AuthGuard} from '@/components/AuthGuard';
 import {Header} from '@/components/Header';
 import {
   IonContent,
   IonPage
 } from '@ionic/react';
-import {useProfile} from '@/hooks/Profile';
 
 interface props {
   translatedTitle: React.ReactNode;
@@ -20,12 +20,14 @@ export const LayoutWrapper: React.FC<React.PropsWithChildren<props>> = ({
     margin: 'auto',
     padding: 0
   };
-  return <IonPage>
+  return <AuthGuard>
+    <IonPage>
     <Header translatedTitle={translatedTitle} />
     <IonContent style={{'--background': 'var(--ion-color-dark)'}}>
       <div style={style}>
 	{children}
       </div>
     </IonContent>
-  </IonPage>;
+    </IonPage>
+  </AuthGuard>;
 }

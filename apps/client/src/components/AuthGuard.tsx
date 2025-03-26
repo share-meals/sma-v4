@@ -1,44 +1,54 @@
 import {Redirect} from 'react-router-dom';
+import {
+  useEffect,
+  useState
+} from 'react';
 import {useLocation} from 'react-router-dom';
 import {useProfile} from '@/hooks/Profile';
 
-export interface AuthGuardProps {
-  checkIsEmailVerified?: boolean;
-  requiredAuth: 'any' | 'authed' | 'unauthed';
-}
+// assume any pages not listed require authentication
+const authLookups: Record<string, 'authed' | 'unauthed' | 'any'> = {
+  '/login': 'unauthed',
+  '/rest-password': 'unauthed',
+  '/signup': 'unauthed',
+  '/privacy-policy': 'any',
+  '/page-not-found': 'any'
+};
 
-export const AuthGuard: React.FC<React.PropsWithChildren<AuthGuardProps>> = ({
-  checkIsEmailVerified = true,
-  children,
-  requiredAuth,
-}) => {
+export const AuthGuard: React.FC<React.PropsWithChildren> = ({children}) => {
   const {
     isLoggedIn,
     requestedUrl,
     requestedUrlSignoutFlag,
     user,    
   } = useProfile();
-  const {pathname} = useLocation();
+  const [pathname, setPathname] = useState<string | null>(null);
+  useEffect(() => {
+    setPathname(window.location.pathname);
+  }, []);
+  if(pathname === null){
+    return <></>; // TODO: implement react suspense to propagate 
+  };
+  
+  const requiredAuth = authLookups[pathname] ?? 'authed';
 
   if(isLoggedIn
      && user.emailVerified === false
-     && checkIsEmailVerified === true){
+     && pathname !== '/verify-email'){
     return <Redirect to='/verify-email' />;
   }
   if(isLoggedIn
      && requiredAuth === 'unauthed'
      && user.emailVerified === true
-     && checkIsEmailVerified === true){
+     && pathname !== '/verify-email'){
     return <Redirect to='/map' />;
   }
   
   if(!isLoggedIn && requiredAuth === 'authed'){
-    if(pathname !== undefined){ // not sure why this is needed
-      if(requestedUrlSignoutFlag.current === false){ 
-	requestedUrl.current = pathname;
-      }else{
-	requestedUrlSignoutFlag.current = false;
-      }
+    if(requestedUrlSignoutFlag.current === false){
+      requestedUrl.current = window.location.pathname;
+    }else{
+      requestedUrlSignoutFlag.current = false;
     }
     return <Redirect to='/signup' />;
   }
