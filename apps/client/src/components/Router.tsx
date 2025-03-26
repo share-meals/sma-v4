@@ -5,7 +5,6 @@ import {
   PushNotifications
 } from '@capacitor/push-notifications';
 import {App} from '@capacitor/app';
-import {AuthGuard} from '@/components/AuthGuard';
 import {Capacitor} from '@capacitor/core';
 import classnames from 'classnames';
 import {
@@ -82,7 +81,7 @@ const CustomURLSchemaListener: React.FC = () => {
   const history = useHistory();
   useEffect(() => {
     App.addListener('appUrlOpen', (data) => {
-      const requestedPath = data.url.split('sharemeals://')[1];
+      const requestedPath = data.url.split('sharemeals://app.sharemeals.org')[1];
       history.push(requestedPath);
     });
   }, []);
@@ -94,7 +93,7 @@ export const Router: React.FC = () => {
     bundlePostsLength,
     features,
     isLoggedIn,
-    postsLength,
+    postsLength
   } = useProfile();
   return <IonReactRouter>
     <CustomURLSchemaListener />
@@ -102,123 +101,95 @@ export const Router: React.FC = () => {
     <IonTabs>
       <IonRouterOutlet>
 	<Route exact path='/login'>
-	  <AuthGuard requiredAuth='unauthed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.login.title' />}>
-	      <Login />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.login.title' />}>
+	    <Login />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/reset-password'>
-	  <AuthGuard requiredAuth='unauthed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.resetPassword.title' />}>
-	      <ResetPassword />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.resetPassword.title' />}>
+	    <ResetPassword />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/map'>
-	  <AuthGuard requiredAuth='authed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.map.title' />}>
-	      <Map />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.map.title' />}>
+	    <Map />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/verify-email'>
-	  <AuthGuard requiredAuth='authed' checkIsEmailVerified={false}>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.map.verifyEmail' />}>
-	      <VerifyEmail />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.map.verifyEmail' />}>
+	    <VerifyEmail />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/post'>
-	  <AuthGuard requiredAuth='authed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.post.title' />}>
-	      <PostFormProvider>
-		<Post />
-	      </PostFormProvider>
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.post.title' />}>
+	    <PostFormProvider>
+	      <Post />
+	    </PostFormProvider>
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/messages/dashboard'>
-	  <AuthGuard requiredAuth='authed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.messagesDashboard.title' />}>
-	      <MessagesDashboard />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.messagesDashboard.title' />}>
+	    <MessagesDashboard />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/view-bundle-post/:bundleId/:id'>
-	  <AuthGuard requiredAuth='authed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.viewPost.title' />}>
-	      <ViewPost source={'bundle'} />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.viewPost.title' />}>
+	    <ViewPost source={'bundle'} />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/view-post/:id'>
-	  <AuthGuard requiredAuth='authed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.viewPost.title' />}>
-	      <ViewPost />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.viewPost.title' />}>
+	    <ViewPost />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/share'>
-	  <AuthGuard requiredAuth='authed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.share.title' />}>
-	      <ShareFormProvider>
-		<Share />
-	      </ShareFormProvider>
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.share.title' />}>
+	    <ShareFormProvider>
+	      <Share />
+	    </ShareFormProvider>
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/signup'>
-	  <AuthGuard requiredAuth='unauthed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.signup.title' />}>
-	      <Signup />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.signup.title' />}>
+	    <Signup />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/account'>
-	  <AuthGuard requiredAuth='authed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.account.title' />}>
-	      <Account />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.account.title' />}>
+	    <Account />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/close-account'>
-	  <AuthGuard requiredAuth='authed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.closeAccount.title' />}>
-	      <CloseAccount />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.closeAccount.title' />}>
+	    <CloseAccount />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/'>
 	  {isLoggedIn ? <Redirect to='/map' /> : <Redirect to='/signup' />}
 	</Route>
   	<Route exact path='/privacy-policy'>
-	  <AuthGuard requiredAuth='any'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.privacyPolicy.title' />}>
-	      <PrivacyPolicy />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.privacyPolicy.title' />}>
+	    <PrivacyPolicy />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/smart-pantry/:spid'>
-	  <AuthGuard requiredAuth='authed'>
-	    <LayoutWrapper
-	      translatedTitle={<FormattedMessage id='pages.smartPantryDashboard.title' />}>
-	      <SmartPantryDashboard />
-	    </LayoutWrapper>
-	  </AuthGuard>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.smartPantryDashboard.title' />}>
+	    <SmartPantryDashboard />
+	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/page-not-found'>
 	  <LayoutWrapper
@@ -229,7 +200,6 @@ export const Router: React.FC = () => {
 	<Route>
 	  <Redirect to='/page-not-found' />
 	</Route>
-
       </IonRouterOutlet>
       <IonTabBar color='primary' slot='bottom'>
 	<IonTabButton tab='login' href='/login' className={isLoggedIn ? 'ion-hide' : ''}>
@@ -269,12 +239,12 @@ export const Router: React.FC = () => {
 	}
 	{
 	  features.canShare.length > 0 &&
-	 <IonTabButton data-testid='share button' tab='share' href='/share' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
-	   <IonIcon aria-hidden='true' src={PostIcon} />
-	   <IonLabel>
-	     <FormattedMessage id='pages.share.title' />
-	   </IonLabel>
-	 </IonTabButton>
+	  <IonTabButton data-testid='share button' tab='share' href='/share' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
+	    <IonIcon aria-hidden='true' src={PostIcon} />
+	    <IonLabel>
+	      <FormattedMessage id='pages.share.title' />
+	    </IonLabel>
+	  </IonTabButton>
 	}
 	<IonTabButton data-testid='account button' tab='account' href='/account' className={isLoggedIn ? '' : 'ion-hide'}>
 	  <IonIcon aria-hidden='true' src={AccountIcon} />
