@@ -23,14 +23,11 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
     }
   }, [isProfileLoading]);
 
-  // todo: doesn't work?
   if(!isProfileLoading
      || language === undefined
      || dateFnsLocale === undefined){
     return <div id='appLoadingIndicator'>
-      <img
-	src={Logo}
-      />
+      <img src={Logo} />
       <IonProgressBar
 	type='indeterminate'
       />
