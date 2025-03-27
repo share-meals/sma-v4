@@ -1,5 +1,6 @@
 //import {FirebaseProvider} from '@/hooks/Firebase';
 import {AlertsProvider} from '@/hooks/Alerts';
+import {App as CapApp} from '@capacitor/app';
 import {AppWrapper} from '@/components/AppWrapper';
 import {I18nProvider} from '@/hooks/I18n';
 import '@/components/Firebase';
@@ -40,6 +41,11 @@ import './theme/toastify.css'; // overwrite react-toastify colors
 
 setupIonicReact({
   mode: 'md'
+});
+
+CapApp.addListener('appUrlOpen', (data) => {
+  const requestedPath = data.url.split('https://app.sharemeals.org')[1];
+  window.location.replace(requestedPath);
 });
 
 export const App: React.FC = () => {
