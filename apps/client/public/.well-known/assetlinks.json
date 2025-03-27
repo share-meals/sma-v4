@@ -4,7 +4,10 @@
     "target": {
       "namespace": "android_app",
       "package_name": "org.sharemeals.app",
-      "sha256_cert_fingerprints": ["7E:2C:B8:22:00:29:56:FD:62:F7:67:95:6A:B2:A9:1F:C8:93:09:0D:C3:93:9D:CF:44:12:86:FC:15:73:9F:60"]
+      "sha256_cert_fingerprints": [
+	"7E:2C:B8:22:00:29:56:FD:62:F7:67:95:6A:B2:A9:1F:C8:93:09:0D:C3:93:9D:CF:44:12:86:FC:15:73:9F:60",
+	"80:C3:05:7F:01:2E:4C:F0:FB:38:1D:CA:41:F7:0F:2A:04:52:AB:3A:14:AC:B2:AD:D8:14:DE:07:AC:C4:A4:AF"
+      ]
     }
   }
 ]
