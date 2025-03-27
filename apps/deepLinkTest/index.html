@@ -104,21 +104,12 @@
             <button class="btn btn-web" onclick="window.open('https://app.sharemeals.org/smart-pantry/rifha3qk', '_blank')">
                 Open via https protocol
             </button>
-            
-            <button class="btn btn-app" onclick="window.location.href='sharemeals://app.sharemeals.org/smart-pantry/rifha3qk'">
-                Open via sharemeals protocol
-            </button>
         </div>
         
         <div class="qr-container">
             <div class="qr-code">
                 <div id="qr-web"></div>
                 <div class="qr-label">https protocol</div>
-            </div>
-            
-            <div class="qr-code">
-                <div id="qr-app"></div>
-                <div class="qr-label">sharemeals protocol</div>
             </div>
         </div>
     </div>
@@ -129,18 +120,8 @@
             // QR code for web login
             new QRCode(document.getElementById("qr-web"), {
                 text: "https://app.sharemeals.org/smart-pantry/rifha3qk",
-                width: 150,
-                height: 150,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-            
-            // QR code for app deep link
-            new QRCode(document.getElementById("qr-app"), {
-                text: "sharemeals://app.sharemeals.org/smart-pantry/rifha3qk",
-                width: 150,
-                height: 150,
+                width: 300,
+                height: 300,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
