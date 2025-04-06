@@ -133,14 +133,14 @@ export const Share: React.FC = () => {
     </div>
     <IonListHeader color='dark'>
       <div className='ion-align-items-center ion-justify-content-between' style={{display: 'flex', width: '100%'}}>
-	<FormattedMessage id='pages.share.when' />
+	<FormattedMessage id='common.label.when' />
 	<IonButton
 	  className='pr-1'
 	  color='light'
 	  disabled={isLoading}
 	  fill='outline'
 	  onClick={resetWhenPickerToNow}>
-	  <FormattedMessage id='components.whenPicker.now' />
+	  <FormattedMessage id='components.whenPicker.happeningNow' />
 	</IonButton>
       </div>
     </IonListHeader>
@@ -148,7 +148,7 @@ export const Share: React.FC = () => {
       <WhenPicker isLoading={isLoading} />
     </div>
     <IonListHeader color='dark'>
-      <FormattedMessage id='pages.share.where' />
+      <FormattedMessage id='common.label.where' />
     </IonListHeader>
     <div className='ion-padding'>
       <WherePicker isLoading={isLoading} rerenderTrigger={wherePickerRerenderTrigger} />
@@ -159,7 +159,7 @@ export const Share: React.FC = () => {
 	isLoading={isLoading/* || !isWherePickerReady*/}
 	size='large'
 	type='submit'>
-	<FormattedMessage id='pages.share.share' />
+	<FormattedMessage id='common.label.share' />
       </StateButton>
       {formState.isSubmitted
       && Object.keys(formState.errors).length > 0

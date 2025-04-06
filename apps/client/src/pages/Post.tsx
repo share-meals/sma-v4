@@ -207,7 +207,7 @@ export const Post: React.FC = () => {
     </div>
     <IonListHeader color='dark'>
       <div className='ion-align-items-center ion-justify-content-between' style={{display: 'flex', width: '100%'}}>
-	<FormattedMessage id='pages.post.when' />
+	<FormattedMessage id='common.label.when' />
 	<IonButton
 	  className='pr-1'
 	  color='light'
@@ -222,7 +222,7 @@ export const Post: React.FC = () => {
       <WhenPicker isLoading={isLoading} />
     </div>
     <IonListHeader color='dark'>
-      <FormattedMessage id='pages.post.where' />
+      <FormattedMessage id='common.label.where' />
     </IonListHeader>
     <div className='ion-padding'>
       <WherePicker isLoading={isLoading} rerenderTrigger={wherePickerRerenderTrigger} />
