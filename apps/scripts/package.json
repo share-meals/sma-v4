@@ -4,6 +4,7 @@
   "dependencies": {
     "apn": "^2.2.0",
     "firestore-export-import": "^1.4.0",
+    "glob": "^11.0.1",
     "js-yaml": "^4.1.0",
     "prompt-sync": "^4.2.0"
   }
