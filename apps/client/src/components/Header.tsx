@@ -30,9 +30,9 @@ interface props {
 export const Header: React.FC<React.PropsWithChildren<props>> = ({
     translatedTitle
 }) => {
-    const {alerts} = useAlerts();
+  const {alerts} = useAlerts();
   const [showAlerts, setShowAlerts] = useState<boolean>(false);
-  const {unreadMessagesCount} = useProfile();
+  const {isLoggedIn, unreadMessagesCount} = useProfile();
     return <>
 	<IonHeader className='ion-no-border' style={{backgroundColor: 'var(--ion-color-primary)'}}>
 	    <IonToolbar color='primary' className='max-width-md margin-horizontal-auto'>
@@ -48,16 +48,18 @@ export const Header: React.FC<React.PropsWithChildren<props>> = ({
 		     <IonIcon aria-hidden='true' src={WarningIcon} slot='icon-only' />
 		   </IonButton>
 		  }
-		  <IonButton
-		    className={classnames({'has-badge': unreadMessagesCount > 0})}
-		    routerDirection='root'
-		    routerLink='/messages/dashboard'>
-		    <IonIcon aria-hidden='true' src={ChatIcon} slot='icon-only' />
-		    {unreadMessagesCount > 0 &&
-		     <IonBadge color='light'>
-		       {unreadMessagesCount}
-		     </IonBadge>}
+		  {isLoggedIn &&
+		   <IonButton
+		     className={classnames({'has-badge': unreadMessagesCount > 0})}
+		     routerDirection='root'
+		     routerLink='/messages/dashboard'>
+		     <IonIcon aria-hidden='true' src={ChatIcon} slot='icon-only' />
+		     {unreadMessagesCount > 0 &&
+		      <IonBadge color='light'>
+			{unreadMessagesCount}
+		      </IonBadge>}
 		  </IonButton>
+		  }
 		</IonButtons>
 	    </IonToolbar>
 	</IonHeader>
