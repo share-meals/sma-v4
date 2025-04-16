@@ -35,6 +35,7 @@ import {Map} from '@/pages/Map';
 import {
   MessagesDashboard
 } from '@/pages/Messages';
+import {normalizeForUrl} from '@/utilities/normalizeForUrl';
 import {PageNotFound} from '@/pages/PageNotFound';
 import {Post} from '@/pages/Post';
 import {PrivacyPolicy} from '@/pages/PrivacyPolicy';
@@ -58,14 +59,15 @@ const PushNotificationActionListener: React.FC = () => {
     if(Capacitor.isNative){
       PushNotifications.addListener('pushNotificationActionPerformed', (event: ActionPerformed) => {
 	const data = event.notification.data;
-	switch(data.source){
-	  case 'post':
-	    history.push(`/view-post/${data.id}`);
-	    break;
-	  default:
-	    // do nothing
-	    break;
-	};
+	if(data.source === 'bundle'){
+	  history.push(`/view-bundle-post/${normalizeForUrl(data.bundleName)}/${data.id}`);
+	}
+	if(data.source === 'event'){
+	  history.push(`/view-post/${data.id}`);
+	}
+	if(data.source === 'share'){
+	  history.push(`/view-share/${data.id}`);
+	}
       });
       return () => {
 	PushNotifications.removeAllListeners();

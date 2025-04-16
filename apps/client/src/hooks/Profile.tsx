@@ -59,7 +59,6 @@ interface Profile {
   features: any;
   isLoading: boolean;
   isLoggedIn: boolean;
-  unreadMessagesCount: number;
   user: any;
   posts: any;
   postsLength: number;
@@ -87,7 +86,6 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
   const communitiesUnsubscribe = useRef<Unsubscribe>();
 
   const [chatDashboard, setChatDashboard] = useState<any>(undefined);
-  const [unreadMessagesCount, setUnreadMessagesCount] = useState<number>(0);
   const chatDashboardUnsubscribe = useRef<Unsubscribe>();
 
   const [posts, setPosts] = useState<any>(undefined);
@@ -255,7 +253,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	    // TODO: better typing - type does not exist on p
 	    // @ts-ignore
 	    switch(p.type){
-	      case 'post':
+	      case 'event':
 		const postSchemaCompliance = postSchema.safeParse(p);
 		if(!postSchemaCompliance.success){
 		  console.log(postSchemaCompliance.error);
@@ -368,7 +366,6 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	     features,
 	     isLoading,
 	     isLoggedIn: user !== null,
-	     unreadMessagesCount,
 	     user,
 	     posts,
 	     postsLength,

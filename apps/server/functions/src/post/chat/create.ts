@@ -42,7 +42,7 @@ const sendNewPostChatMessage = async ({
 	  .send({
 	    token,
 	    data: {
-	      source: 'post',
+	      source: 'event',
 	      id: postId,
 	    },
 	    notification: {
@@ -121,7 +121,7 @@ export const create = onCall(
 	text: request.data.text,
 	title: data!.title,
 	timestamp: now,
-	type: 'post',
+	type: 'event',
 	userId
       };
       if(userId !== subscriber){

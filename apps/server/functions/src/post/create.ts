@@ -39,7 +39,7 @@ const sendNewPostMessage = async ({
   .send({
     condition,
     data: {
-      source: 'post',
+      source: 'event',
       id
     },
     notification: {

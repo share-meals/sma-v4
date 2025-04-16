@@ -23,7 +23,7 @@ interface DashboardMessage {
   text: string,
   timestamp: string,
   title?: string,
-  type: 'post' | 'share',
+  type: 'event' | 'share',
   userId: string,
 }
 
