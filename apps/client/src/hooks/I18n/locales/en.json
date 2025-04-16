@@ -149,5 +149,6 @@
   "pages.viewPost.showMap": "Show Map",
   "pages.viewPost.title": "Post Details",
   "pages.viewPost.unevergreen": "Unevergreen",
-  "pages.viewPost.unfeature": "Unfeature"
+  "pages.viewPost.unfeature": "Unfeature",
+  "pages.viewShare.title": "{name} is sharing {swipes} swipes"
 }

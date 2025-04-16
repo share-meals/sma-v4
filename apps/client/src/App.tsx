@@ -10,6 +10,7 @@ import {
 } from '@ionic/react';
 import {GeolocationProvider} from '@/hooks/Geolocation';
 import {LoggerProvider} from '@/hooks/Logger';
+import {MessagesProvider} from '@/hooks/Messages';
 import {MessagingProvider} from '@/hooks/Messaging';
 import {ProfileProvider} from '@/hooks/Profile';
 import {Router} from '@/components/Router';
@@ -55,6 +56,7 @@ export const App: React.FC = () => {
 	<AlertsProvider>
 	  <MessagingProvider>
 	    <ProfileProvider>
+	      <MessagesProvider>
 	      <AppWrapper>
 		<GeolocationProvider>
 		  <UsersProvider>
@@ -62,6 +64,7 @@ export const App: React.FC = () => {
 		  </UsersProvider>
 		</GeolocationProvider>
 	      </AppWrapper>
+	      </MessagesProvider>
 	    </ProfileProvider>
 	  </MessagingProvider>
 	</AlertsProvider>
