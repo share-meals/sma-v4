@@ -71,7 +71,7 @@ export const logPostCreate: LogPostCreate = async ({communities, ...data}) => {
 	      lat: data.location.lat,
 	      lng: data.location.lng,
 	      locationName: data.location.name,
-	      photos: data.photos,
+	      photos: data.photos || [],
 	      postId: data.postId,
 	      room: data.location.room,
 	      servings: data.servings,

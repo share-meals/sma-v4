@@ -149,5 +149,6 @@
   "pages.viewPost.showMap": "Mostrar Mapa",
   "pages.viewPost.title": "Detalles de la Publicación",
   "pages.viewPost.unevergreen": "Eliminar perennes",
-  "pages.viewPost.unfeature": "Eliminar destacada"
+  "pages.viewPost.unfeature": "Eliminar destacada",
+  "pages.viewShare.title": "{name} está compartiendo {swipes} swipes"
 }
