@@ -149,5 +149,6 @@
   "pages.viewPost.showMap": "Tampilkan Peta",
   "pages.viewPost.title": "Detail Posting",
   "pages.viewPost.unevergreen": "Belum pernah menjadi Evergreen",
-  "pages.viewPost.unfeature": "Tidak memiliki fitur"
+  "pages.viewPost.unfeature": "Tidak memiliki fitur",
+  "pages.viewShare.title": "{name} sedang membagikan {swipes} gesekan"
 }

@@ -15,37 +15,74 @@ import {
   IonItem,
   IonLabel,
   IonRow,
+  IonSkeletonText,
   IonThumbnail,
 } from '@ionic/react';
 import {Link} from 'react-router-dom';
+import logo from '@/assets/svg/logo.svg';
 import Markdown from 'react-markdown';
 import {normalizeForUrl} from '@/utilities/normalizeForUrl';
 import {Photo} from '@/components/Photo';
-import {postSchema} from '@sma-v4/schema';
+import {postSchema, shareSchema} from '@sma-v4/schema';
 import {storage} from '@/components/Firebase';
+import {
+  useEffect,
+  useState
+} from 'react';
 import {useI18n} from '@/hooks/I18n';
+import {useUsers} from '@/hooks/Users';
 import {z} from 'zod';
 
 type post = z.infer<typeof postSchema>;
+type share = z.infer<typeof shareSchema>;
 
 const getLink: (arg: any) => string = (postInfo) => {
-    switch(postInfo.source){
-	case 'bundle':
-	    return `/view-bundle-post/${normalizeForUrl(postInfo.bundleName)}/${postInfo.id}`;
-	default:
-	    return `/view-post/${postInfo.id}`;
-    };
+  if(postInfo.source === 'bundle'){
+    return `/view-bundle-post/${normalizeForUrl(postInfo.bundleName)}/${postInfo.id}`;
+  }
+  if(postInfo.type === 'event'){
+    return `/view-post/${postInfo.id}`;
+  }
+  if(postInfo.type === 'share'){
+    return `/view-share/${postInfo.id}`;
+  }
+
+  // should never get to here
+  return '/map';
 };
 
-export const PostInfoBanner: React.FC<post & {onNavigate: () => void}> = (props) => {
+const ShareTitle: React.FC<share> = ({
+  swipes,
+  userId,
+}) => {
+  const {getUser} = useUsers();
+  const [name, setName] = useState<string | null>(null);
+  useEffect(() => {
+    getUser(userId)
+      .then(({displayName}) => {
+	setName(displayName);
+      });
+  }, []);
+  if(name === null){
+    return <IonSkeletonText style={{width: '30%', height: '20px'}} />;
+  }else{
+    return <>
+      <FormattedMessage id='pages.viewShare.title' values={{name, swipes}} />
+    </>;
+  }
+};
+
+export const PostInfoBanner: React.FC<any & {onNavigate: () => void}> = (props) => {
   const {onNavigate, ...postInfo} = props;
-    const {dateFnsLocale} = useI18n();
+
+  const {dateFnsLocale} = useI18n();
   return <Link to={{pathname: getLink(postInfo)}} style={{textDecoration: 'none'}} onClick={onNavigate}>
     <IonItem detail={true}>
       <IonLabel>
 	<h2>
 	  <span className={classnames({feature: postInfo.feature})}>
-	    {postInfo.title}
+	    {postInfo.type === 'event' && postInfo.title}
+	    {postInfo.type === 'share' && <ShareTitle {...postInfo} />}
 	  </span>
 	</h2>
 	{!postInfo.evergreen &&
@@ -64,17 +101,18 @@ export const PostInfoBanner: React.FC<post & {onNavigate: () => void}> = (props)
 	  <DietaryTags tags={postInfo.tags} />
 	</div>}
 	{postInfo.details && postInfo.details !== '' &&
-	<div className='truncate-lines-3 mt-1'>
-	  <Markdown>
-	    {postInfo.details}
-	  </Markdown>
-	</div>
+	 <div className='truncate-lines-3 mt-1'>
+	   <Markdown>
+	     {postInfo.details}
+	   </Markdown>
+	 </div>
 	}
       </IonLabel>
       <IonThumbnail slot='start'>
-	{postInfo.photos && postInfo.photos.length > 0
-	? <Photo path={`postPhotos/${postInfo.id}-${postInfo.photos[0]}.png`} />
-	: <img src='https://sharemeals.org/assets/img/og_image.png' />}
+	{postInfo.photos
+	&& postInfo.photos.length > 0
+				  ? <Photo path={`postPhotos/${postInfo.id}-${postInfo.photos[0]}.png`} />
+				  : <img src={logo} />}
       </IonThumbnail>
     </IonItem>
   </Link>;

@@ -40,7 +40,7 @@ export const PostFormProvider: React.FC<React.PropsWithChildren> = ({children}) 
       communities: features.canPost.length === 1 ? [features.canPost[0]] : [],
       starts: nowAndLater[0],
       ends: nowAndLater[1],
-      type: 'post'
+      type: 'event'
     },
     mode: 'onSubmit',
     resolver: zodResolver(postCreateClientSchema),
