@@ -174,6 +174,15 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	  getGeolocation()
 	    .catch(handleGetGeolocationError);
 	}else{
+	  if(import.meta.env.VITE_ENVIRONMENT){
+	    // TODO: trigger this instead on if there is internet access
+	    // often times when running in emulator, there is no internet access
+	    setValue('location.address', `(${lastGeolocation!.lat}, ${lastGeolocation!.lng})`);
+	    setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
+	    setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
+	    setInternalLat(lastGeolocation!.lat);
+	    setInternalLng(lastGeolocation!.lng);
+	  }else{
 	  // todo: need to check if address === undefined is necessary
 	  try{
 	  const response = await fromLatLng(lastGeolocation!.lat, lastGeolocation!.lng);
@@ -203,6 +212,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	    setInternalLat(lastGeolocation!.lat);
 	    setInternalLng(lastGeolocation!.lng);
 	  };
+	  }
 	}
       })();
     }
