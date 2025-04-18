@@ -29,6 +29,7 @@ import {
 } from '@ionic/react';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {ManualAddressPicker} from '@/components/ManualAddressPicker';
+import {Network} from '@capacitor/network';
 import {
   useCallback,
   useEffect,
@@ -174,44 +175,48 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	  getGeolocation()
 	    .catch(handleGetGeolocationError);
 	}else{
-	  if(import.meta.env.VITE_ENVIRONMENT){
-	    // TODO: trigger this instead on if there is internet access
-	    // often times when running in emulator, there is no internet access
-	    setValue('location.address', `(${lastGeolocation!.lat}, ${lastGeolocation!.lng})`);
-	    setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
-	    setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
-	    setInternalLat(lastGeolocation!.lat);
-	    setInternalLng(lastGeolocation!.lng);
+	  if(import.meta.env.VITE_ENVIRONMENT === 'emulator'){
+	    // sometimes developing with emulator, I'm on the subway with no or limited internet connectivity
+	    // and WherePicker hangs waiting for react-geocode
+	    const {connected} = await Network.getStatus();
+	    if(connected === false){
+	      // no internet so bypass react-geocode
+	      setValue('location.address', `(${lastGeolocation!.lat}, ${lastGeolocation!.lng})`);
+	      setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
+	      setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
+	      setInternalLat(lastGeolocation!.lat);
+	      setInternalLng(lastGeolocation!.lng);
+	    }
 	  }else{
-	  // todo: need to check if address === undefined is necessary
-	  try{
-	  const response = await fromLatLng(lastGeolocation!.lat, lastGeolocation!.lng);
-	  // todo: handle more statuses
-	  switch(response.status){
-	    case 'OK':
-	      if(response.results.length > 0){
-		setValue('location.address', response.results[0].formatted_address, setValueCleanOptions);
-		setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
-		setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
-		setInternalLat(lastGeolocation!.lat);
-		setInternalLng(lastGeolocation!.lng);
-	      }else{
-		// todo: handle
+	    // todo: need to check if address === undefined is necessary
+	    try{
+	      const response = await fromLatLng(lastGeolocation!.lat, lastGeolocation!.lng);
+	      // todo: handle more statuses
+	      switch(response.status){
+		case 'OK':
+		  if(response.results.length > 0){
+		    setValue('location.address', response.results[0].formatted_address, setValueCleanOptions);
+		    setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
+		    setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
+		    setInternalLat(lastGeolocation!.lat);
+		    setInternalLng(lastGeolocation!.lng);
+		  }else{
+		    // todo: handle
+		  }
+		  break;
+		default:
+		  // todo: something
+		  break;
 	      }
-	      break;
-	    default:
-	      // todo: something
-	      break;
-	  }
-	  }catch(error: unknown){
-	    // TODO: more error checking
-	    // typically no results from geocode?
-	    setValue('location.address', `(${lastGeolocation!.lat}, ${lastGeolocation!.lng})`);
-	    setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
-	    setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
-	    setInternalLat(lastGeolocation!.lat);
-	    setInternalLng(lastGeolocation!.lng);
-	  };
+	    }catch(error: unknown){
+	      // TODO: more error checking
+	      // typically no results from geocode?
+	      setValue('location.address', `(${lastGeolocation!.lat}, ${lastGeolocation!.lng})`);
+	      setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
+	      setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
+	      setInternalLat(lastGeolocation!.lat);
+	      setInternalLng(lastGeolocation!.lng);
+	    };
 	  }
 	}
       })();
@@ -323,11 +328,11 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	},
 	/*
 	   // todo: implement virtual checking
-	{
-	  label: intl.formatMessage({id: 'components.wherePicker.virtual'}),
-	  value: 'virtual',
-	},
-	*/
+	   {
+	   label: intl.formatMessage({id: 'components.wherePicker.virtual'}),
+	   value: 'virtual',
+	   },
+	 */
       ]}
     />
 
