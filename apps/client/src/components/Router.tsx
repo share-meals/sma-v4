@@ -45,6 +45,7 @@ import {Signup} from '@/pages/Signup';
 import {SmartPantryDashboard} from '@/pages/SmartPantry';
 import {VerifyEmail} from '@/pages/VerifyEmail';
 import {ViewPost} from '@/pages/ViewPost';
+import {ViewShare} from '@/pages/ViewShare';
 
 import AccountIcon from '@material-symbols/svg-400/rounded/manage_accounts-fill.svg';
 import LoginIcon from '@material-symbols/svg-400/rounded/security_update_good-fill.svg';
@@ -138,6 +139,12 @@ export const Router: React.FC = () => {
 	  <LayoutWrapper
 	    translatedTitle={<FormattedMessage id='pages.viewPost.title' />}>
 	    <ViewPost />
+	  </LayoutWrapper>
+	</Route>
+	<Route exact path='/view-share/:id'>
+	  <LayoutWrapper
+	    translatedTitle={<FormattedMessage id='pages.viewShare.title' />}>
+	    <ViewShare />
 	  </LayoutWrapper>
 	</Route>
 	<Route exact path='/share'>

@@ -1,7 +1,7 @@
 // todo: remove intersection commentes
 // todo: test if adding refine to end of merge will work
 
-import {chatSchema} from './chat';
+import {chatMessageSchema} from './chat';
 import {locationSchema} from './location';
 import {z} from 'zod';
 
@@ -26,7 +26,7 @@ const baseSchema = z.object({
 
 const basePostSchema = baseSchema.merge(z.object({
   cannotChat: z.boolean().optional(),
-  chat: chatSchema.array().optional(),
+//  chat: chatSchema.array().optional(),
   details: z.string().max(500).min(5),
   evergreen: z.boolean().optional(),
   feature: z.boolean().optional(),
@@ -106,7 +106,7 @@ export const postActionSchema = basePostSchema.pick({
 
 export const postChatCreateSchema = z.object({
   postId: z.string(),
-}).merge(chatSchema.pick({
+}).merge(chatMessageSchema.pick({
   text: true
 })
 );
