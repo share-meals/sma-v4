@@ -1,6 +1,9 @@
 const MESSAGE_BLOCK_THRESHOLD_IN_MINUTES = 10;
 
-import {chatSchema} from '@sma-v4/schema';
+import {
+  ChatMessage,
+  chatMessageSchema
+} from '@sma-v4/schema';
 import classnames from 'classnames';
 import {
   doc,
@@ -115,7 +118,7 @@ const ChatForm: React.FC<ChatFormProps> = ({
     reset,
   } = useForm({
     resolver: zodResolver(
-      chatSchema.pick({
+      chatMessageSchema.pick({
 	text: true
       })
     ),
@@ -167,7 +170,7 @@ const ChatForm: React.FC<ChatFormProps> = ({
   </>;
 }
 
-type Messages = z.infer<typeof chatSchema>[];
+type Messages = ChatMessage[];
 
 export interface ChatProps {
   messages: Messages

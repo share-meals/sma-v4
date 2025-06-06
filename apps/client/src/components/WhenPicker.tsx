@@ -3,6 +3,9 @@ import {
   Datetime,
 } from '@share-meals/frg-ui';
 import {
+  useFormContext,
+} from 'react-hook-form';
+import {
   FormattedMessage,
   useIntl
 } from 'react-intl';
@@ -15,13 +18,14 @@ import {
   IonModal,
   IonNote,
 } from '@ionic/react';
-import {useFormContext} from 'react-hook-form';
 interface WhenPickerProps {
-  isLoading: boolean,
+  isLoading: boolean;
+  name: string;
 }
 
 export const WhenPicker: React.FC<WhenPickerProps> = ({
   isLoading,
+  name
 }) => {
   const intl = useIntl();
   const {
@@ -33,11 +37,11 @@ export const WhenPicker: React.FC<WhenPickerProps> = ({
       <IonLabel>
 	<FormattedMessage id='common.label.starts' />
       </IonLabel>
-      <IonDatetimeButton datetime='starts' disabled={isLoading} />
+      <IonDatetimeButton datetime={`${name}_starts`} disabled={isLoading} />
       <IonModal keepContentsMounted={true}>
 	<Datetime
 	  control={control}
-	  id='starts'
+	  id={`${name}_starts`}
 	  minuteValues='0,15,30,45'
 	  name='starts'
 	/>
@@ -47,11 +51,15 @@ export const WhenPicker: React.FC<WhenPickerProps> = ({
       <IonLabel color={formState.isSubmitted && formState.errors.ends ? 'danger' : undefined}>
 	<FormattedMessage id='common.label.ends' />
       </IonLabel>
-      <IonDatetimeButton className={formState.isSubmitted && formState.errors.ends ? 'hasError' : undefined} datetime='ends' disabled={isLoading} />
+      <IonDatetimeButton
+	className={formState.isSubmitted && formState.errors.ends ? 'hasError' : undefined}
+	datetime={`${name}_ends`}
+	disabled={isLoading}
+      />
       <IonModal keepContentsMounted={true}>
 	<Datetime
 	  control={control}
-	  id='ends'
+	  id={`${name}_ends`}
 	  minuteValues='0,15,30,45'
 	  name='ends'
 	/>
