@@ -24,14 +24,16 @@ import Markdown from 'react-markdown';
 import {normalizeForUrl} from '@/utilities/normalizeForUrl';
 import {Photo} from '@/components/Photo';
 import {postSchema, shareSchema} from '@sma-v4/schema';
+import {ShareTitle} from '@/components/ShareTitle';
 import {storage} from '@/components/Firebase';
 import {
   useEffect,
   useState
 } from 'react';
 import {useI18n} from '@/hooks/I18n';
-import {useUsers} from '@/hooks/Users';
 import {z} from 'zod';
+
+import cardOutline from '@material-symbols/svg-400/rounded/credit_card.svg';
 
 type post = z.infer<typeof postSchema>;
 type share = z.infer<typeof shareSchema>;
@@ -51,27 +53,6 @@ const getLink: (arg: any) => string = (postInfo) => {
   return '/map';
 };
 
-const ShareTitle: React.FC<share> = ({
-  swipes,
-  userId,
-}) => {
-  const {getUser} = useUsers();
-  const [name, setName] = useState<string | null>(null);
-  useEffect(() => {
-    getUser(userId)
-      .then(({displayName}) => {
-	setName(displayName);
-      });
-  }, []);
-  if(name === null){
-    return <IonSkeletonText style={{width: '30%', height: '20px'}} />;
-  }else{
-    return <>
-      <FormattedMessage id='pages.viewShare.title' values={{name, swipes}} />
-    </>;
-  }
-};
-
 export const PostInfoBanner: React.FC<any & {onNavigate: () => void}> = (props) => {
   const {onNavigate, ...postInfo} = props;
 
@@ -82,7 +63,7 @@ export const PostInfoBanner: React.FC<any & {onNavigate: () => void}> = (props) 
 	<h2>
 	  <span className={classnames({feature: postInfo.feature})}>
 	    {postInfo.type === 'event' && postInfo.title}
-	    {postInfo.type === 'share' && <ShareTitle {...postInfo} />}
+	    {postInfo.type === 'share' && <ShareTitle swipes={postInfo.swipes} userId={postInfo.userId} />}
 	  </span>
 	</h2>
 	{!postInfo.evergreen &&
@@ -112,7 +93,7 @@ export const PostInfoBanner: React.FC<any & {onNavigate: () => void}> = (props) 
 	{postInfo.photos
 	&& postInfo.photos.length > 0
 				  ? <Photo path={`postPhotos/${postInfo.id}-${postInfo.photos[0]}.png`} />
-				  : <img src={logo} />}
+				  : <img src={postInfo.type === 'event' ? logo : cardOutline} />}
       </IonThumbnail>
     </IonItem>
   </Link>;

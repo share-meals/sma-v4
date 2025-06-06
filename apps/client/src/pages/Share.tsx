@@ -41,7 +41,8 @@ export const Share: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     isWherePickerReady,
-    resetWhenPickerToNow
+    resetWhenPickerToNow,
+    setIsWherePickerReady,
   } = useShareForm();
   const {
     control,
@@ -145,13 +146,19 @@ export const Share: React.FC = () => {
       </div>
     </IonListHeader>
     <div className='ion-padding'>
-      <WhenPicker isLoading={isLoading} />
+      <WhenPicker isLoading={isLoading} name='share' />
     </div>
     <IonListHeader color='dark'>
       <FormattedMessage id='common.label.where' />
     </IonListHeader>
     <div className='ion-padding'>
-      <WherePicker isLoading={isLoading} rerenderTrigger={wherePickerRerenderTrigger} />
+      <WherePicker
+	defaultMethod='commonList'
+	isLoading={isLoading}
+	isWherePickerReady={isWherePickerReady}
+	rerenderTrigger={wherePickerRerenderTrigger}
+	setIsWherePickerReady={setIsWherePickerReady}
+      />
     </div>
     <div className='pt-3 ion-text-center'>
       <StateButton

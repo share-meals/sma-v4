@@ -5,6 +5,8 @@ export const latlngSchema = z.object({
   lng: z.number()
 });
 
+export type Latlng = z.infer<typeof latlngSchema>;
+
 export const locationSchema = z.object({
   address: z.string()
   .nonempty({message: 'Required'}), // hackzorz for WherePicker
@@ -12,3 +14,5 @@ export const locationSchema = z.object({
   room: z.string().optional()
 })
 .merge(latlngSchema);
+
+export type Location = z.infer<typeof locationSchema>;

@@ -85,7 +85,7 @@ export const ManualAddressPicker: React.FC<ManualAddressPicker> = () => {
       }
     }
   });
-  return <>
+  return <div className='margin-between-form-components'>
     <form id='manual-address-form' onSubmit={onSubmit}/>
       <Input
 	control={control}
@@ -104,5 +104,5 @@ export const ManualAddressPicker: React.FC<ManualAddressPicker> = () => {
 	  <IonIcon icon={SearchIcon} slot='icon-only' />
 	</IonButton>
       </Input>
-  </>;
+  </div>;
 }
