@@ -30,6 +30,8 @@ import {
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {ManualAddressPicker} from '@/components/ManualAddressPicker';
 import {
+  Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -38,7 +40,6 @@ import {
 import {useGeolocation} from '@/hooks/Geolocation';
 import {useIntl} from 'react-intl';
 import {useFormContext} from 'react-hook-form';
-import {usePostForm} from '@/hooks/PostForm';
 import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -48,20 +49,27 @@ import RefreshIcon from '@material-symbols/svg-400/rounded/refresh.svg';
 import UnlockIcon from '@material-symbols/svg-400/rounded/lock_open-fill.svg';
 
 type locationType = z.infer<typeof locationSchema>;
+const methodSchema = z.enum([
+  'currentLocation',
+  'commonList',
+  'manualAddress',
+  'virtual'
+])
+
+type method = z.infer<typeof methodSchema>;
 
 const internalForm = z.object({
   commonBuilding: z.string(),
-  method: z.enum([
-    'currentLocation',
-    'commonList',
-    'manualAddress',
-    'virtual'
-  ])
+  method: methodSchema,
+  room: z.string().optional()
 });
 
 export interface WherePickerProps {
-  isLoading: boolean,
-  rerenderTrigger: Date | null
+  defaultMethod?: method;
+  isLoading: boolean;
+  isWherePickerReady: boolean;
+  rerenderTrigger: Date | null;
+  setIsWherePickerReady: Dispatch<SetStateAction<boolean>>;
 }
 
 const setValueCleanOptions = {
@@ -77,8 +85,11 @@ const setValueOptions = {
 };
 
 export const WherePicker: React.FC<WherePickerProps> = ({
+  defaultMethod = 'currentLocation',
   isLoading,
+  isWherePickerReady,
   rerenderTrigger,
+  setIsWherePickerReady
 }) => {
   const intl = useIntl();
   const {communities, features} = useProfile();
@@ -90,10 +101,6 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     setValue,
     watch
   } = useFormContext();
-  const {
-    isWherePickerReady,
-    setIsWherePickerReady
-  } = usePostForm();
   const [address] = watch(['location.address']);
   // todo: Object is of type 'unknown'
   // @ts-ignore
@@ -140,7 +147,8 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     handleSubmit: handleInternalSubmit
   } = useForm<z.infer<typeof internalForm>>({
     defaultValues: {
-      method: 'currentLocation'
+      method: defaultMethod,
+      room: undefined
     },
     resolver: zodResolver(internalForm)
   });
@@ -166,6 +174,18 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     });
     setLocationType('ROOFTOP');
   }, []);
+
+  useEffect(() => {
+    if(defaultMethod === 'commonList'
+       || defaultMethod === 'manualAddress'){
+      getGeolocation()
+	.then((location) => {
+	  setInternalLat(location.lat);
+	  setInternalLng(location.lng);
+	})
+	.catch(handleGetGeolocationError);
+    }
+  }, [defaultMethod]);
 
   useEffect(() => {
     if(method === 'currentLocation'){
@@ -215,10 +235,14 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   useEffect(() => {
     if(rerenderTrigger !== null){
       // reset form
-      setInternalValue('method', 'currentLocation');
+//      setInternalValue('method', defaultMethod);
       // @ts-ignore
       resetInternalField('commonBuilding');
-      setValue('location.address', '', setValueOptions);
+      resetInternalField('room');
+      setValue('location.address', undefined, setValueOptions);
+      setValue('location.lat', undefined, setValueOptions);
+      setValue('location.lng', undefined, setValueOptions);
+      setValue('location.room', undefined, setValueOptions);
       setIsLocked(true);
     }
   }, [rerenderTrigger]);
@@ -367,11 +391,28 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     {method === 'manualAddress' &&
      <ManualAddressPicker />
     }
-    
+
+    <Input
+      className='margin-between-form-components'
+      control={internalControl}
+      data-testid='input-room'
+      disabled={isLoading}
+      fill='outline'
+      helperText={intl.formatMessage({id: 'common.label.optional'})}
+      label={intl.formatMessage({id: 'common.label.room'})}
+      labelPlacement='floating'
+      name='room'
+      onIonChange={(event) => {
+	setValue('location.room', event.detail.value, setValueCleanOptions)
+      }}
+      required={false}
+      type='text'
+    />
+
     <div className='mt-2 a' style={{height: '20rem'}}>
       {(internalLat === undefined
-      || internalLng === undefined) &&
-       <LoadingIndicator />
+      || internalLng === undefined)
+      && <LoadingIndicator />
       }
       {(internalLat != undefined
       && internalLng != undefined) &&

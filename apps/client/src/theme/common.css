@@ -83,6 +83,10 @@ ion-card{
     }
 }
 
+.margin-between-form-components {
+    margin-top: var(--margin-between-form-components);
+}
+
 ion-input,
 ion-textarea {
     &.ion-valid {
@@ -94,6 +98,25 @@ form {
     ion-item {
 	--inner-padding-end: 0;
 	--padding-start: 0;
+
+	/* TODO: this only accounts for inputs that start with placeholder; otherwise, there is a jump if error text is appended */
+	&.input-button {
+	    ion-input:has(.input-bottom)
+	    {
+		margin-top: 4px;
+		+ div {
+		    height: 100%;
+		}
+	    }
+	}
+	
+	ion-input {
+	    --padding-start: 16px !important;
+	}
+
+	ion-button {
+	    --box-shadow: none;
+	}
     }
 }
 
@@ -182,6 +205,13 @@ ion-datetime-button.hasError::part(native){
     background-size: 400% 400%;
     border-radius: 4px;
     animation: gradient 3s ease infinite;
+}
+
+.centered-wrapper {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
 }
 
 @keyframes gradient {

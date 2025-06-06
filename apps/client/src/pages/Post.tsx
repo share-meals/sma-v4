@@ -47,7 +47,8 @@ export const Post: React.FC = () => {
   const intl = useIntl();
   const {
     isWherePickerReady,
-    resetWhenPickerToNow
+    resetWhenPickerToNow,
+    setIsWherePickerReady,
   } = usePostForm();
   const {
     control,
@@ -129,10 +130,10 @@ export const Post: React.FC = () => {
 
   return <>
     <form
-	   id='post-form'
-	   noValidate
-	   onSubmit={onSubmit}
-	   ref={formRef} />
+      id='post-form'
+      noValidate
+      onSubmit={onSubmit}
+      ref={formRef} />
     <IonListHeader color='dark'>
       <FormattedMessage id='pages.post.what' />
     </IonListHeader>
@@ -140,8 +141,8 @@ export const Post: React.FC = () => {
       <Input
 	control={control}
 	disabled={isLoading}
-      fill='outline'
-      form='post-form'
+	fill='outline'
+	form='post-form'
 	label={intl.formatMessage({id: 'common.label.title'})}
 	labelPlacement='floating'
 	name='title'
@@ -219,13 +220,18 @@ export const Post: React.FC = () => {
       </div>
     </IonListHeader>
     <div className='ion-padding'>
-      <WhenPicker isLoading={isLoading} />
+      <WhenPicker isLoading={isLoading} name='post' />
     </div>
     <IonListHeader color='dark'>
       <FormattedMessage id='common.label.where' />
     </IonListHeader>
     <div className='ion-padding'>
-      <WherePicker isLoading={isLoading} rerenderTrigger={wherePickerRerenderTrigger} />
+      <WherePicker
+	isLoading={isLoading}
+	isWherePickerReady={isWherePickerReady}
+	rerenderTrigger={wherePickerRerenderTrigger}
+	setIsWherePickerReady={setIsWherePickerReady}
+      />
     </div>
     {!isPlatform('android') &&
      <PhotoPicker isLoading={isLoading} />

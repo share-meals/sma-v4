@@ -21,13 +21,7 @@ export const LoadingIndicator: React.FC<Props> = (props) => {
     }
   }, []);
   if(shouldRender){
-    return <div
-      style={{
-	alignItems: 'center',
-	display: 'flex',
-	height: '100%',
-	justifyContent: 'center',
-      }}>
+    return <div className='centered-wrapper'>
       <IonSpinner
 	aria-label='loading indicator'
 	color='primary'

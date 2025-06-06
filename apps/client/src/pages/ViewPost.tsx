@@ -14,6 +14,7 @@ import {
 } from '@ionic/react';
 import {Chat} from '@/components/Chat';
 import classnames from 'classnames';
+import {CollapsibleMap} from '@/components/CollapsibleMap';
 import {CommunityTags} from '@/components/CommunityTags';
 import {DateTimeDisplay} from '@/components/DateTimeDisplay';
 import {DietaryTags} from '@/components/DietaryTags';
@@ -29,25 +30,16 @@ import {
   getFunctions,
   httpsCallable,
 } from 'firebase/functions';
-import {
-  LocateMeControl,
-  Map,
-} from '@/components/Map';
-import {
-  MapLayerProps,
-  TimestampedLatLng,
-} from '@share-meals/frg-ui';
 import Markdown from 'react-markdown';
 import {Photo} from '@/components/Photo';
+import {PostNotFound} from '@/components/PostNotFound';
 import {postSchema} from '@sma-v4/schema';
 import {toast} from 'react-toastify';
+import {toastError} from '@/utilities/toastError';
 import {
-  useCallback,
   useEffect,
   useState,
-  useMemo,
 } from 'react';
-import {useGeolocation} from '@/hooks/Geolocation';
 import {useHistory} from 'react-router-dom';
 import {useI18n} from '@/hooks/I18n';
 import {useParams} from 'react-router-dom';
@@ -59,13 +51,10 @@ import CancelIcon from '@material-symbols/svg-700/sharp/undo.svg';
 import ClockIcon  from '@material-symbols/svg-700/sharp/schedule.svg';
 import ClockFilledIcon  from '@material-symbols/svg-700/sharp/schedule-fill.svg';
 import CloseIcon from '@material-symbols/svg-700/sharp/close.svg';
-import LocationMarkerIcon from '@/assets/svg/locationMarker.svg';
-import PostLocationIcon from '@material-symbols/svg-400/rounded/location_on-fill.svg';
 import StarIcon from '@material-symbols/svg-700/sharp/star.svg';
 import StarFilledIcon from '@material-symbols/svg-700/sharp/star-fill.svg';
 
-type PostType  = z.infer<typeof postSchema>;
-const defaultLocation: TimestampedLatLng = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
+type PostType = z.infer<typeof postSchema>;
 
 interface ViewPost {
     source?: string
@@ -88,31 +77,6 @@ export const ViewPost: React.FC<ViewPost> = ({source}) => {
 		 : <PostNotFound />;
 	    break;
     }
-};
-
-const PostNotFound: React.FC = () => <div className='ion-padding'>
-    <IonText>
-	<h1>
-	    <FormattedMessage id='pages.viewPost.notFoundOrNoLongerAvailable' />
-	</h1>
-    </IonText>
-</div>;
-
-type toastError = (
-  code: string,
-  intl: any // need to pass as argument since this is not a component
-) => void;
-
-const toastError: toastError = (code, intl) => {
-  switch(code){
-    case 'functions/unauthenticated':
-      toast.error(intl.formatMessage({id: 'common.errors.unauthenticated'}));
-      break;
-      // todo: check other cases
-    default:
-      toast.error(intl.formatMessage({id: 'common.errors.generic'}));
-      break;
-  }
 };
 
 // todo: grab from schema?
@@ -153,7 +117,7 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 	// todo: add an extra layer of protection?
 	presentAlert({
 	  header: intl.formatMessage({id: 'common.label.confirm'}),
-	  message: intl.formatMessage({id: 'pages.viewPost.confirmClose'}),
+	  message: intl.formatMessage({id: 'common.label.confirmClose'}),
 	  buttons: [
 	    {
 	      text: intl.formatMessage({id: 'common.label.no'}),
@@ -167,7 +131,7 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 		  .then(() => {
 		    // todo: flashes 404 error before redirecting
 		    history.replace('/map');
-		    toast.success(intl.formatMessage({id: 'pages.viewPost.postClosed'}));
+		    toast.success(intl.formatMessage({id: 'common.toast.postClosed'}));
 		  })
 		  .catch((error) => {
 		    toastError(error.code, intl);
@@ -178,7 +142,7 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 	});
       },
       icon: CloseIcon,
-      text: intl.formatMessage({id: 'pages.viewPost.close'}),
+      text: intl.formatMessage({id: 'buttons.label.close'}),
       role: 'destructive'
     });
   }
@@ -264,74 +228,6 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
   const isAdmin = post.communities.filter((c) => profile.private.communities[`community-${c}`] === 'admin').length > 0;
   const {dateFnsLocale} = useI18n();
   const {communities} = useProfile();
-  const {lastGeolocation} = useGeolocation();
-  const postCenter: TimestampedLatLng = {
-    lat: post.location.lat,
-    lng: post.location.lng
-  };
-  const [center, setCenter] = useState<TimestampedLatLng>(postCenter);
-  const changeCenter = useCallback((location: TimestampedLatLng) => {
-    setCenter({
-      ...location,
-      timestamp: new Date()
-    });
-  }, [setCenter]);
-  const [showMap, setShowMap] = useState<boolean>(false);
-  const layer: MapLayerProps = useMemo(() => ({
-    featureRadius: 20,
-    featureWidth: 20,
-    fillColor: 'rgba(11, 167, 100, 0.5)',
-    geojson: {
-      type: 'FeatureCollection',
-      features: [
-	{
-	  type: 'Feature',
-	  geometry: {
-	    type: 'Point',
-	    coordinates: [
-	      post.location.lng,
-	      post.location.lat
-	    ]
-	  }
-	}
-      ]
-    },
-    name: 'marker',
-    strokeColor: 'rgba(255, 255, 255, 0.5)',
-    type: 'vector'
-  }), [post.location.lat, post.location.lng]);
-  const currentLocationLayer = {
-    fillColor: '#ffffff',
-    icon: LocationMarkerIcon,
-    geojson: {
-      type: 'FeatureCollection',
-      features: [{
-	type: 'Feature',
-	geometry: {
-	  coordinates: lastGeolocation ? [lastGeolocation.lng, lastGeolocation.lat] : defaultLocation,
-	  type: 'Point'
-	},
-	properties: {}
-      }]
-    },
-    name: 'Current Location',
-    strokeColor: '#ffffff',
-    type: 'vector',
-    zIndex: 1
-  };
-  const controls = <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    right: '1rem',
-    top: '1rem',
-    zIndex: 999
-  }}>
-    <LocateMeControl setCurrentLocation={changeCenter} />
-    <IonButton className='square' onClick={() => {changeCenter(postCenter);}}>
-      <IonIcon slot='icon-only' src={PostLocationIcon} />
-    </IonButton>
-  </div>;
   return <>
     <div className='ion-padding'>
       <div style={{display: 'flex'}}>
@@ -373,27 +269,7 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
 	  </IonRow>
       </IonGrid>
       }
-      <p>
-	{post.location.name ? <>{post.location.name}<br /></> : <></>}
-	{post.location.address}
-	<br />
-	<a className='text-button' onClick={() => {setShowMap(!showMap);}}>
-	  {showMap
-	  ? <FormattedMessage id='pages.viewPost.hideMap' />
-	  : <FormattedMessage id='pages.viewPost.showMap' />}
-	</a>
-      </p>
-      {showMap && <div style={{height: '20rem'}}>
-	<Map
-	  center={center}
-	  controls={controls}
-	  layers={[
-	    currentLocationLayer,
-	    layer,
-	  ]}
-	  zoom={14}
-	/>
-      </div>}
+      <CollapsibleMap {...post.location} />
       {post.tags && <div>
 	<DietaryTags tags={post.tags} />
       </div>}
