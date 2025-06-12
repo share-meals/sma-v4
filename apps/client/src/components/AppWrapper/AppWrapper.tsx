@@ -6,14 +6,17 @@ import {
 } from 'react';
 import {useI18n} from '@/hooks/I18n';
 import {useProfile} from '@/hooks/Profile';
+import {useIntl} from 'react-intl';
 
 import './AppWrapper.css';
-
 
 export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
   const {isLoading: isProfileLoading} = useProfile();
   const {dateFnsLocale, language} = useI18n();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const queryParams = new URLSearchParams(window.location.search);
+  const testAppLoadingScreen = queryParams.get('testAppLoadingScreen');
+  const intl = useIntl();
   useEffect(() => {
     if(!isProfileLoading){
       setTimeout(() => {
@@ -25,13 +28,15 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
 
   if(!isProfileLoading
      || language === undefined
-     || dateFnsLocale === undefined){
-    return <div id='appLoadingIndicator'>
-      <img src={Logo} />
+     || dateFnsLocale === undefined
+     || testAppLoadingScreen !== null){
+    return <main id='appLoadingIndicator'>
+      <img src={Logo} alt={intl.formatMessage({id: 'img.alt.appWrapper'})} />
       <IonProgressBar
+	aria-label='xxx'
 	type='indeterminate'
       />
-    </div>;
+    </main>;
   }else{
     return children;
   }

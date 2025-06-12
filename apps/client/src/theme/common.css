@@ -225,3 +225,20 @@ ion-datetime-button.hasError::part(native){
 	background-position: 0% 50%;
     }
 }
+
+.helper-text {
+    --ion-color-step-550: #595959;
+}
+
+ion-tab-bar[color='primary'] * {
+    color: #ffffff;
+}
+
+
+/* for a11y compliance */
+ion-modal::part(content),
+.markdown-content {
+  background-color: #fff !important;
+  color: #000 !important;
+  opacity: 1 !important;
+}

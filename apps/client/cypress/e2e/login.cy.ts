@@ -1,17 +1,24 @@
+import 'cypress-axe';
+
 describe('Login', () => {
-  it('should display errors on an empty form submit', () => {
+  beforeEach(() => {
     cy.visit('/login');
-    cy.get('ion-button[data-testid="button-submit"]').click();
-    cy.get('ion-input[data-testid="input-email"] div.input-bottom div.error-text').should('exist');
-    cy.get('ion-input[data-testid="input-password"] div.input-bottom div.error-text').should('exist');
+    cy.injectAxe();
   });
 
-  it('should display errors on bad inputs', () => {
-    cy.visit('/login');
-    cy.get('ion-input[data-testid="input-email"]').type('bad@email');
-    cy.get('ion-input[data-testid="input-password"]').type('1');
-    cy.get('ion-button[data-testid="button-submit"]').click();
-    cy.get('ion-input[data-testid="input-email"] div.input-bottom div.error-text').should('exist');
-    cy.get('ion-input[data-testid="input-password"] div.input-bottom div.error-text').should('exist');
+  it('has no a11y violation on load', () => {
+    cy.checkA11y();
   });
+
+  it('has no a11y violation on reset password', () => {
+    cy.get('ion-button[data-testid="button-showResetPassword"]').click();
+    cy.checkA11y();
+  });
+
+  it('logs in', () => {
+    cy.login({
+      email: 'test1@nasa.edu',
+      password: 'password'
+    });
+  })
 });

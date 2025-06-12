@@ -68,6 +68,7 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-dark-contrast-rgb: 255,255,255;
     --ion-color-dark-shade: #302b35;
     --ion-color-dark-tint: #4b4650;
+
 }
 
 @media (prefers-color-scheme: xdark) {
@@ -139,6 +140,7 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-light-contrast-rgb: 255,255,255;
     --ion-color-light-shade: #1e2023;
     --ion-color-light-tint: #383a3e;
+
   }
 
   /*
