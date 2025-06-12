@@ -35,3 +35,18 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('login', ({email, password}) => {
+  cy.visit('/login');
+  cy.get('[data-testid="input-email"] input')
+  .should('exist')
+  .type(email, { force: true });
+  
+  cy.get('[data-testid="input-password"] input')
+  .should('exist')
+  .type(password, { force: true });
+
+  cy.get('ion-button[type="submit"]')
+  .should('exist')
+  .click();
+});

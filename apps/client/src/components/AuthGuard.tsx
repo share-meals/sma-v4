@@ -9,7 +9,7 @@ import {useProfile} from '@/hooks/Profile';
 // assume any pages not listed require authentication
 const authLookups: Record<string, 'authed' | 'unauthed' | 'any'> = {
   '/login': 'unauthed',
-  '/rest-password': 'unauthed',
+  '/reset-password': 'unauthed',
   '/signup': 'unauthed',
   '/privacy-policy': 'any',
   '/page-not-found': 'any'

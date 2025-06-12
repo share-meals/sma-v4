@@ -32,5 +32,11 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "emulators": {
+    "auth": {
+      "host": "localhost",
+      "port": 9099
+    }
   }
 }

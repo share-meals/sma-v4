@@ -53,30 +53,31 @@ export const ResetPassword: React.FC = () => {
 	setShowNotice(true);
       });
   });
-  return <form
-	   noValidate
-	   onSubmit={onSubmit}>
-    <Input
-      control={control}
-      disabled={isLoading}
-      fill='outline'
-      label={intl.formatMessage({id: 'common.label.email'})}
-      labelPlacement='floating'
-      name='email'
-      required={true}
-      type='email'
-    />
-    <div className='ion-padding-top ion-text-center'>
-      <StateButton
-	isLoading={isLoading}
-	type='submit'>
-	<FormattedMessage id='buttons.label.reset' />
-      </StateButton>
-    </div>
-    {showNotice && <Notice color='success'>
-      <IonLabel>
-	<FormattedMessage id='pages.resetPassword.successNotice' />
-      </IonLabel>
-    </Notice>}
-  </form>  
+  return <div className='mt-2'>
+    <form noValidate
+	  onSubmit={onSubmit}>
+      <Input
+	control={control}
+	disabled={isLoading}
+	fill='outline'
+	label={intl.formatMessage({id: 'common.label.email'})}
+	labelPlacement='floating'
+	name='email'
+	required={true}
+	type='email'
+      />
+      <div className='ion-padding-top ion-text-center'>
+	<StateButton
+	  isLoading={isLoading}
+	  type='submit'>
+	  <FormattedMessage id='buttons.label.reset' />
+	</StateButton>
+      </div>
+      {showNotice && <Notice color='success'>
+	<IonLabel>
+	  <FormattedMessage id='pages.resetPassword.successNotice' />
+	</IonLabel>
+      </Notice>}
+    </form>
+  </div>
 }

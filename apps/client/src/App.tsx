@@ -1,4 +1,6 @@
 //import {FirebaseProvider} from '@/hooks/Firebase';
+import {Header} from '@/components/Header';
+import {AuthGuard} from '@/components/AuthGuard';
 import {AlertsProvider} from '@/hooks/Alerts';
 import {App as CapApp} from '@capacitor/app';
 import {AppWrapper} from '@/components/AppWrapper';
@@ -6,7 +8,8 @@ import {I18nProvider} from '@/hooks/I18n';
 import '@/components/Firebase';
 import {
   IonApp,
-  setupIonicReact
+  setupIonicReact,
+  IonPage
 } from '@ionic/react';
 import {GeolocationProvider} from '@/hooks/Geolocation';
 import {LoggerProvider} from '@/hooks/Logger';
@@ -50,6 +53,13 @@ CapApp.addListener('appUrlOpen', (data) => {
 });
 
 export const App: React.FC = () => {
+  const style = {
+    backgroundColor: '#ffffff',
+    minHeight: '100%',
+    maxWidth: 768,
+    margin: 'auto',
+    padding: 0
+  };
   return <IonApp>
     <LoggerProvider>
       <I18nProvider>
@@ -60,7 +70,10 @@ export const App: React.FC = () => {
 	      <AppWrapper>
 		<GeolocationProvider>
 		  <UsersProvider>
-		    <Router />
+		    <IonPage>
+		      <Header translatedTitle='abc' />
+		      <Router />
+		    </IonPage>
 		  </UsersProvider>
 		</GeolocationProvider>
 	      </AppWrapper>
