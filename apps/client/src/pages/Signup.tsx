@@ -204,34 +204,50 @@ const SignupForm: React.FC = () => {
       </Notice>}
     </form>
     <IonModal
+      aria-label='xxx'
+      aria-modal='true'
+      data-testid='modal-privacyPolicy'
       ref={modal}
+      role='dialog'
       trigger='showPrivacyPolicy'
-      data-testid='modal-privacyPolicy'>
-      <IonHeader className='ion-no-border'>
+    >
+      {/* TODO: double check role */}
+      <IonHeader role='none' className='ion-no-border'>
         <IonToolbar color='primary'>
 	  <IonTitle>
 	    <FormattedMessage id='pages.privacyPolicy.title' />
 	  </IonTitle>
           <IonButtons slot='end'>
             <IonButton
+	      aria-label={intl.formatMessage({id: 'pages.signUp.closePrivacyPolicyModal'})}
 	      data-testid='button-close'
 	      onClick={() => modal.current?.dismiss()}>
-	      <IonIcon icon={CloseIcon} slot='icon-only' />
+	      <IonIcon
+		aria-label={intl.formatMessage({id: 'buttons.label.closeButton'})}
+		icon={CloseIcon}
+		slot='icon-only'
+	      />
 	    </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className='ion-padding'>
-	<PrivacyPolicy />
+      {/* TODO: role should not be complementary? need a11y compliance */}
+      <IonContent className='ion-padding' role='complementary'>
+	<PrivacyPolicy isModal={true} />
       </IonContent>
     </IonModal>
   </>;
 }
 export const Signup: React.FC = () => {  
+  const intl = useIntl();
   return <IonGrid>
       <IonRow>
 	<IonCol size-xs='6' push-xs='3' push-sm='0'>
-	  <img src={SignupSVG} className='square responsive' />
+	  <img
+	    alt={intl.formatMessage({id: 'img.alt.signupPage'})}
+	    src={SignupSVG}
+	    className='square responsive'
+	  />
 	</IonCol>
 	<IonCol size-xs='12' size-sm='6' className='pt-2'>
 	  <LanguageSwitcher
