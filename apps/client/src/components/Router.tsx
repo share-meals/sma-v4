@@ -6,6 +6,7 @@ import {
 } from '@capacitor/push-notifications';
 import {Capacitor} from '@capacitor/core';
 import classnames from 'classnames';
+import {FormattedMessage} from 'react-intl';
 import {
   IonBadge,
   IonIcon,
@@ -15,7 +16,6 @@ import {
   IonTabButton,
   IonTabs,
 } from '@ionic/react';
-import {FormattedMessage} from 'react-intl';
 import {IonReactRouter} from '@ionic/react-router';
 import {LayoutWrapper} from '@/components/LayoutWrapper';
 import {PostFormProvider} from '@/hooks/PostForm';
@@ -89,167 +89,153 @@ export const Router: React.FC = () => {
   } = useProfile();
   return <IonReactRouter>
     <PushNotificationActionListener />
-    <IonTabs>
-      <IonRouterOutlet>
-	<Route exact path='/login'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.login.title' />}>
-	    <Login />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/reset-password'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.resetPassword.title' />}>
-	    <ResetPassword />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/map'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.map.title' />}>
-	    <Map />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/verify-email'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.map.verifyEmail' />}>
-	    <VerifyEmail />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/post'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.post.title' />}>
-	    <PostFormProvider>
-	      <Post />
-	    </PostFormProvider>
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/messages/dashboard'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.messagesDashboard.title' />}>
-	    <MessagesDashboard />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/view-bundle-post/:bundleId/:id'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.viewPost.title' />}>
-	    <ViewPost source={'bundle'} />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/view-post/:id'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.viewPost.title' />}>
-	    <ViewPost />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/view-share/:id'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.viewShare.title' />}>
-	    <ViewShare />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/share'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.share.title' />}>
-	    <ShareFormProvider>
-	      <Share />
-	    </ShareFormProvider>
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/signup'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.signup.title' />}>
-	    <Signup />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/account'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.account.title' />}>
-	    <Account />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/close-account'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.closeAccount.title' />}>
-	    <CloseAccount />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/'>
-	  {isLoggedIn ? <Redirect to='/map' /> : <Redirect to='/signup' />}
-	</Route>
-  	<Route exact path='/privacy-policy'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.privacyPolicy.title' />}>
-	    <PrivacyPolicy />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/smart-pantry/:spid'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.smartPantryDashboard.title' />}>
-	    <SmartPantryDashboard />
-	  </LayoutWrapper>
-	</Route>
-	<Route exact path='/page-not-found'>
-	  <LayoutWrapper
-	    translatedTitle={<FormattedMessage id='pages.pageNotFound.title' />}>
-	    <PageNotFound />
-	  </LayoutWrapper>
-	</Route>
-	<Route>
-	  <Redirect to='/page-not-found' />
-	</Route>
-      </IonRouterOutlet>
-      <IonTabBar color='primary' slot='bottom'>
-	<IonTabButton tab='login' href='/login' className={isLoggedIn ? 'ion-hide' : ''}>
-	  <IonIcon aria-hidden='true' icon={LoginIcon} />
-	  <IonLabel>
-	    <FormattedMessage id='pages.login.title' />
-	  </IonLabel>
-	</IonTabButton>
-	<IonTabButton data-testid='signup button' tab='signup' href='/signup' className={isLoggedIn ? 'ion-hide' : ''}>
-	  <IonIcon aria-hidden='true' src={SignupIcon} />
-	  <IonLabel>
-	    <FormattedMessage id='pages.signup.title' />
-	  </IonLabel>
-	</IonTabButton>
-	<IonTabButton data-testid='map button' tab='map' href='/map' layout='icon-top' className={
-	classnames({
-	  'ion-hide': !isLoggedIn,
-	  'has-badge': postsLength > 0
-	})
-	}>
-	  <IonIcon aria-hidden='true' src={MapIcon} />
-	  <IonLabel>
-	    <FormattedMessage id='pages.map.title' />
-	    {postsLength + bundlePostsLength > 0 &&
-	     <IonBadge color='light'>
-	       {postsLength + bundlePostsLength}
-	     </IonBadge>}
-	  </IonLabel>
-	</IonTabButton>
-	{features.canPost.length > 0 &&
-	 <IonTabButton data-testid='post button' tab='post' href='/post' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
-	   <IonIcon aria-hidden='true' src={PostIcon} />
-	   <IonLabel>
-	     <FormattedMessage id='pages.post.title' />
-	   </IonLabel>
-	 </IonTabButton>
-	}
-	{
-	  features.canShare.length > 0 &&
-	  <IonTabButton data-testid='share button' tab='share' href='/share' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
-	    <IonIcon aria-hidden='true' src={PostIcon} />
+    <nav aria-label={'xxx'}>
+      <IonTabs>
+	<IonRouterOutlet>
+	  <Route exact path='/login'>
+	    <LayoutWrapper i18nTitle=''>
+	      <Login />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/reset-password'>
+	    <LayoutWrapper i18nTitle=''>
+	      <ResetPassword />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/map'>
+	    <LayoutWrapper i18nTitle=''>
+	      <Map />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/verify-email'>
+	    <LayoutWrapper i18nTitle=''>
+	      <VerifyEmail />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/post'>
+	    <LayoutWrapper i18nTitle=''>
+	      <PostFormProvider>
+		<Post />
+	      </PostFormProvider>
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/messages/dashboard'>
+	    <LayoutWrapper i18nTitle=''>
+	      <MessagesDashboard />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/view-bundle-post/:bundleId/:id'>
+	    <LayoutWrapper i18nTitle=''>
+	      <ViewPost source={'bundle'} />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/view-post/:id'>
+	    <LayoutWrapper i18nTitle=''>
+	      <ViewPost />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/view-share/:id'>
+	    <LayoutWrapper i18nTitle=''>
+	      <ViewShare />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/share'>
+	    <LayoutWrapper i18nTitle=''>
+	      <ShareFormProvider>
+		<Share />
+	      </ShareFormProvider>
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/signup'>
+	    <LayoutWrapper i18nTitle=''>
+	      <Signup />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/account'>
+	    <LayoutWrapper i18nTitle=''>
+	      <Account />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/close-account'>
+	    <LayoutWrapper i18nTitle=''>
+	      <CloseAccount />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/'>
+	    {isLoggedIn ? <Redirect to='/map' /> : <Redirect to='/signup' />}
+	  </Route>
+  	  <Route exact path='/privacy-policy'>
+	    <LayoutWrapper i18nTitle=''>
+	      <PrivacyPolicy />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/smart-pantry/:spid'>
+	    <LayoutWrapper i18nTitle=''>
+	      <SmartPantryDashboard />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route exact path='/page-not-found'>
+	    <LayoutWrapper i18nTitle=''>
+	      <PageNotFound />
+	    </LayoutWrapper>
+	  </Route>
+	  <Route>
+	    <Redirect to='/page-not-found' />
+	  </Route>
+	</IonRouterOutlet>
+	<IonTabBar color='primary' slot='bottom' aria-label='xxx'>
+	  <IonTabButton tab='login' href='/login' className={isLoggedIn ? 'ion-hide' : ''}>
+	    <IonIcon aria-hidden='true' icon={LoginIcon} />
 	    <IonLabel>
-	      <FormattedMessage id='pages.share.title' />
+	      <FormattedMessage id='pages.login.title' />
 	    </IonLabel>
 	  </IonTabButton>
-	}
-	<IonTabButton data-testid='account button' tab='account' href='/account' className={isLoggedIn ? '' : 'ion-hide'}>
-	  <IonIcon aria-hidden='true' src={AccountIcon} />
-	  <IonLabel>
-	    <FormattedMessage id='pages.account.title' />
-	  </IonLabel>
-	</IonTabButton>
-      </IonTabBar>
-    </IonTabs>
+	  <IonTabButton data-testid='signup button' tab='signup' href='/signup' className={isLoggedIn ? 'ion-hide' : ''}>
+	    <IonIcon aria-hidden='true' src={SignupIcon} />
+	    <IonLabel>
+	      <FormattedMessage id='pages.signup.title' />
+	    </IonLabel>
+	  </IonTabButton>
+	  <IonTabButton data-testid='map button' tab='map' href='/map' layout='icon-top' className={
+	  classnames({
+	    'ion-hide': !isLoggedIn,
+	    'has-badge': postsLength > 0
+	  })
+	  }>
+	    <IonIcon aria-hidden='true' src={MapIcon} />
+	    <IonLabel>
+	      <FormattedMessage id='pages.map.title' />
+	      {postsLength + bundlePostsLength > 0 &&
+	       <IonBadge color='light'>
+		 {postsLength + bundlePostsLength}
+	       </IonBadge>}
+	    </IonLabel>
+	  </IonTabButton>
+	  {features.canPost.length > 0 &&
+	   <IonTabButton data-testid='post button' tab='post' href='/post' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
+	     <IonIcon aria-hidden='true' src={PostIcon} />
+	     <IonLabel>
+	       <FormattedMessage id='pages.post.title' />
+	     </IonLabel>
+	   </IonTabButton>
+	  }
+	  {
+	    features.canShare.length > 0 &&
+	    <IonTabButton data-testid='share button' tab='share' href='/share' layout='icon-top' className={isLoggedIn ? '' : 'ion-hide'}>
+	      <IonIcon aria-hidden='true' src={PostIcon} />
+	      <IonLabel>
+		<FormattedMessage id='pages.share.title' />
+	      </IonLabel>
+	    </IonTabButton>
+	  }
+	  <IonTabButton data-testid='account button' tab='account' href='/account' className={isLoggedIn ? '' : 'ion-hide'}>
+	    <IonIcon aria-hidden='true' src={AccountIcon} />
+	    <IonLabel>
+	      <FormattedMessage id='pages.account.title' />
+	    </IonLabel>
+	  </IonTabButton>
+	</IonTabBar>
+      </IonTabs>
+    </nav>
   </IonReactRouter>;
 }

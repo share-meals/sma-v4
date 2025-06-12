@@ -84,6 +84,8 @@ const LoginForm: React.FC = () => {
       await enable();
       await sendMessagingToken();
     }catch(error){
+      console.log('------------');
+      console.log(error);
       if(error instanceof FirebaseError){
 	log({
 	  level: 'error',
@@ -151,12 +153,17 @@ const LoginForm: React.FC = () => {
 }
 
 export const Login: React.FC = () => {
+  const intl = useIntl();
   const modal = useRef<HTMLIonModalElement>(null);
   return <>
     <IonGrid>
       <IonRow>
 	<IonCol size-xs='6' push-xs='3' push-sm='0'>
-	  <img src={LoginIcon} className='square responsive' />
+	  <img
+	    alt={intl.formatMessage({id: 'img.alt.loginPage'})}
+	    className='square responsive'
+	    src={LoginIcon}
+	  />
 	</IonCol>
 	<IonCol size-xs='12' size-sm='6'>
 	  <IonText>
@@ -167,6 +174,7 @@ export const Login: React.FC = () => {
 	  <LoginForm />
 	  <div className='ion-text-right mt-3'>
 	    <IonButton
+	      data-testid='button-showResetPassword'
 	      fill='clear'
 	      id='showResetPassword'>
 	      <FormattedMessage id='pages.login.resetPassword' />
@@ -175,20 +183,34 @@ export const Login: React.FC = () => {
 	</IonCol>
       </IonRow>
     </IonGrid>
-    <IonModal ref={modal} trigger='showResetPassword'>
-      <IonHeader className='ion-no-border'>
+    <IonModal
+      aria-label='xxx'
+      aria-modal='true'
+      ref={modal}
+      role='dialog'
+      trigger='showResetPassword'
+    >
+      {/* TODO: double check role */}
+      <IonHeader role='none' className='ion-no-border'>
         <IonToolbar color='primary'>
 	  <IonTitle>
 	    <FormattedMessage id='pages.resetPassword.title' />
 	  </IonTitle>
           <IonButtons slot='end'>
-            <IonButton onClick={() => modal.current?.dismiss()}>
-	      <IonIcon icon={CloseIcon} slot='icon-only' />
+            <IonButton
+	      aria-label={intl.formatMessage({id: 'pages.login.closeResetPasswordModal'})}
+	      onClick={() => modal.current?.dismiss()}
+	    >
+	      <IonIcon
+	      	aria-label={intl.formatMessage({id: 'buttons.label.closeButton'})}
+		icon={CloseIcon}
+		slot='icon-only' />
 	    </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className='ion-padding'>
+      {/* TODO: role should not be complementary? need a11y compliance */}
+      <IonContent className='ion-padding' role='complementary'>
 	<ResetPassword />
       </IonContent>
     </IonModal>
