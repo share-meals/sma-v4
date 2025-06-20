@@ -21,8 +21,6 @@ import {
   getAuth,
   indexedDBLocalPersistence,
   initializeAuth,
-  inMemoryPersistence,
-  setPersistence
 } from 'firebase/auth';
 
 const app = initializeApp({
@@ -51,14 +49,12 @@ export const firestore = getFirestore(app);
 export const functions = getFunctions(app);
 export const storage = getStorage(app);
 
-if(import.meta.env.VITE_ENVIRONMENT === 'emulator'
-// @ts-ignore Property 'Cypress' does not exist on type 'Window & typeof globalThis'
-   || window.Cypress){
-  connectAuthEmulator(auth, 'http://localhost:9099');
-  connectDatabaseEmulator(database, 'localhost', 9000)
-  connectFirestoreEmulator(firestore, 'localhost', 8080);
-  connectFunctionsEmulator(functions, 'localhost', 5001);
-  connectStorageEmulator(storage, 'localhost', 9199);
+if(import.meta.env.VITE_ENVIRONMENT === 'emulator'){
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+  connectDatabaseEmulator(database, '127.0.0.1', 9000)
+  connectFirestoreEmulator(firestore, '127.0.0.1', 8080);
+  connectFunctionsEmulator(functions, '127.0.0.1', 5001);
+  connectStorageEmulator(storage, '127.0.0.1', 9199);
 }
 
 export default app;

@@ -1,16 +1,8 @@
 import {
-  Checkbox,
   Datetime,
 } from '@share-meals/frg-ui';
+import {FormattedMessage} from 'react-intl';
 import {
-  useFormContext,
-} from 'react-hook-form';
-import {
-  FormattedMessage,
-  useIntl
-} from 'react-intl';
-import {
-  IonButton,
   IonDatetimeButton,
   IonItem,
   IonLabel,
@@ -18,6 +10,8 @@ import {
   IonModal,
   IonNote,
 } from '@ionic/react';
+import {useFormContext} from 'react-hook-form';
+
 interface WhenPickerProps {
   isLoading: boolean;
   name: string;
@@ -27,7 +21,6 @@ export const WhenPicker: React.FC<WhenPickerProps> = ({
   isLoading,
   name
 }) => {
-  const intl = useIntl();
   const {
     control,
     formState

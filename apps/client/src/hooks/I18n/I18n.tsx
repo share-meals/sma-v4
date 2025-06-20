@@ -1,6 +1,5 @@
 import {
   createContext,
-  useCallback,
   useContext,
   useState,
 } from 'react';
@@ -11,11 +10,8 @@ import {
   useEffect,
 } from 'react';
 import {IntlProvider} from 'react-intl';
-import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Locale} from 'date-fns';
 import {Preferences} from '@capacitor/preferences';
-import fr from 'date-fns/locale/fr';
-import ab from 'date-fns/locale/en-US';
 
 import en from './locales/en.json';
 import es from './locales/es.json';

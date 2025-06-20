@@ -32,7 +32,7 @@ export const AlertsProvider: React.FC<React.PropsWithChildren> = ({children}) =>
       component: 'alerts',
       message: `adding alert: ${JSON.stringify(alert)}`
     });
-    setAlerts({...alerts, key: alert});
+    setAlerts({...alerts, [key]: alert});
   }, []);
   return <AlertsContext.Provider
 	   children={children}

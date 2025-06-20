@@ -74,7 +74,7 @@ export const Share: React.FC = () => {
       ...data,
       starts: data.starts + getTimezoneOffsetString(),
       ends: data.ends + getTimezoneOffsetString()
-    }).then((response) => {
+    }).then(() => {
       reset();
       setWherePickerRerenderTrigger(new Date());
       formRef.current!.scrollIntoView(true);

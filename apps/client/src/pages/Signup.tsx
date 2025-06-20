@@ -1,10 +1,4 @@
 import {auth} from '@/components/Firebase';
-import {
-  Checkbox,
-  Input,
-  StateButton,
-  Toggle
-} from '@share-meals/frg-ui';
 import {FirebaseError} from '@firebase/util';
 import {
   FormattedMessage,
@@ -14,6 +8,10 @@ import {
   getFunctions,
   httpsCallable,
 } from 'firebase/functions';
+import {
+  Input,
+  StateButton,
+} from '@share-meals/frg-ui';
 import {
   IonButton,
   IonButtons,
@@ -45,7 +43,6 @@ import {
 } from 'react';
 import {useForm} from 'react-hook-form';
 import {signupSchema} from '@sma-v4/schema';
-import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
 import SignupSVG from '@/assets/svg/signup.svg';
@@ -166,7 +163,7 @@ const SignupForm: React.FC = () => {
 	    <FormattedMessage id='pages.signup.privacyPolicy' />
 	  </IonLabel>
 	  <IonButton
-	    data-testid='button-showPrivacyPolicy'
+	    data-testid='pages.signup.privacyPolicy.button'
 	    fill='outline'
 	    id='showPrivacyPolicy'
 	    size='default'
@@ -206,7 +203,7 @@ const SignupForm: React.FC = () => {
     <IonModal
       aria-label='xxx'
       aria-modal='true'
-      data-testid='modal-privacyPolicy'
+      data-testid='pages.signup.privacyPolicy.modal'
       ref={modal}
       role='dialog'
       trigger='showPrivacyPolicy'
@@ -220,7 +217,7 @@ const SignupForm: React.FC = () => {
           <IonButtons slot='end'>
             <IonButton
 	      aria-label={intl.formatMessage({id: 'pages.signUp.closePrivacyPolicyModal'})}
-	      data-testid='button-close'
+	      data-testid='pages.signup.privacyPolicy.close.button'
 	      onClick={() => modal.current?.dismiss()}>
 	      <IonIcon
 		aria-label={intl.formatMessage({id: 'buttons.label.closeButton'})}

@@ -7,10 +7,6 @@ import type {
 
 interface LanguageSwitcherProps {};
 
-const en = {
-  'common.language': 'Language'
-};
-
 const meta: Meta<LanguageSwitcherProps> = {
   component: LanguageSwitcher,
   render: (props) => {

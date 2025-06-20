@@ -9,7 +9,6 @@ import {
   doc,
   onSnapshot,
 } from 'firebase/firestore';
-import {createHash} from 'crypto';
 import {DateTimeDisplay} from '@/components/DateTimeDisplay';
 import {firestore} from '@/components/Firebase';
 import {
@@ -37,7 +36,6 @@ import {
 } from 'react';
 import {useProfile} from '@/hooks/Profile';
 import {UserName} from '@/components/User';
-import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
 import SendIcon from '@material-symbols/svg-700/rounded/send-fill.svg';
@@ -113,7 +111,6 @@ const ChatForm: React.FC<ChatFormProps> = ({
 
   const {
     control,
-    formState,
     handleSubmit,
     reset,
   } = useForm({
@@ -228,7 +225,7 @@ export const Chat: React.FC<ChatFormProps> = ({
   collection,
   documentId,
 }) => {
-  const {user: {uid}} = useProfile();
+  //const {user: {uid}} = useProfile();
   const [messages, setMessages] = useState<Messages>([]);
   const chatDoc = doc(firestore, 'chats', documentId);
   onSnapshot(chatDoc, (d) => {

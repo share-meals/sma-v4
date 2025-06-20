@@ -1,8 +1,4 @@
 import {
-  Control,
-  useForm
-} from 'react-hook-form';
-import {
   fromAddress,
   OutputFormat,
   setDefaults,
@@ -16,6 +12,7 @@ import {
   IonIcon,
 } from '@ionic/react';
 import {useEffect} from 'react';
+import {useForm} from 'react-hook-form';
 import {useFormContext} from 'react-hook-form';
 import {useIntl} from 'react-intl';
 import {z} from 'zod';

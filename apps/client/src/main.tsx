@@ -1,7 +1,6 @@
 import {App} from './App';
 import {createRoot} from 'react-dom/client';
 import {defineCustomElements} from '@ionic/pwa-elements/loader';
-import React from 'react';
 
 defineCustomElements(window);
 

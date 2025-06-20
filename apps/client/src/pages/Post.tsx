@@ -20,7 +20,6 @@ import {
   IonLabel,
   IonListHeader,
   IonRow,
-  IonText,
   isPlatform,
   useIonViewWillEnter,
 } from '@ionic/react';
@@ -57,7 +56,6 @@ export const Post: React.FC = () => {
     reset
   } = useFormContext();
   const {communities, features} = useProfile();
-  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const functions = getFunctions();
   const postFunction = httpsCallable(functions, 'post-create');
@@ -113,7 +111,7 @@ export const Post: React.FC = () => {
       ...data,
       starts: data.starts + getTimezoneOffsetString(),
       ends: data.ends + getTimezoneOffsetString()
-    }).then((response) => {
+    }).then(() => {
       reset();
       setWherePickerRerenderTrigger(new Date());
       formRef.current!.scrollIntoView(true);
@@ -210,6 +208,7 @@ export const Post: React.FC = () => {
       <div className='ion-align-items-center ion-justify-content-between' style={{display: 'flex', width: '100%'}}>
 	<FormattedMessage id='common.label.when' />
 	<IonButton
+	  aria-label={intl.formatMessage({id: 'xxx'})}
 	  className='pr-1'
 	  color='light'
 	  disabled={isLoading}
@@ -238,6 +237,7 @@ export const Post: React.FC = () => {
     }
     <div className='pt-3 ion-text-center'>
       <StateButton
+	aria-label={intl.formatMessage({id: 'xxx'})}
 	form='post-form'
 	isLoading={isLoading || !isWherePickerReady}
 	size='large'
