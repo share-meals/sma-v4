@@ -7,7 +7,6 @@ import {
   IonIcon,
   IonRow,
   IonText,
-  IonThumbnail,
 } from '@ionic/react';
 
 import CheckCircle from '@material-symbols/svg-400/rounded/check_circle.svg';
@@ -46,7 +45,12 @@ export const Notice: React.FC<React.PropsWithChildren<NoticeProps>> = ({
 	<IonGrid>
 	  <IonRow className='ion-align-items-center'>
 	  <IonCol size='auto'>
-	    <IonIcon icon={getIcon(color)} color={color} style={{fontSize: '2rem'}} />
+	    <IonIcon
+	      aria-hidden='true'
+	      color={color}
+	      icon={getIcon(color)}
+	      style={{fontSize: '2rem'}}
+	    />
 	  </IonCol>
 	  <IonCol>
 	    <IonText>

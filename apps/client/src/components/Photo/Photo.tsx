@@ -4,12 +4,9 @@ import {
 } from 'firebase/storage';
 import {
   IonButton,
-  IonButtons,
   IonContent,
-  IonHeader,
   IonIcon,
   IonModal,
-  IonToolbar,
 } from '@ionic/react';
 import {storage} from '@/components/Firebase';
 import {

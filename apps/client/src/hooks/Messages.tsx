@@ -1,6 +1,5 @@
 import {
   createContext,
-  useCallback,
   useContext,
   useState,
 } from 'react';
@@ -40,9 +39,9 @@ const MessagesContext = createContext<MessagesState>({} as MessagesState);
 export const useMessages = () => useContext(MessagesContext);
 
 export const MessagesProvider: React.FC<React.PropsWithChildren> = ({children}) => {
-  const [messages, setMessages] = useState<MessagesStore>({event: {}, user: {}});
-  const [dashboard, setDashboard] = useState<DashboardStore>({});
-  const [unreadCount, setUnreadCount] = useState<number>(0);
+  const [messages/*, setMessages*/] = useState<MessagesStore>({event: {}, user: {}});
+  const [dashboard/*, setDashboard*/] = useState<DashboardStore>({});
+  const [unreadCount/*, setUnreadCount*/] = useState<number>(0);
   
   return <MessagesContext.Provider
   children={children}

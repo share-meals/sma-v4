@@ -27,7 +27,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import {FirebaseMessaging} from '@capacitor-firebase/messaging';
 import {merge} from 'lodash';
 import {normalizeForUrl} from '@/utilities/normalizeForUrl';
 import {onAuthStateChanged} from 'firebase/auth';
@@ -74,7 +73,6 @@ export const useProfile = () => useContext(ProfileContext);
 
 export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) => {
   const {
-    clearMessagingToken,
     updateCommunitySubscriptions,
   } = useMessaging();
   const [user, setUser] = useState<any>(undefined);
@@ -85,6 +83,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
   const [communities, setCommunities] = useState<any>(undefined);
   const communitiesUnsubscribe = useRef<Unsubscribe>();
 
+  // @ts-ignore chatdashboard is not fully implemented yet
   const [chatDashboard, setChatDashboard] = useState<any>(undefined);
   const chatDashboardUnsubscribe = useRef<Unsubscribe>();
 
@@ -131,7 +130,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
       profileUnsubscribe.current = profileUnsub;
 
       const chatDashboard = ref(database, `/chatDashboard/${user.uid}`);
-      const chatDashboardUnsub = onValue(chatDashboard, (snapshot) => {
+      const chatDashboardUnsub = onValue(chatDashboard, (/*snapshot*/) => {
 	//console.log(snapshot.val());
       });
       chatDashboardUnsubscribe.current = chatDashboardUnsub;

@@ -27,6 +27,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = (props) => {
   const {language, setLanguage} = useI18n();
   return <IonSelect
 	   cancelText={intl.formatMessage({id: 'buttons.label.cancel'})}
+	   data-testid='components.languageSwitcher.select'
 	   label={intl.formatMessage({id: 'common.language'})}
 	   okText={intl.formatMessage({id: 'buttons.label.ok'})}
 	   onIonChange={(event) => {

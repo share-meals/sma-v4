@@ -1,52 +1,100 @@
-/// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+Cypress.Commands.add('waitForAppLoaderIfPresent', () => {
+  cy.get('body').then(($body) => {
+    if ($body.find('[data-testid="appWrapper.indicator"]').length > 0) {
+      // Indicator exists, wait for it to disappear
+      cy.log('Indicator found - waiting for it to disappear');
+      cy.get('[data-testid="appWrapper.indicator"]').should('not.exist');
+    } else {
+      // Indicator doesn't exist, continue
+      cy.log('Indicator not found - continuing');
+    }
+  });
+});
+
+Cypress.Commands.add('getByTestId', (testId, options = {}) => {
+  return cy.get(`[data-testid="${testId}"]`, options);
+});
+
+Cypress.Commands.add('getByTestIdIfExists', (testId) => {
+  return cy.get('body').then(($body) => {
+    console.log($body[0]);
+    const elements = $body.find(`[data-testid="${testId}"]`);
+    return elements.length ? cy.wrap(elements) : cy.wrap(null);
+  });
+});
 
 Cypress.Commands.add('login', ({email, password}) => {
-  cy.visit('/login');
-  cy.get('[data-testid="input-email"] input')
-  .should('exist')
-  .type(email, { force: true });
-  
-  cy.get('[data-testid="input-password"] input')
-  .should('exist')
-  .type(password, { force: true });
 
-  cy.get('ion-button[type="submit"]')
-  .should('exist')
-  .click();
+  /*
+  cy.session([email, password], () => {
+    cy.visit('/login');
+    cy.getByTestId('login.input.email')
+    .within(() => {
+      cy.get('input')
+      .should('exist')
+      .type(email, {force: true});
+    });
+    
+    cy.getByTestId('login.input.password')
+    .within(() => {
+      cy.get('input')
+      .should('exist')
+      .type(password, { force: true });
+    });
+    cy.getByTestId('login.button.submit')
+    .should('be.visible')
+    .click();
+    cy.url().should('include', '/map');
+  });
+  */
+});
+
+Cypress.Commands.add('loginx', ({email, password}) => {
+  cy.waitForAppLoaderIfPresent();
+  cy.getByTestIdIfExists('footer.button.login')
+  .then(($element) => {
+    console.log($element);
+    if($element === null){
+      return;
+    }
+    if($element.is(':visible')){
+      $element.click();
+
+      cy.getByTestId('login.input.email')
+      .within(() => {
+	cy.get('input')
+	.should('exist')
+	.type(email, {force: true});
+      });
+      
+      cy.getByTestId('login.input.password')
+      .within(() => {
+	cy.get('input')
+	.should('exist')
+	.type(password, { force: true });
+      });
+      
+      cy.getByTestId('login.button.submit')
+      .should('be.visible')
+      .click();
+    }else{
+      // do nothing
+    }
+  });
+});
+
+Cypress.Commands.add('logout', () => {
+  /*
+  cy.waitForAppLoaderIfPresent();
+  cy.getByTestIdIfExists('footer.button.account')
+  .then(($element) => {
+    if($element === null){
+      return;
+    }
+    if($element.is(':visible')){
+      $element.click();
+      cy.getByTestId('account.button.logout').click();
+    }
+  });
+  */
 });

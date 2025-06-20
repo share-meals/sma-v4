@@ -3,7 +3,6 @@ import {
   useEffect,
   useState
 } from 'react';
-import {useLocation} from 'react-router-dom';
 import {useProfile} from '@/hooks/Profile';
 
 // assume any pages not listed require authentication

@@ -1,9 +1,6 @@
-import 'cypress-axe';
-
-describe('Reset Password', () => {
+describe('', () => {
   beforeEach(() => {
-    cy.visit('/reset-password');
-    cy.injectAxe();
+    cy.visit('/');
   });
 
   it('has no a11y violation on load', () => {

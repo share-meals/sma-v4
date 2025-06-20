@@ -37,7 +37,6 @@ export const CloseAccount: React.FC = () => {
   const closeAccountFunction = httpsCallable(functions, 'user-close');
   const {
     control,
-    formState,
     handleSubmit,
   } = useForm({
     mode: 'onSubmit',

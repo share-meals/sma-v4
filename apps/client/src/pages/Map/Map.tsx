@@ -1,6 +1,7 @@
-import {Feature} from 'ol';
-import {FormattedMessage} from 'react-intl';
-import {fromLonLat} from 'ol/proj';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 import {
   IonBadge,
   IonButton,
@@ -19,15 +20,8 @@ import {
   LocateMeControl,
   Map as FRGMap,
 } from '@/components/Map';
-import {Point} from 'ol/geom';
 import {PostInfoBanner} from '@/components/PostInfoBanner';
 import {Redirect} from 'react-router-dom';
-import {
-  RFeature,
-  RLayerCluster,
-  RMap,
-  ROSM
-} from 'rlayers';
 import {
   useCallback,
   useEffect,
@@ -86,6 +80,7 @@ export const Map: React.FC = () => {
     permissionState
   } = useGeolocation();
   const [center, setCenter] = useState<TimestampedLatLng | null>(null);
+  const intl = useIntl();
   const {
     requestedUrl,
   } = useProfile();
@@ -94,7 +89,8 @@ export const Map: React.FC = () => {
       if(center === null){
 	getGeolocation()
 	  .then(setCenter)
-	  .catch((error: unknown) => {
+	  .catch((error: any) => {
+	    console.log(error);
 	    // TODO: error checking
 	  })
       }else{
@@ -109,7 +105,6 @@ export const Map: React.FC = () => {
 	postsLength
     } = useProfile();
   const [clickedPosts, setClickedPosts] = useState<PostType[]>([]);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
     const bundlesLayer = useMemo(() => {
 	if(bundles === undefined){
 	    return [];
@@ -224,8 +219,14 @@ export const Map: React.FC = () => {
     }}>
 	<LocateMeControl setCurrentLocation={changeCenter} />
 	{(bundlePostsLength + postsLength) > 0 &&
-	 <IonButton className='square has-badge' onClick={showAllPosts}>
-	     <IonIcon slot='icon-only' src={ListsIcon} />
+	 <IonButton
+	   aria-label={intl.formatMessage({id: 'xxx'})}
+	   className='square has-badge'
+	   onClick={showAllPosts}>
+	   <IonIcon
+	     aria-hidden='true'
+	     slot='icon-only'
+	     src={ListsIcon} />
 	     <IonBadge color='light'>
 		 {bundlePostsLength + postsLength}
 	     </IonBadge>

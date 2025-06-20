@@ -30,7 +30,6 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import isEqual from 'lodash/isEqual';
-import {toast} from 'react-toastify';
 import {useAlerts} from '@/hooks/Alerts';
 import {
   useRef,
@@ -125,17 +124,23 @@ export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children})
 
   // need to pass userId since likely to be called on logout
   // and cannot access Profile context
-  const clearMessagingToken = useCallback(async (userId: string) => {
+  const clearMessagingToken = useCallback(async (/*userId: string*/) => {
     log({
       level: 'debug',
       component: 'messaging',
       message: `clearing messaging token`
     });
-    const messagingToken = await getMessagingToken();
-    userMessagingTokenDeleteFunction({messagingToken});
+    try{
+      const messagingToken = await getMessagingToken();
+      userMessagingTokenDeleteFunction({messagingToken});
+    }catch(error){
+      console.log(error);
+      // TODO: something with error
+    }
   }, []);
 
   const subUnsubCommunities = useCallback(async (fixedCommunityIds: string[], action: 'subscribe' | 'unsubscribe') => {
+    try{
     const p = await checkPermission();
     const messagingToken = await getMessagingToken();
 
@@ -179,6 +184,10 @@ export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children})
       default:
 	// should never reach here
 	break;
+    }
+    }catch(error){
+      // TODO: something with error
+      console.log(error);
     }
   }, []);
 

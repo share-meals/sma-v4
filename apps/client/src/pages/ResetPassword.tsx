@@ -7,10 +7,7 @@ import {
   Input,
   StateButton
 } from '@share-meals/frg-ui';
-import {
-  IonLabel,
-  IonText
-} from '@ionic/react';
+import {IonLabel} from '@ionic/react';
 import {Notice} from '@/components/Notice';
 import {sendPasswordResetEmail} from 'firebase/auth';
 import {useForm} from 'react-hook-form';
