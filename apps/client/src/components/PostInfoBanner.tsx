@@ -6,16 +6,8 @@ import {
 } from 'date-fns';
 import {FormattedMessage} from 'react-intl';
 import {
-  getDownloadURL,
-  ref,
-} from 'firebase/storage';
-import {
-  IonCol,
-  IonGrid,
   IonItem,
   IonLabel,
-  IonRow,
-  IonSkeletonText,
   IonThumbnail,
 } from '@ionic/react';
 import {Link} from 'react-router-dom';
@@ -23,20 +15,10 @@ import logo from '@/assets/svg/logo.svg';
 import Markdown from 'react-markdown';
 import {normalizeForUrl} from '@/utilities/normalizeForUrl';
 import {Photo} from '@/components/Photo';
-import {postSchema, shareSchema} from '@sma-v4/schema';
 import {ShareTitle} from '@/components/ShareTitle';
-import {storage} from '@/components/Firebase';
-import {
-  useEffect,
-  useState
-} from 'react';
 import {useI18n} from '@/hooks/I18n';
-import {z} from 'zod';
 
 import cardOutline from '@material-symbols/svg-400/rounded/credit_card.svg';
-
-type post = z.infer<typeof postSchema>;
-type share = z.infer<typeof shareSchema>;
 
 const getLink: (arg: any) => string = (postInfo) => {
   if(postInfo.source === 'bundle'){

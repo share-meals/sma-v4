@@ -1,7 +1,6 @@
 import {
   FormProvider,
   useForm,
-  useFormContext,
 } from 'react-hook-form';
 import {
   createContext,
@@ -58,7 +57,6 @@ export const ShareFormProvider: React.FC<React.PropsWithChildren> = ({children})
 
   const internalReset = useCallback(() => {
     resetWhenPickerToNow();
-    const nowAndLater = getNowAndLater();
     reset();
   }, []);
   return <ShareFormContext.Provider

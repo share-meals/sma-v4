@@ -1,6 +1,5 @@
 import {
   IonChip,
-  IonIcon,
   IonLabel,
 } from '@ionic/react';
 import {FormattedMessage} from 'react-intl';

@@ -10,7 +10,6 @@ import {
   IonRow,
   IonText,
   useIonAlert,
-  useIonViewWillEnter,
 } from '@ionic/react';
 import {Chat} from '@/components/Chat';
 import classnames from 'classnames';
@@ -23,25 +22,18 @@ import {
   useIntl
 } from 'react-intl';
 import {
-  format,
-  isPast,
-} from 'date-fns';
-import {
   getFunctions,
   httpsCallable,
 } from 'firebase/functions';
+import {isPast} from 'date-fns';
 import Markdown from 'react-markdown';
 import {Photo} from '@/components/Photo';
 import {PostNotFound} from '@/components/PostNotFound';
 import {postSchema} from '@sma-v4/schema';
 import {toast} from 'react-toastify';
 import {toastError} from '@/utilities/toastError';
-import {
-  useEffect,
-  useState,
-} from 'react';
+import {useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
-import {useI18n} from '@/hooks/I18n';
 import {useParams} from 'react-router-dom';
 import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
@@ -96,7 +88,6 @@ const MoreActions: React.FC<MoreActionsProps> = ({
   userId,
 }) => {
   const {
-    communities: myCommunities,
     profile,
     user: {uid}
   } = useProfile();
@@ -226,7 +217,6 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
   } = useProfile();
   const isOwner = uid === post.userId;
   const isAdmin = post.communities.filter((c) => profile.private.communities[`community-${c}`] === 'admin').length > 0;
-  const {dateFnsLocale} = useI18n();
   const {communities} = useProfile();
   return <>
     <div className='ion-padding'>

@@ -1,11 +1,15 @@
 import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
   Community,
   locationSchema,
 } from '@sma-v4/schema';
-import {
-  Control,
-  useForm
-} from 'react-hook-form';
 import {
   controlsRightStyle,
   Map
@@ -30,14 +34,7 @@ import {
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {ManualAddressPicker} from '@/components/ManualAddressPicker';
 import {Network} from '@capacitor/network';
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import {useForm} from 'react-hook-form';
 import {useGeolocation} from '@/hooks/Geolocation';
 import {useIntl} from 'react-intl';
 import {useFormContext} from 'react-hook-form';
@@ -95,10 +92,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   const intl = useIntl();
   const {communities, features} = useProfile();
   const {
-    control,
     formState,
-    getValues,
-    reset,
     setValue,
     watch
   } = useFormContext();

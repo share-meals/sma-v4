@@ -16,8 +16,6 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonList,
   IonModal,
   IonRow,
   IonText,
@@ -36,7 +34,6 @@ import {useForm} from 'react-hook-form';
 import {useLogger} from '@/hooks/Logger';
 import {useMessaging} from '@/hooks/Messaging';
 import {userSchema} from '@sma-v4/schema';
-import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
 import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
@@ -112,7 +109,7 @@ const LoginForm: React.FC = () => {
     onSubmit={onSubmit}>
     <Input
       control={control}
-      data-testid='input-email'
+      data-testid='login.input.email'
       disabled={isLoading}
       fill='outline'
       label={intl.formatMessage({id: 'common.label.email'})}
@@ -123,7 +120,7 @@ const LoginForm: React.FC = () => {
     />
     <Input
       control={control}
-      data-testid='input-password'
+      data-testid='login.input.password'
       disabled={isLoading}
       fill='outline'
       label={intl.formatMessage({id: 'common.label.password'})}
@@ -134,7 +131,7 @@ const LoginForm: React.FC = () => {
     />
     <div className='ion-padding-top ion-text-center'>
       <StateButton
-	data-testid='button-submit'
+	data-testid='login.button.submit'
 	isLoading={isLoading}
 	type='submit'>
 	<FormattedMessage id='buttons.label.login' />
@@ -174,7 +171,7 @@ export const Login: React.FC = () => {
 	  <LoginForm />
 	  <div className='ion-text-right mt-3'>
 	    <IonButton
-	      data-testid='button-showResetPassword'
+	      data-testid='login.button.showResetPassword'
 	      fill='clear'
 	      id='showResetPassword'>
 	      <FormattedMessage id='pages.login.resetPassword' />
@@ -184,7 +181,7 @@ export const Login: React.FC = () => {
       </IonRow>
     </IonGrid>
     <IonModal
-      aria-label='xxx'
+      aria-label={intl.formatMessage({id: 'xxx'})}
       aria-modal='true'
       ref={modal}
       role='dialog'

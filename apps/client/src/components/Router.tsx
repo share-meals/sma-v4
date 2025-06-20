@@ -85,79 +85,78 @@ export const Router: React.FC = () => {
     features,
     isLoggedIn,
     postsLength,
-    requestedUrl,
   } = useProfile();
   return <IonReactRouter>
     <PushNotificationActionListener />
-    <nav aria-label={'xxx'}>
+    <nav>
       <IonTabs>
 	<IonRouterOutlet>
 	  <Route exact path='/login'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <Login />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/reset-password'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <ResetPassword />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/map'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <Map />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/verify-email'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <VerifyEmail />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/post'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <PostFormProvider>
 		<Post />
 	      </PostFormProvider>
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/messages/dashboard'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <MessagesDashboard />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/view-bundle-post/:bundleId/:id'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <ViewPost source={'bundle'} />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/view-post/:id'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <ViewPost />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/view-share/:id'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <ViewShare />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/share'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <ShareFormProvider>
 		<Share />
 	      </ShareFormProvider>
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/signup'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <Signup />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/account'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <Account />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/close-account'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <CloseAccount />
 	    </LayoutWrapper>
 	  </Route>
@@ -165,17 +164,17 @@ export const Router: React.FC = () => {
 	    {isLoggedIn ? <Redirect to='/map' /> : <Redirect to='/signup' />}
 	  </Route>
   	  <Route exact path='/privacy-policy'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <PrivacyPolicy />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/smart-pantry/:spid'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <SmartPantryDashboard />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/page-not-found'>
-	    <LayoutWrapper i18nTitle=''>
+	    <LayoutWrapper>
 	      <PageNotFound />
 	    </LayoutWrapper>
 	  </Route>
@@ -184,13 +183,23 @@ export const Router: React.FC = () => {
 	  </Route>
 	</IonRouterOutlet>
 	<IonTabBar color='primary' slot='bottom' aria-label='xxx'>
-	  <IonTabButton tab='login' href='/login' className={isLoggedIn ? 'ion-hide' : ''}>
+	  <IonTabButton
+	    className={isLoggedIn ? 'ion-hide' : ''}
+	    data-testid='footer.button.login'
+	    href='/login'
+	    tab='login'
+	  >
 	    <IonIcon aria-hidden='true' icon={LoginIcon} />
 	    <IonLabel>
 	      <FormattedMessage id='pages.login.title' />
 	    </IonLabel>
 	  </IonTabButton>
-	  <IonTabButton data-testid='signup button' tab='signup' href='/signup' className={isLoggedIn ? 'ion-hide' : ''}>
+	  <IonTabButton
+	    className={isLoggedIn ? 'ion-hide' : ''}
+	    data-testid='footer.button.signup'
+	    href='/signup'
+	    tab='signup'
+	  >
 	    <IonIcon aria-hidden='true' src={SignupIcon} />
 	    <IonLabel>
 	      <FormattedMessage id='pages.signup.title' />
@@ -228,7 +237,12 @@ export const Router: React.FC = () => {
 	      </IonLabel>
 	    </IonTabButton>
 	  }
-	  <IonTabButton data-testid='account button' tab='account' href='/account' className={isLoggedIn ? '' : 'ion-hide'}>
+	  <IonTabButton
+	    className={isLoggedIn ? '' : 'ion-hide'}
+	    data-testid='footer.button.account'
+	    href='/account'
+	    tab='account'
+	  >
 	    <IonIcon aria-hidden='true' src={AccountIcon} />
 	    <IonLabel>
 	      <FormattedMessage id='pages.account.title' />

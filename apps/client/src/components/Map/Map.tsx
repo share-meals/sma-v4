@@ -7,10 +7,8 @@ import {
   MapProvider,
   TimestampedLatLng,
 } from '@share-meals/frg-ui';
-import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Notice} from '@/components/Notice';
 import {useGeolocation} from '@/hooks/Geolocation';
-import {z} from 'zod';
 
 interface MapProps {
   center: TimestampedLatLng;

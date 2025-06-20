@@ -15,10 +15,6 @@ import {
 import {CollapsibleMap} from '@/components/CollapsibleMap';
 import {DateTimeDisplay} from '@/components/DateTimeDisplay';
 import {
-  format,
-  isPast,
-} from 'date-fns';
-import {
   FormattedMessage,
   useIntl,
 } from 'react-intl';
@@ -36,6 +32,7 @@ import {
   Input,
   StateButton
 } from '@share-meals/frg-ui';
+import {isPast} from 'date-fns';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {PostNotFound} from '@/components/PostNotFound';
 import {
@@ -49,11 +46,7 @@ import {useForm} from 'react-hook-form';
 import {useHistory} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import {useProfile} from '@/hooks/Profile';
-import {
-  useCallback,
-  useEffect,
-  useState
-} from 'react';
+import {useState} from 'react';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
@@ -75,7 +68,6 @@ const MoreActions: React.FC<MoreActionsProps> = ({
   userId,
 }) => {
   const {
-    communities: myCommunities,
     profile,
     user: {uid}
   } = useProfile();
@@ -206,7 +198,6 @@ const ShareContent: React.FC<{didIAsk: boolean, share: ShareType}> = ({
   const isAdmin = share.communities.filter((c) => profile.private.communities[`community-${c}`] === 'admin').length > 0;
   const {
     control,
-    formState,
     handleSubmit,
   } = useForm({
     mode: 'onSubmit',
@@ -217,7 +208,6 @@ const ShareContent: React.FC<{didIAsk: boolean, share: ShareType}> = ({
     ),
     reValidateMode: 'onSubmit'
   });
-  const db = getDatabase();
   const functions = getFunctions();
   const askFunction = httpsCallable(functions, 'share-ask');
   const onSubmit = handleSubmit(({message}) => {

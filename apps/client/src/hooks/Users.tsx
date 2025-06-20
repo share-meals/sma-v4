@@ -2,7 +2,6 @@ const REFRESH_THRESHOLD_IN_DAYS = 1;
 
 import {
   createContext,
-  useCallback,
   useContext,
   useState,
 } from 'react';

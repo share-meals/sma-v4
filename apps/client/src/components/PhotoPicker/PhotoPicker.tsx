@@ -3,7 +3,10 @@ import {
   CameraResultType,
   CameraSource
 } from '@capacitor/camera';
-import {FormattedMessage} from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 import {
   IonButton,
   IonCol,
@@ -12,15 +15,10 @@ import {
   IonListHeader,
   IonRow,
 } from '@ionic/react';
-import {
-  useMemo,
-  useState
-} from 'react';
+import {useMemo} from 'react';
 import {useFormContext} from 'react-hook-form';
-import {usePostForm} from '@/hooks/PostForm';
 
 import {close} from 'ionicons/icons';
-import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 import AddPhotoIcon from '@material-symbols/svg-400/rounded/add_a_photo-fill.svg';
 
 import './PhotoPicker.css';
@@ -36,6 +34,8 @@ type ResizeAndCrop = (args: {
 const IMAGE_RESIZE_TARGET = 300;
 
 const resizeAndCrop: ResizeAndCrop = async ({base64}) => {
+  // TODO: handle reject
+  // @ts-ignore
   return new Promise((resolve, reject) => {
     const image = new Image();
     image.src = `data:image/jpeg;base64, ${base64}`;
@@ -58,6 +58,7 @@ const resizeAndCrop: ResizeAndCrop = async ({base64}) => {
 const AddPhotoButton: React.FC = () => {
   const {watch, setValue} = useFormContext();
   const photos = watch('photos');
+  const intl = useIntl();
   const addPhoto = async () => {
     // get the photo
     const photo = await Camera.getPhoto({
@@ -70,22 +71,23 @@ const AddPhotoButton: React.FC = () => {
     setValue('photos', photos ? [...photos, photoBase64] : [photoBase64]);
   };
   return <IonButton
+	   aria-label={intl.formatMessage({id: 'xxx'})}
 	   className='pr-1'
 	   color='light'
 	   disabled={photos && photos.length >= 4}
 	   fill='outline'
 	   onClick={addPhoto}>
     <IonIcon
+      aria-hidden='true'
       src={AddPhotoIcon}
       slot='icon-only'
     />
   </IonButton>;
 };
 
-export const PhotoPicker: React.FC<PhotoPickerProps> = ({
-  isLoading
-}) => {
+export const PhotoPicker: React.FC<PhotoPickerProps> = () => {
   const {watch, setValue} = useFormContext();
+  const intl = useIntl();
   const photos = watch('photos');
   const blanks = useMemo<any[]>(() => {
     let payload = [];
@@ -107,11 +109,12 @@ export const PhotoPicker: React.FC<PhotoPickerProps> = ({
 	  {photos && photos.map((photo: string, index: number) => (
 	    <IonCol className='photopicker-tile' key={photo.slice(-10) + index}>
 	      <IonButton
+		aria-label={intl.formatMessage({id: 'xxx'})}
 		color='danger'
 		onClick={() => {
 		  setValue('photos', photos.filter((_: string, i: number) => i !== index));
 		}}>
-		<IonIcon slot='icon-only' icon={close} />
+		<IonIcon aria-hidden='true' slot='icon-only' icon={close} />
 	      </IonButton>
 	      <img src={photo} />
 	    </IonCol>

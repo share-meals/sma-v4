@@ -1,9 +1,6 @@
-import 'cypress-axe';
-
 describe('Signup', () => {
   beforeEach(() => {
     cy.visit('/signup');
-    cy.injectAxe();
   });
 
   it('has no a11y violation on load', () => {
@@ -11,7 +8,7 @@ describe('Signup', () => {
   });
 
   it('has no a11y violation on privacy policy', () => {
-    cy.get('ion-button[data-testid="button-showPrivacyPolicy"]').click();
+    cy.getByTestId('pages.signup.showPrivacyPolicy.button').click();
     cy.checkA11y();
   });
 
