@@ -29,8 +29,9 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
   if(!isProfileLoading
      || language === undefined
      || dateFnsLocale === undefined
-     || testAppLoadingScreen !== null){
-    return <main id='appLoadingIndicator'>
+     || testAppLoadingScreen !== null
+     || isLoading){
+    return <main id='appLoadingIndicator' data-testid='appWrapper.indicator'>
       <img src={Logo} alt={intl.formatMessage({id: 'img.alt.appWrapper'})} />
       <IonProgressBar
 	aria-label='xxx'

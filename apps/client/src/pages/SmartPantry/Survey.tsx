@@ -3,13 +3,8 @@ import {
   getFunctions,
   httpsCallable,
 } from 'firebase/functions';
-import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {toast} from 'react-toastify';
 import {useIntl} from 'react-intl';
-import {
-  useIonViewDidEnter,
-  useIonViewWillLeave,
-} from '@ionic/react';
 import {useState} from 'react';
 import {useParams} from 'react-router-dom';
 

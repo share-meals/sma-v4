@@ -26,7 +26,6 @@ import {
   IonToolbar,
   useIonViewWillLeave,
 } from '@ionic/react';
-import {Link} from 'react-router-dom';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {Notice} from '@/components/Notice';
 import {SmartPantryInfo} from '@sma-v4/schema';
@@ -37,15 +36,11 @@ import {
 import {StateButton} from '@share-meals/frg-ui';
 import {toast} from 'react-toastify';
 import {
-  useCallback,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import {
-  useHistory,
-  useParams
-} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {useProfile} from '@/hooks/Profile';
 
 import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';

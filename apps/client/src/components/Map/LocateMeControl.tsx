@@ -1,7 +1,4 @@
-import {
-  IonButton,
-  IonIcon,
-} from '@ionic/react';
+import {IonIcon} from '@ionic/react';
 import {latlngSchema} from '@sma-v4/schema';
 import {
   StateButton
@@ -11,6 +8,7 @@ import {
   useState,
 } from 'react';
 import {useGeolocation} from '@/hooks/Geolocation';
+import {useIntl} from 'react-intl';
 import {z} from 'zod';
 
 import MyLocationIcon from '@material-symbols/svg-400/rounded/my_location-fill.svg';
@@ -27,6 +25,7 @@ const JIGGLE = 0.0001; // hackzorz needed since MapContext has difficulty recent
 export const LocateMeControl: React.FC<LocateMeControlProps> = ({
   setCurrentLocation
 }) => {
+  const intl = useIntl();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {getGeolocation, permissionState}  = useGeolocation();
   const locateMe = useCallback(() => {
@@ -38,7 +37,8 @@ export const LocateMeControl: React.FC<LocateMeControlProps> = ({
 	  lng: location.lng + JIGGLE * Math.random()
 	});
       })
-      .catch((error: unknown) => {
+      .catch((error: any) => {
+	console.log(error);
 	// TODO: error handling
       })
       .finally(() => {
@@ -51,10 +51,15 @@ export const LocateMeControl: React.FC<LocateMeControlProps> = ({
     setIsLoading,
   ]);
   return <StateButton
+	   aria-label={intl.formatMessage({id: 'xxx'})}
 	   className='square'
 	   disabled={permissionState === 'denied'}
 	   isLoading={isLoading}
 	   onClick={locateMe}>
-    <IonIcon slot='icon-only' src={MyLocationIcon} />
+    <IonIcon
+      aria-hidden='true'
+      slot='icon-only'
+      src={MyLocationIcon}
+    />
   </StateButton>;
 }

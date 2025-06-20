@@ -9,12 +9,12 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
-  IonList,
   IonModal,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
 import {useAlerts} from '@/hooks/Alerts';
+import {useIntl} from 'react-intl';
 import {useMessages} from '@/hooks/Messages';
 import {useProfile} from '@/hooks/Profile';
 import {useState} from 'react';
@@ -32,6 +32,7 @@ export const Header: React.FC<React.PropsWithChildren<props>> = ({
   translatedTitle
 }) => {
   const {alerts} = useAlerts();
+  const intl = useIntl();
   const [showAlerts, setShowAlerts] = useState<boolean>(false);
   const {isLoggedIn} = useProfile();
   const {unreadCount} = useMessages();
@@ -46,12 +47,19 @@ export const Header: React.FC<React.PropsWithChildren<props>> = ({
 	</IonTitle>
 	<IonButtons slot='end'>
 	  {Object.values(alerts).length > 0 &&
-	   <IonButton onClick={() => {setShowAlerts(true);}}>
-	     <IonIcon aria-hidden='true' src={WarningIcon} slot='icon-only' />
+	   <IonButton
+	     aria-label={intl.formatMessage({id: 'xxx'})}
+	     onClick={() => {setShowAlerts(true);}}>
+	     <IonIcon
+	       aria-hidden='true'
+	       slot='icon-only'
+	       src={WarningIcon}
+	     />
 	   </IonButton>
 	  }
 	  {isLoggedIn &&
 	   <IonButton
+	     aria-label={intl.formatMessage({id: 'xxx'})}
 	     className={classnames({'has-badge': unreadCount > 0})}
 	     routerDirection='root'
 	     routerLink='/messages/dashboard'>
