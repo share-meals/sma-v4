@@ -1,12 +1,10 @@
-import {IonProgressBar} from '@ionic/react';
-import Logo from '@/assets/svg/logo.svg';
+import {AppWrapperLoadingIndicator} from './AppWrapperLoadingIndicator';
 import {
   useEffect,
   useState,
 } from 'react';
-import {useI18n} from '@/hooks/I18n';
 import {useProfile} from '@/hooks/Profile';
-import {useIntl} from 'react-intl';
+import {useI18n} from '@/hooks/I18n';
 
 import './AppWrapper.css';
 
@@ -16,7 +14,6 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const queryParams = new URLSearchParams(window.location.search);
   const testAppLoadingScreen = queryParams.get('testAppLoadingScreen');
-  const intl = useIntl();
   useEffect(() => {
     if(!isProfileLoading){
       setTimeout(() => {
@@ -31,13 +28,7 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
      || dateFnsLocale === undefined
      || testAppLoadingScreen !== null
      || isLoading){
-    return <main id='appLoadingIndicator' data-testid='appWrapper.indicator'>
-      <img src={Logo} alt={intl.formatMessage({id: 'img.alt.appWrapper'})} />
-      <IonProgressBar
-	aria-label='xxx'
-	type='indeterminate'
-      />
-    </main>;
+    return <AppWrapperLoadingIndicator />;
   }else{
     return children;
   }

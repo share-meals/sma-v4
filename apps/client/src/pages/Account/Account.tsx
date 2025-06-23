@@ -204,7 +204,11 @@ export const Account: React.FC = () => {
       </div>
       <IonListHeader color='dark'>
       </IonListHeader>
-      <IonItem button detail={true} onClick={signoutInternal}>
+      <IonItem
+	button
+	data-testid='pages.account.logout.button'
+	detail={true}
+	onClick={signoutInternal}>
 	<FormattedMessage id='common.label.logout' />
       </IonItem>
       <IonItem className='ion-text-right mt-3' lines='none' onClick={async () => {

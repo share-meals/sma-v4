@@ -1,5 +1,3 @@
-//import {FirebaseProvider} from '@/hooks/Firebase';
-import {Header} from '@/components/Header';
 import {AlertsProvider} from '@/hooks/Alerts';
 import {App as CapApp} from '@capacitor/app';
 import {AppWrapper} from '@/components/AppWrapper';
@@ -7,8 +5,6 @@ import {I18nProvider} from '@/hooks/I18n';
 import '@/components/Firebase';
 import {
   IonApp,
-  IonContent,
-  IonPage,
   setupIonicReact,
 } from '@ionic/react';
 import {GeolocationProvider} from '@/hooks/Geolocation';
@@ -63,12 +59,7 @@ export const App: React.FC = () => {
 	      <AppWrapper>
 		<GeolocationProvider>
 		  <UsersProvider>
-		    <IonPage>
-		      <Header translatedTitle='abc' />
-		      <IonContent>
-			<Router />
-		      </IonContent>
-		    </IonPage>
+		    <Router />
 		  </UsersProvider>
 		</GeolocationProvider>
 	      </AppWrapper>

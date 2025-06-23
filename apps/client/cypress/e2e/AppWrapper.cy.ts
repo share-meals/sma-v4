@@ -1,8 +1,8 @@
 import 'cypress-axe';
 
-describe('App Loading Screen', () => {
+describe('App Wrapper', () => {
   beforeEach(() => {
-    cy.visit('/?testAppLoadingScreen=true');
+    cy.visit('/app-Wrapper?debug=true');
     cy.injectAxe();
   });
 
