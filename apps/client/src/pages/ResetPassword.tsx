@@ -50,7 +50,7 @@ export const ResetPassword: React.FC = () => {
 	setShowNotice(true);
       });
   });
-  return <div className='mt-2'>
+  return <div className='pt-2'>
     <form noValidate
 	  onSubmit={onSubmit}>
       <Input
