@@ -242,7 +242,11 @@ ion-tab-bar[color='primary'] * {
 /* for a11y compliance */
 ion-modal::part(content),
 .markdown-content {
-  background-color: #fff !important;
-  color: #000 !important;
-  opacity: 1 !important;
+    background-color: #fff !important;
+    color: #000 !important;
+    opacity: 1 !important;
+}
+
+.alert-message {
+    color: #000 !important;
 }

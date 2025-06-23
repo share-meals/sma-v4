@@ -1,5 +1,8 @@
 import {AuthGuard} from '@/components/AuthGuard';
-import {IonContent} from '@ionic/react';
+import {
+  IonContent,
+  IonPage
+} from '@ionic/react';
 
 export const LayoutWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
   const style = {
@@ -10,10 +13,12 @@ export const LayoutWrapper: React.FC<React.PropsWithChildren> = ({children}) => 
     padding: 0,
   };
   return <AuthGuard>
-    <IonContent>
-      <div style={style}>
-	{children}
-      </div>
-    </IonContent>
+    <IonPage>
+      <IonContent>
+	<div style={style}>
+	  {children}
+	</div>
+      </IonContent>
+    </IonPage>
   </AuthGuard>;
 }

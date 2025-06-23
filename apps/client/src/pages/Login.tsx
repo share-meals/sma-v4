@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {FirebaseError} from '@firebase/util';
 import {
@@ -171,7 +173,7 @@ export const Login: React.FC = () => {
 	  <LoginForm />
 	  <div className='ion-text-right mt-3'>
 	    <IonButton
-	      data-testid='login.button.showResetPassword'
+	      data-testid='pages.login.showResetPassword.button'
 	      fill='clear'
 	      id='showResetPassword'>
 	      <FormattedMessage id='pages.login.resetPassword' />

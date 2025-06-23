@@ -4,6 +4,7 @@ import {
   ActionPerformed,
   PushNotifications
 } from '@capacitor/push-notifications';
+import {AppWrapperLoadingIndicator} from '@/components/AppWrapper';
 import {Capacitor} from '@capacitor/core';
 import classnames from 'classnames';
 import {FormattedMessage} from 'react-intl';
@@ -91,6 +92,9 @@ export const Router: React.FC = () => {
     <nav>
       <IonTabs>
 	<IonRouterOutlet>
+	  <Route exact path='/app-wrapper'>
+	    <AppWrapperLoadingIndicator />
+	  </Route>
 	  <Route exact path='/login'>
 	    <LayoutWrapper>
 	      <Login />
@@ -183,20 +187,21 @@ export const Router: React.FC = () => {
 	  </Route>
 	</IonRouterOutlet>
 	<IonTabBar color='primary' slot='bottom' aria-label='xxx'>
+	  {!isLoggedIn &&
+	   <IonTabButton
+	     data-testid='components.router.login.button'
+	     href='/login'
+	     tab='login'
+	   >
+	     <IonIcon aria-hidden='true' icon={LoginIcon} />
+	     <IonLabel>
+	       <FormattedMessage id='pages.login.title' />
+	     </IonLabel>
+	   </IonTabButton>
+	  }
 	  <IonTabButton
 	    className={isLoggedIn ? 'ion-hide' : ''}
-	    data-testid='footer.button.login'
-	    href='/login'
-	    tab='login'
-	  >
-	    <IonIcon aria-hidden='true' icon={LoginIcon} />
-	    <IonLabel>
-	      <FormattedMessage id='pages.login.title' />
-	    </IonLabel>
-	  </IonTabButton>
-	  <IonTabButton
-	    className={isLoggedIn ? 'ion-hide' : ''}
-	    data-testid='footer.button.signup'
+	    data-testid='components.router.signup.button'
 	    href='/signup'
 	    tab='signup'
 	  >
@@ -205,12 +210,17 @@ export const Router: React.FC = () => {
 	      <FormattedMessage id='pages.signup.title' />
 	    </IonLabel>
 	  </IonTabButton>
-	  <IonTabButton data-testid='map button' tab='map' href='/map' layout='icon-top' className={
-	  classnames({
-	    'ion-hide': !isLoggedIn,
-	    'has-badge': postsLength > 0
-	  })
-	  }>
+	  <IonTabButton
+	    data-testid='components.router.map.button'
+	    tab='map'
+	    href='/map'
+	    layout='icon-top'
+	    className={
+	    classnames({
+	      'ion-hide': !isLoggedIn,
+	      'has-badge': postsLength > 0
+	    })
+	    }>
 	    <IonIcon aria-hidden='true' src={MapIcon} />
 	    <IonLabel>
 	      <FormattedMessage id='pages.map.title' />
@@ -237,17 +247,17 @@ export const Router: React.FC = () => {
 	      </IonLabel>
 	    </IonTabButton>
 	  }
-	  <IonTabButton
-	    className={isLoggedIn ? '' : 'ion-hide'}
-	    data-testid='footer.button.account'
-	    href='/account'
-	    tab='account'
-	  >
-	    <IonIcon aria-hidden='true' src={AccountIcon} />
-	    <IonLabel>
-	      <FormattedMessage id='pages.account.title' />
-	    </IonLabel>
-	  </IonTabButton>
+	  {isLoggedIn &&
+	   <IonTabButton
+	     data-testid='components.router.account.button'
+	     href='/account'
+	     tab='account'>
+	     <IonIcon aria-hidden='true' src={AccountIcon} />
+	     <IonLabel>
+	       <FormattedMessage id='pages.account.title' />
+	     </IonLabel>
+	   </IonTabButton>
+	  }
 	</IonTabBar>
       </IonTabs>
     </nav>
