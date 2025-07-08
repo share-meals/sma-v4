@@ -22,6 +22,7 @@ import {
   IonText,
 } from '@ionic/react';
 import {Notice} from '@/components/Notice';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {useForm} from 'react-hook-form';
 import {useProfile} from '@/hooks/Profile';
 import {userSchema} from '@sma-v4/schema';
@@ -95,6 +96,7 @@ export const CloseAccount: React.FC = () => {
 	      <StateButton
 		data-testid='button-submit'
 		isLoading={isLoading}
+		loadingIndicator={<StateButtonLoadingIndicator />}
 		type='submit'>
 		<FormattedMessage id='buttons.label.submit' />
 	      </StateButton>

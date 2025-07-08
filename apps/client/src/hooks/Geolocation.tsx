@@ -76,11 +76,21 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
 	return getBackupGeolocation();
 	break;
       case 'granted':
-	try{
-	  const position: GeolocationPosition = await Geolocation.getCurrentPosition();
-	  if(permissionState !== 'granted'){
 	    setPermissionState('granted');
-	  }
+	try{
+	  console.log('BEFORE');
+	  console.log('BEFORE');
+	  console.log('BEFORE');
+	  console.log('BEFORE');
+	  console.log('BEFORE');
+	  console.log('BEFORE');
+	  const position: GeolocationPosition = await Geolocation.getCurrentPosition();
+	  console.log('AFTER');
+	  console.log('AFTER');
+	  console.log('AFTER');
+	  console.log('AFTER');
+	  console.log('AFTER');
+	  console.log('AFTER');
 	  const location: latlngType = {
 	    lat: position.coords.latitude,
 	    lng: position.coords.longitude

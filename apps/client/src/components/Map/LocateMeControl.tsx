@@ -1,8 +1,7 @@
 import {IonIcon} from '@ionic/react';
 import {latlngSchema} from '@sma-v4/schema';
-import {
-  StateButton
-} from '@share-meals/frg-ui';
+import {StateButton} from '@share-meals/frg-ui';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {
   useCallback,
   useState,
@@ -55,6 +54,7 @@ export const LocateMeControl: React.FC<LocateMeControlProps> = ({
 	   className='square'
 	   disabled={permissionState === 'denied'}
 	   isLoading={isLoading}
+	   loadingIndicator={<StateButtonLoadingIndicator />}
 	   onClick={locateMe}>
     <IonIcon
       aria-hidden='true'

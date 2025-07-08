@@ -10,6 +10,7 @@ import {
 import {IonLabel} from '@ionic/react';
 import {Notice} from '@/components/Notice';
 import {sendPasswordResetEmail} from 'firebase/auth';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {useForm} from 'react-hook-form';
 import {useState} from 'react';
 import {userSchema} from '@sma-v4/schema';
@@ -50,7 +51,10 @@ export const ResetPassword: React.FC = () => {
 	setShowNotice(true);
       });
   });
-  return <div className='pt-2'>
+  return <div
+	   data-testid='pages.resetPassword'
+	   className='mt-2'
+	 >
     <form noValidate
 	  onSubmit={onSubmit}>
       <Input
@@ -66,6 +70,7 @@ export const ResetPassword: React.FC = () => {
       <div className='ion-padding-top ion-text-center'>
 	<StateButton
 	  isLoading={isLoading}
+	  loadingIndicator={<StateButtonLoadingIndicator />}
 	  type='submit'>
 	  <FormattedMessage id='buttons.label.reset' />
 	</StateButton>

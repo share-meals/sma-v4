@@ -62,6 +62,7 @@ const AddPhotoButton: React.FC = () => {
   const addPhoto = async () => {
     // get the photo
     const photo = await Camera.getPhoto({
+      webUseInput: true,
       allowEditing: false,
       quality: 50,
       resultType: CameraResultType.Base64,
@@ -74,6 +75,7 @@ const AddPhotoButton: React.FC = () => {
 	   aria-label={intl.formatMessage({id: 'xxx'})}
 	   className='pr-1'
 	   color='light'
+	   data-testid='components.photoPicker.addPhoto.button'
 	   disabled={photos && photos.length >= 4}
 	   fill='outline'
 	   onClick={addPhoto}>
@@ -110,6 +112,7 @@ export const PhotoPicker: React.FC<PhotoPickerProps> = () => {
 	    <IonCol className='photopicker-tile' key={photo.slice(-10) + index}>
 	      <IonButton
 		aria-label={intl.formatMessage({id: 'xxx'})}
+		data-testid='components.photoPicker.removePhoto.button'
 		color='danger'
 		onClick={() => {
 		  setValue('photos', photos.filter((_: string, i: number) => i !== index));

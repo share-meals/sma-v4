@@ -1,12 +1,70 @@
-Cypress.Commands.add('waitForAppLoaderIfPresent', () => {
-  cy.get('body').then(($body) => {
-    if ($body.find('[data-testid="appWrapper.indicator"]').length > 0) {
-      // Indicator exists, wait for it to disappear
-      cy.log('Indicator found - waiting for it to disappear');
-      cy.get('[data-testid="appWrapper.indicator"]').should('not.exist');
-    } else {
-      // Indicator doesn't exist, continue
-      cy.log('Indicator not found - continuing');
+Cypress.Commands.add('addPost', ({
+  email,
+  password,
+  title,
+  details,
+  communities,
+  dietaryTags,
+  servings,
+  startDate,
+  startTime,
+  endDate,
+  endTime,
+  whereMethod,
+  whereAddress,
+  whereRoom
+} = {
+  title: 'this is the title',
+  details: 'these are the details',
+}) => {
+  // TODO: implement rest of input options
+  cy.login({email, password});
+  cy.visit('/post');
+  cy.getByTestId('pages.post.title.input')
+  .should('exist')
+  .type(title);
+
+  cy.getByTestId('pages.post.details.input')
+  .should('exist')
+  .type(details);
+
+  cy.getByTestId('components.wherePicker.loadingIndicator')
+  .should('not.exist');
+  
+  cy.getByTestId('pages.post.submit.button')
+  .should('exist')
+  .click();
+  
+  cy.location('pathname')
+  .should('eq', '/map');
+});
+
+Cypress.Commands.add('closeAllPosts', ({
+  email,
+  password
+} = {
+  email: 'test1@nasa.edu',
+  password: 'password'
+}) => {
+  cy.login({email, password});
+  cy.visit('/map');
+  cy.getByTestId('pages.map').then($page => {
+    const selector = '[data-testid="pages.map.showAllPosts.button"]';
+    if ($page.find(selector).length) {
+      cy.get(selector).click();
+      cy.get('.postInfoBanner')
+      .first()
+      .click();
+      cy.getByTestId('pages.viewPost.openMoreActions.button')
+      .should('be.visible')
+      .click();
+      cy.getByTestId('pages.viewPost.moreActionsSheet.close.button')
+      .should('be.visible')
+      .click();
+      cy.getByTestId('pages.viewPost.closePost.confirm.yes.button')
+      .should('be.visible')
+      .click();
+      cy.closeAllPosts({email, password})
     }
   });
 });
@@ -22,49 +80,57 @@ Cypress.Commands.add('getByTestIdIfExists', (testId) => {
   });
 });
 
-Cypress.Commands.add('login', ({email, password}) => {
-      cy.visit('/');
-    cy.waitForAppLoaderIfPresent();
-    cy.get('body').then(($body) => {
-      const $loginButton = $body.find('[data-testid="components.router.login.button"]');
-      if($loginButton.length > 0) {
-	cy.visit('/login');
-	cy.waitForAppLoaderIfPresent();
-	cy.getByTestId('login.input.email')
-	.within(() => {
-	  cy.get('input')
-	  .should('exist')
-	  .type(email, {force: true});
-	});
-	
-	cy.getByTestId('login.input.password')
-	.within(() => {
-	  cy.get('input')
-	  .should('exist')
-	  .type(password, { force: true });
-	});
-	cy.getByTestId('login.button.submit')
-	.should('be.visible')
-	.click();
-
-	cy.waitForAppLoaderIfPresent();
-      }
-    });
+Cypress.Commands.add('login', ({
+  email,
+  password
+} = {
+  email: 'test1@nasa.edu',
+  password: 'password'
+}) => {
+  cy.visit('/');
+  cy.get('#footer').then(($footer) => {
+    const $loginButton = $footer.find('[data-testid="components.footer.login.button"]');
+    if($loginButton.length > 0) {
+      cy.visit('/login');
+      cy.getByTestId('pages.login')
+      .should('be.visible');
+      cy.getByTestId('login.input.email')
+      .should('be.visible')
+      .within(() => {
+	cy.get('input')
+	.should('exist')
+	.type(email, {force: true});
+      });
+      
+      cy.getByTestId('login.input.password')
+      .should('be.visible')
+      .within(() => {
+	cy.get('input')
+	.should('exist')
+	.type(password, { force: true });
+      });
+      cy.getByTestId('login.button.submit')
+      .should('be.visible')
+      .click();
+      cy.getByTestId('pages.map')
+      .should('be.visible');
+    }
+  });
 });
 
 Cypress.Commands.add('logout', () => {
-    cy.visit('/');
-    cy.waitForAppLoaderIfPresent();
-    cy.get('body').then(($body) => {      
-      const $accountButton = $body.find('[data-testid="components.router.account.button"]');
-      if($accountButton.length > 0) {
-	cy.visit('/account');
-	cy.waitForAppLoaderIfPresent();
-	cy.getByTestId('pages.account.logout.button')
-	.should('exist')
-	.click();
-	cy.waitForAppLoaderIfPresent();
-	// TODO: should be redirected to /
-      }
-    });
+  cy.visit('/');
+  cy.get('#footer').then(($footer) => {
+    const $accountButton = $footer.find('[data-testid="components.footer.account.button"]');
+    if($accountButton.length > 0) {
+      cy.visit('/account');
+      cy.getByTestId('pages.account')
+      .should('be.visible');
+      cy.getByTestId('pages.account.logout.button')
+      .should('be.visible')
+      .click();
+      cy.getByTestId('pages.signup')
+      .should('be.visible');
+    }
+  });
 });

@@ -6,6 +6,7 @@ import {
   MapLayerProps,
   MapProvider,
   TimestampedLatLng,
+  TimestampedZoom,
 } from '@share-meals/frg-ui';
 import {Notice} from '@/components/Notice';
 import {useGeolocation} from '@/hooks/Geolocation';
@@ -17,8 +18,8 @@ interface MapProps {
   locked?: boolean;
   maxZoom?: number;
   minZoom?: number;
-    onFeatureClick?: any;
-  zoom?: number;
+  onFeatureClick?: any;
+  zoom?: TimestampedZoom;
 }
 
 const NOTIFICATION_WIDTH: number = 30;
@@ -50,10 +51,10 @@ export const controlsRightStyle: React.CSSProperties = {
 
 export const Map: React.FC<MapProps> = ({
   center,
-    controls,
+  controls,
   layers = [],
   maxZoom = 16,
-    minZoom = 10,
+  minZoom = 10,
   zoom,
   ...props
 }) => {

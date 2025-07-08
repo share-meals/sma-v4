@@ -34,6 +34,7 @@ import {
   SmartPantrySurveyProps
 } from './Survey';
 import {StateButton} from '@share-meals/frg-ui';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {toast} from 'react-toastify';
 import {
   useEffect,
@@ -199,6 +200,7 @@ export const SmartPantryDashboard: React.FC = () => {
 	isLoading={sendingPoints}
 	onClick={sendPoints}
 	disabled={points <= 0/* || spState !== 'ENABLED'*/}
+	loadingIndicator={<StateButtonLoadingIndicator />}
 	size='large'>
 	<FormattedMessage id='pages.smartPantryDashboard.sendPoints' values={{spName: spInfo!.name}} />
       </StateButton>

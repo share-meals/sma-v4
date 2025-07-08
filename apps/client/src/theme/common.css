@@ -10,7 +10,7 @@ ion-button.button-has-icon-only.square {
     --padding-top: var(--padding);
 }
 
-ion-button.has-badge {
+ion-button.icon-only.has-badge {
     &::part(native) {overflow:visible}
     ion-badge {
 	border: 3px solid var(--ion-color-primary);
@@ -240,13 +240,21 @@ ion-tab-bar[color='primary'] * {
 
 
 /* for a11y compliance */
+
+/*
 ion-modal::part(content),
 .markdown-content {
     background-color: #fff !important;
-    color: #000 !important;
     opacity: 1 !important;
 }
+*/
 
-.alert-message {
-    color: #000 !important;
+:root {
+  /*   All of Ionic’s typography utilities funnel through these two vars   */
+  --ion-text-color: #000000;
+  --ion-text-color-rgb: 0, 0, 0;
+}
+
+.sc-ion-label-md-s > p {
+    color: #000000;
 }

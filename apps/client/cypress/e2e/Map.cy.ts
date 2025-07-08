@@ -2,12 +2,10 @@ import 'cypress-axe';
 
 describe('Map', () => {
   beforeEach(() => {
-    cy.login({
-      email: 'test1@nasa.edu',
-      password: 'password'
-    });
+    cy.login();
     cy.visit('/map');
-    cy.waitForAppLoaderIfPresent();
+    cy.getByTestId('pages.map')
+    .should('be.visible');
   });
 
   afterEach(() => {
@@ -17,5 +15,16 @@ describe('Map', () => {
   it('has no a11y violation on load', () => {
     cy.injectAxe();
     cy.checkA11y();
+  });
+
+  it('has no a11y violation when showing all posts', () => {
+    cy.addPost();
+    cy.visit('/map');
+    cy.getByTestId('pages.map.showAllPosts.button')
+    .should('exist')
+    .click();
+    cy.injectAxe();
+    cy.checkA11y();
+    cy.closeAllPosts();
   });
 });

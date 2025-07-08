@@ -33,6 +33,7 @@ import {
 } from '@ionic/react';
 import {JoinCommunityModal} from './JoinCommunity';
 import {LanguageSwitcher} from '@/components/LanguageSwitcher';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {useForm} from 'react-hook-form';
 import {useLogger} from '@/hooks/Logger';
 import {useMessaging} from '@/hooks/Messaging';
@@ -126,6 +127,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 	    <StateButton
 	      data-testid='button-change-passwordsubmit'
 	      isLoading={isLoading}
+	      loadingIndicator={<StateButtonLoadingIndicator />}
 	      type='submit'>
 	      <FormattedMessage id='buttons.label.submit' />
 	    </StateButton>
@@ -163,7 +165,7 @@ export const Account: React.FC = () => {
     setShowLogs(true);
   };
 
-  return <>
+  return <div data-testid='pages.account'>
     <IonListHeader color='dark'>
       <FormattedMessage id='pages.account.settings' />
     </IonListHeader>
@@ -186,6 +188,7 @@ export const Account: React.FC = () => {
 	    color='light'
 	    data-testid='pages.account.showJoinCommunity.button'
 	    fill='outline'
+	    loadingIndicator={<StateButtonLoadingIndicator />}
 	    onClick={() => {setShowJoinCommunity(true);}}>
 	    <IonIcon
 	      aria-label={intl.formatMessage({id: 'xxx'})}
@@ -266,5 +269,5 @@ export const Account: React.FC = () => {
 	 logs.map((l) => <p key={l.timestamp.toString()}><code>{l.level}|{l.timestamp.toString()}|{l.component}|{l.message}</code></p>)}
       </IonContent>
     </IonModal>
-  </>;
+  </div>;
 };

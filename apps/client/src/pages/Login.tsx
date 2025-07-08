@@ -27,6 +27,7 @@ import {
 import {getFirebaseAuth} from '@/components/Firebase';
 import {Notice} from '@/components/Notice';
 import {ResetPassword} from '@/pages/ResetPassword';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {
   useCallback,
   useRef,
@@ -135,6 +136,7 @@ const LoginForm: React.FC = () => {
       <StateButton
 	data-testid='login.button.submit'
 	isLoading={isLoading}
+	loadingIndicator={StateButtonLoadingIndicator}
 	type='submit'>
 	<FormattedMessage id='buttons.label.login' />
       </StateButton>
@@ -154,7 +156,7 @@ const LoginForm: React.FC = () => {
 export const Login: React.FC = () => {
   const intl = useIntl();
   const modal = useRef<HTMLIonModalElement>(null);
-  return <>
+  return <div data-testid='pages.login'>
     <IonGrid>
       <IonRow>
 	<IonCol size-xs='6' push-xs='3' push-sm='0'>
@@ -213,5 +215,5 @@ export const Login: React.FC = () => {
 	<ResetPassword />
       </IonContent>
     </IonModal>
-    </>;
+    </div>;
 };

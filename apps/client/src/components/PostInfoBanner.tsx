@@ -4,7 +4,10 @@ import {
   formatDistanceToNow,
   isPast,
 } from 'date-fns';
-import {FormattedMessage} from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl,
+} from 'react-intl';
 import {
   IonItem,
   IonLabel,
@@ -37,9 +40,14 @@ const getLink: (arg: any) => string = (postInfo) => {
 
 export const PostInfoBanner: React.FC<any & {onNavigate: () => void}> = (props) => {
   const {onNavigate, ...postInfo} = props;
-
+  const intl = useIntl();
   const {dateFnsLocale} = useI18n();
-  return <Link to={{pathname: getLink(postInfo)}} style={{textDecoration: 'none'}} onClick={onNavigate}>
+  return <Link
+	   className='postInfoBanner'
+	   onClick={onNavigate}
+	   style={{textDecoration: 'none'}}
+	   to={{pathname: getLink(postInfo)}}
+	 >
     <IonItem detail={true}>
       <IonLabel>
 	<h2>
@@ -75,7 +83,9 @@ export const PostInfoBanner: React.FC<any & {onNavigate: () => void}> = (props) 
 	{postInfo.photos
 	&& postInfo.photos.length > 0
 				  ? <Photo path={`postPhotos/${postInfo.id}-${postInfo.photos[0]}.png`} />
-				  : <img src={postInfo.type === 'event' ? logo : cardOutline} />}
+				  : <img
+				      alt={intl.formatMessage({id: 'xxx'})}
+				      src={postInfo.type === 'event' ? logo : cardOutline} />}
       </IonThumbnail>
     </IonItem>
   </Link>;

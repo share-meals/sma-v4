@@ -29,6 +29,7 @@ import {
   IonIcon,
   IonRow,
 } from '@ionic/react';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {useForm} from 'react-hook-form';
 import {
   useMemo,
@@ -140,7 +141,9 @@ const ChatForm: React.FC<ChatFormProps> = ({
 	<IonRow className='ion-align-items-top'>
 	  <IonCol>
 	    <Input
+	      aria-label={intl.formatMessage({id: 'xxx'})}
 	      control={control}
+	      data-testid='components.chat.text.input'
 	      disabled={isLoading}
 	      fill='outline'
 	      label={undefined}
@@ -152,7 +155,10 @@ const ChatForm: React.FC<ChatFormProps> = ({
 	  </IonCol>
 	  <IonCol size='auto' style={{paddingTop: 10}}>
 	    <StateButton
+	      aria-label={intl.formatMessage({id: 'xxx'})}
+	      data-testid='components.chat.submit.button'
 	      isLoading={isLoading}
+	      loadingIndicator={<StateButtonLoadingIndicator />}
 	      type='submit'>
 	      <IonIcon
 		aria-hidden='true'

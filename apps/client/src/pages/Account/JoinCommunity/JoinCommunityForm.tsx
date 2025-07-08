@@ -27,6 +27,7 @@ import type {
   JoinCommunityErrorMessage,
   JoinCommunitySuccessMessage,
 } from './JoinCommunity.d.ts';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {useForm} from 'react-hook-form';
 import {useIntl} from 'react-intl';
 import {z} from 'zod';
@@ -101,6 +102,7 @@ export const JoinCommunityForm: React.FC<JoinCommunityFormProps> = ({
 	    <StateButton
 	      isLoading={isLoading}
 	      style={{marginTop: 10}}
+	      loadingIndicator={<StateButtonLoadingIndicator />}
 	      type='submit'>
 	      <FormattedMessage id='pages.account.join' />
 	    </StateButton>

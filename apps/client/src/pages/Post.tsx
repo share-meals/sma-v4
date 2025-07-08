@@ -23,6 +23,7 @@ import {
   isPlatform,
   useIonViewWillEnter,
 } from '@ionic/react';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {toast} from 'react-toastify';
 import {WhenPicker} from '@/components/WhenPicker';
 import {WherePicker} from '@/components/WherePicker';
@@ -126,7 +127,7 @@ export const Post: React.FC = () => {
     console.log(error);
   });
 
-  return <>
+  return <div data-testid='pages.post'>
     <form
       id='post-form'
       noValidate
@@ -137,7 +138,8 @@ export const Post: React.FC = () => {
     </IonListHeader>
     <div className='ion-padding'>
       <Input
-	control={control}
+      control={control}
+      data-testid='pages.post.title.input'
 	disabled={isLoading}
 	fill='outline'
 	form='post-form'
@@ -148,7 +150,8 @@ export const Post: React.FC = () => {
 	type='text'
       />
       <Textarea
-	control={control}
+      control={control}
+      data-testid='pages.post.details.input'
 	disabled={isLoading}
 	fill='outline'
 	form='post-form'
@@ -161,6 +164,7 @@ export const Post: React.FC = () => {
       <Select
 	cancelText={intl.formatMessage({id: 'buttons.label.cancel'})}
 	control={control}
+	data-testid='pages.post.communities.select'
 	disabled={isLoading}
 	fill='outline'
 	form='post-form'
@@ -178,6 +182,7 @@ export const Post: React.FC = () => {
 	    <Select
 	      cancelText={intl.formatMessage({id: 'buttons.label.cancel'})}
 	      control={control}
+	      data-testid='pages.post.tags.select'
 	      disabled={isLoading}
 	      fill='outline'
 	      form='post-form'
@@ -192,9 +197,10 @@ export const Post: React.FC = () => {
 	  <IonCol style={{paddingLeft: '0.5rem'}}>
 	    <Input
 	      control={control}
+	      data-testid='pages.post.servings.input'
 	      disabled={isLoading}
 	      fill='outline'
-	    form='post-form'
+	      form='post-form'
 	      label={intl.formatMessage({id: 'common.label.servings'})}
 	      labelPlacement='floating'
 	      name='servings'
@@ -211,6 +217,7 @@ export const Post: React.FC = () => {
 	  aria-label={intl.formatMessage({id: 'xxx'})}
 	  className='pr-1'
 	  color='light'
+	  data-testid='pages.post.happeningNow.button'
 	  disabled={isLoading}
 	  fill='outline'
 	  onClick={resetWhenPickerToNow}>
@@ -238,8 +245,10 @@ export const Post: React.FC = () => {
     <div className='pt-3 ion-text-center'>
       <StateButton
 	aria-label={intl.formatMessage({id: 'xxx'})}
+	data-testid='pages.post.submit.button'
 	form='post-form'
 	isLoading={isLoading || !isWherePickerReady}
+	loadingIndicator={<StateButtonLoadingIndicator />}
 	size='large'
 	type='submit'>
 	<FormattedMessage id='pages.post.post' />
@@ -254,6 +263,7 @@ export const Post: React.FC = () => {
     </div>
     <div className='pv-1 ion-text-right'>
       <IonButton
+	data-testid='pages.post.reset.button'
 	disabled={isLoading}
 	fill='clear'
 	onClick={() => {
@@ -264,5 +274,5 @@ export const Post: React.FC = () => {
 	<FormattedMessage id='common.label.reset' />
       </IonButton>
     </div>
-  </>;
+  </div>;
 };

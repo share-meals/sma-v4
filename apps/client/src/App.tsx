@@ -40,7 +40,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import './theme/toastify.css'; // overwrite react-toastify colors
 
 setupIonicReact({
-  mode: 'md'
+  mode: 'md',
+  animated: false
 });
 
 CapApp.addListener('appUrlOpen', (data) => {
