@@ -111,12 +111,13 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 	  message: intl.formatMessage({id: 'common.label.confirmClose'}),
 	  buttons: [
 	    {
+	      htmlAttributes: {
+		'data-testid': 'pages.viewPost.closePost.confirm.no.button'
+	      },
+	      role: 'cancel',
 	      text: intl.formatMessage({id: 'common.label.no'}),
-	      role: 'cancel'
 	    },
 	    {
-	      text: intl.formatMessage({id: 'common.label.yes'}),
-	      role: 'confirm',
 	      handler: () => {
 		postCloseFunction({id: postId})
 		  .then(() => {
@@ -127,14 +128,22 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 		  .catch((error) => {
 		    toastError(error.code, intl);
 		  });
-	      }
+	      },
+	      htmlAttributes: {
+		'data-testid': 'pages.viewPost.closePost.confirm.yes.button'
+	      },
+	      role: 'confirm',
+	      text: intl.formatMessage({id: 'common.label.yes'}),
 	    },
 	  ]
 	});
       },
       icon: CloseIcon,
       text: intl.formatMessage({id: 'buttons.label.close'}),
-      role: 'destructive'
+      role: 'destructive',
+      htmlAttributes: {
+	'data-testid': 'pages.viewPost.moreActionsSheet.close.button'
+      }
     });
   }
   if(isAdmin){
@@ -185,7 +194,8 @@ const MoreActions: React.FC<MoreActionsProps> = ({
   });
     return <>
 	<IonButton
-	  aria-label='more'
+	  aria-label={intl.formatMessage({id: 'xxx'})}
+	  data-testid='pages.viewPost.openMoreActions.button'
 	  id='openMoreActions'
 	  size='small'
 	  fill='clear'
@@ -289,7 +299,7 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
     </IonGrid>}
     {post.cannotChat !== true
     && <>
-      <IonList className='ion-no-padding'>
+      <IonList className='ion-no-padding' role='presentation'>
 	<IonListHeader color='dark'>
 	  <FormattedMessage id='pages.viewPost.chat' />
 	</IonListHeader>

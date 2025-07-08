@@ -1,4 +1,7 @@
-import {FormattedMessage} from 'react-intl';
+import {
+  FormattedMessage,
+  useIntl
+} from 'react-intl';
 import {
   IonButton,
   IonIcon,
@@ -33,6 +36,7 @@ export const CollapsibleMap: React.FC<Location> = ({
   name,
   room
 }) => {
+  const intl = useIntl();
   const [showMap, setShowMap] = useState<boolean>(false);
   const {lastGeolocation} = useGeolocation();
   const postCenter: TimestampedLatLng = {
@@ -99,8 +103,10 @@ export const CollapsibleMap: React.FC<Location> = ({
     zIndex: 999
   }}>
     <LocateMeControl setCurrentLocation={changeCenter} />
-    <IonButton className='square' onClick={() => {changeCenter(postCenter);}}>
-      <IonIcon slot='icon-only' src={PostLocationIcon} />
+    <IonButton
+      aria-label={intl.formatMessage({id: 'xxx'})}
+      className='square' onClick={() => {changeCenter(postCenter);}}>
+      <IonIcon aria-hidden='true' slot='icon-only' src={PostLocationIcon} />
     </IonButton>
   </div>;
   ////////////////////////
@@ -110,13 +116,18 @@ export const CollapsibleMap: React.FC<Location> = ({
 	{name} {room}
 	{address}
 	<br />
-	<a className='text-button' onClick={() => {setShowMap(!showMap);}}>
+	<a
+	  className='text-button'
+	  data-testid='components.collapsibleMap.showMap.link'
+	  onClick={() => {setShowMap(!showMap);}}>
 	  {showMap
 	  ? <FormattedMessage id='pages.viewPost.hideMap' />
 	  : <FormattedMessage id='pages.viewPost.showMap' />}
 	</a>
       </p>
-      {showMap && <div style={{height: '20rem'}}>
+      {showMap && <div
+	data-testid='components.collapsibleMap.map'
+		    style={{height: '20rem'}}>
 	<Map
 	  center={center}
 	  controls={controls}
@@ -124,7 +135,7 @@ export const CollapsibleMap: React.FC<Location> = ({
 	    currentLocationLayer,
 	    layer,
 	  ]}
-	  zoom={14}
+	  zoom={{level: 14}}
 	/>
       </div>}
 

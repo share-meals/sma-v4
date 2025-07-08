@@ -4,6 +4,7 @@ import {
   httpsCallable,
 } from 'firebase/functions';
 import {StateButton} from '@share-meals/frg-ui';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {useState} from 'react';
 
 import type {JoinCommunityFormProps} from './JoinCommunityForm';
@@ -21,6 +22,7 @@ export const JoinCommunityByEmailDomain: React.FC<JoinCommunityFormProps> = ({
       data-testid='pages.account.joinCommunityByEmailAddress.button'
       fill='clear'
       isLoading={isLoading}
+      loadingIndicator={<StateButtonLoadingIndicator />}
       onClick={() => {
 	setIsLoading(true);
 	setHasSuccess(null);

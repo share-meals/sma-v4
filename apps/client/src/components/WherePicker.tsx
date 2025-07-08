@@ -189,18 +189,17 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	  getGeolocation()
 	    .catch(handleGetGeolocationError);
 	}else{
-	  if(import.meta.env.VITE_ENVIRONMENT === 'emulator'){
+	  const {connected} = await Network.getStatus();
+	  if(import.meta.env.VITE_ENVIRONMENT === 'emulator'
+	     && connected === false){
 	    // sometimes developing with emulator, I'm on the subway with no or limited internet connectivity
 	    // and WherePicker hangs waiting for react-geocode
-	    const {connected} = await Network.getStatus();
-	    if(connected === false){
-	      // no internet so bypass react-geocode
-	      setValue('location.address', `(${lastGeolocation!.lat}, ${lastGeolocation!.lng})`);
-	      setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
-	      setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
-	      setInternalLat(lastGeolocation!.lat);
-	      setInternalLng(lastGeolocation!.lng);
-	    }
+	    // so bypass react-geocode
+	    setValue('location.address', `(${lastGeolocation!.lat}, ${lastGeolocation!.lng})`);
+	    setValue('location.lat', lastGeolocation!.lat, setValueCleanOptions);
+	    setValue('location.lng', lastGeolocation!.lng, setValueCleanOptions);
+	    setInternalLat(lastGeolocation!.lat);
+	    setInternalLng(lastGeolocation!.lng);
 	  }else{
 	    // todo: need to check if address === undefined is necessary
 	    try{
@@ -257,8 +256,15 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   }, [rerenderTrigger]);
 
   const controls = <div style={controlsRightStyle}>
-    <IonButton className='square' onClick={() => {setIsLocked(!isLocked);}}>
-      <IonIcon slot='icon-only' src={isLocked ? UnlockIcon : LockIcon} />
+    <IonButton
+      aria-label={intl.formatMessage({id: 'xxx'})}
+      data-testid='components.wherePicker.lock.button'
+      className='square'
+      onClick={() => {setIsLocked(!isLocked);}}>
+      <IonIcon
+	aria-hidden='true'
+	slot='icon-only'
+	src={isLocked ? UnlockIcon : LockIcon} />
     </IonButton>
   </div>;
 
@@ -312,11 +318,12 @@ export const WherePicker: React.FC<WherePickerProps> = ({
       <LoadingIndicator />
     </div>;
   }
-  
+
   return <>
     <Select
       cancelText={intl.formatMessage({id: 'buttons.label.cancel'})}
       control={internalControl}
+      data-testid='components.wherePicker.method.button'
       disabled={isLoading}
       fill='outline'
       label={intl.formatMessage({id: 'common.label.method'})}
@@ -385,6 +392,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
        readonly={true}
        value={address}>
        <IonButton
+	 aria-label={intl.formatMessage({id: 'xxx'})}
 	 disabled={isLoading}
 	 fill='clear'
 	 slot='end'
@@ -392,7 +400,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	   getGeolocation()
 	     .catch(handleGetGeolocationError);
 	 }}>
-	 <IonIcon icon={RefreshIcon} slot='icon-only' />
+	 <IonIcon aria-hidden='true' icon={RefreshIcon} slot='icon-only' />
        </IonButton>
      </IonInput>
     }
@@ -421,7 +429,9 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     <div className='mt-2 a' style={{height: '20rem'}}>
       {(internalLat === undefined
       || internalLng === undefined)
-      && <LoadingIndicator />
+      && <LoadingIndicator
+	   data-testid='components.wherePicker.loadingIndicator'
+      />
       }
       {(internalLat != undefined
       && internalLng != undefined) &&

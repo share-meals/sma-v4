@@ -18,6 +18,7 @@ import {
   IonListHeader,
   useIonViewWillEnter,
 } from '@ionic/react';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {toast} from 'react-toastify';
 import {WhenPicker} from '@/components/WhenPicker';
 import {WherePicker} from '@/components/WherePicker';
@@ -90,7 +91,8 @@ export const Share: React.FC = () => {
   });
 
   
-  return <>
+  return <div
+	 data-testid='pages.share'>
     <form
       id='share-form'
       noValidate
@@ -103,6 +105,7 @@ export const Share: React.FC = () => {
       <Select
 	cancelText={intl.formatMessage({id: 'buttons.label.cancel'})}
 	control={control}
+	data-testid='pages.share.communities.select'
 	disabled={isLoading}
 	fill='outline'
 	form='post-form'
@@ -165,6 +168,7 @@ export const Share: React.FC = () => {
 	form='share-form'
 	isLoading={isLoading/* || !isWherePickerReady*/}
 	size='large'
+	loadingIndicator={<StateButtonLoadingIndicator />}
 	type='submit'>
 	<FormattedMessage id='common.label.share' />
       </StateButton>
@@ -188,6 +192,5 @@ export const Share: React.FC = () => {
 	<FormattedMessage id='common.label.reset' />
       </IonButton>
     </div>
-
-  </>;
+  </div>;
 };

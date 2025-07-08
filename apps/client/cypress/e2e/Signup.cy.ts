@@ -1,9 +1,14 @@
 import 'cypress-axe';
 
 describe('Signup', () => {
-  beforeEach(() => {
+  before(() => {
     cy.logout();
+  });
+
+  beforeEach(() => {
     cy.visit('/signup');
+    cy.getByTestId('pages.signup')
+    .should('be.visible');
   });
 
   it('has no a11y violation on load', () => {

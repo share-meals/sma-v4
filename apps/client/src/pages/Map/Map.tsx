@@ -42,6 +42,7 @@ const defaultLocation: TimestampedLatLng = {lat: 40.78016900410382, lng: -73.968
 
 const InfoModal: React.FC<{posts: PostType[]}> = ({posts}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const intl = useIntl();
   useEffect(() => {
     if(posts.length > 0){
       setIsOpen(true);
@@ -54,22 +55,28 @@ const InfoModal: React.FC<{posts: PostType[]}> = ({posts}) => {
     }
   }, []);
   
-  return <IonModal isOpen={isOpen} onDidDismiss={() => {setIsOpen(false);}}>
-      <IonHeader className='ion-no-border'>
-	<IonToolbar color='primary'>
-	  <IonTitle>
-	    <FormattedMessage id='pages.map.postsList' />
-	  </IonTitle>
-	  <IonButtons slot='end'>
-	    <IonButton onClick={() => {setIsOpen(false);}}>
-	      <IonIcon src={CloseIcon}/>
-	    </IonButton>
-	  </IonButtons>
-	</IonToolbar>
-      </IonHeader>
-      <IonContent color='light'>
-	{posts.map((p) => <PostInfoBanner key={p.id} {...p} onNavigate={() => {setIsOpen(false);}}/>)}
-      </IonContent>
+  return <IonModal
+	   aria-label={intl.formatMessage({id: 'xxx'})}
+	   isOpen={isOpen}
+	   onDidDismiss={() => {setIsOpen(false);}}
+	   role='dialog'>
+    <IonHeader className='ion-no-border'>
+      <IonToolbar color='primary'>
+	<IonTitle>
+	  <FormattedMessage id='pages.map.postsList' />
+	</IonTitle>
+	<IonButtons slot='end'>
+	  <IonButton
+	    aria-label={intl.formatMessage({id: 'xxx'})}
+	    onClick={() => {setIsOpen(false);}}>
+	    <IonIcon aria-hidden='true' src={CloseIcon}/>
+	  </IonButton>
+	</IonButtons>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent color='light'>
+      {posts.map((p) => <PostInfoBanner key={p.id} {...p} onNavigate={() => {setIsOpen(false);}}/>)}
+    </IonContent>
   </IonModal>;
 };
 
@@ -98,48 +105,48 @@ export const Map: React.FC = () => {
       }
     })();
   }, [center, getGeolocation]);
-    const {
-	bundles,
-	bundlePostsLength,
-	posts,
-	postsLength
-    } = useProfile();
+  const {
+    bundles,
+    bundlePostsLength,
+    posts,
+    postsLength
+  } = useProfile();
   const [clickedPosts, setClickedPosts] = useState<PostType[]>([]);
-    const bundlesLayer = useMemo(() => {
-	if(bundles === undefined){
-	    return [];
-	}
-	return Object.values(bundles).map((bundle: any) => {
-	    const geojson = {
-		type: 'FeatureCollection',
-		features: Object.values(bundle.posts).map((post: any) => {
-		    return {
-			type: 'Feature',
-			geometry: {
-			    coordinates: [post.location.lng, post.location.lat],
-			    type: 'Point'
-			},
-			properties: post
-		    };
-		})
-	    };
+  const bundlesLayer = useMemo(() => {
+    if(bundles === undefined){
+      return [];
+    }
+    return Object.values(bundles).map((bundle: any) => {
+      const geojson = {
+	type: 'FeatureCollection',
+	features: Object.values(bundle.posts).map((post: any) => {
+	  return {
+	    type: 'Feature',
+	    geometry: {
+	      coordinates: [post.location.lng, post.location.lat],
+	      type: 'Point'
+	    },
+	    properties: post
+	  };
+	})
+      };
 
-	    return {
-		name: bundle.name,
-		geojson,
-		featureWidth: 4,
-		fillColor: 'rgba(11, 167, 100, 0.5)',
-		strokeColor: 'rgba(255, 255, 255, 1)',
-		textScale: 1.5,
-		textFillColor: '#ffffff',
-		textStrokeColor: '#000000',
-		textStrokeWidth: 4,
-		type: 'cluster',
-		clusterDistance: 50,
-		zIndex: 2
-	    }
-	});
-    }, [bundles]);
+      return {
+	name: bundle.name,
+	geojson,
+	featureWidth: 4,
+	fillColor: 'rgba(11, 167, 100, 0.5)',
+	strokeColor: 'rgba(255, 255, 255, 1)',
+	textScale: 1.5,
+	textFillColor: '#ffffff',
+	textStrokeColor: '#000000',
+	textStrokeWidth: 4,
+	type: 'cluster',
+	clusterDistance: 50,
+	zIndex: 2
+      }
+    });
+  }, [bundles]);
   const featuresLayer = useMemo(() => {
     const geojson = {
       type: 'FeatureCollection',
@@ -154,7 +161,7 @@ export const Map: React.FC = () => {
 	};
       })
     };
-      
+    
     return {
       name: 'Posts',
       geojson,
@@ -201,38 +208,39 @@ export const Map: React.FC = () => {
     });
   }, [setCenter]);
 
-    const showAllPosts = useCallback(() => {
-	const bundlePosts = Object.values(bundles).map((b: any) => Object.values(b.posts)).flat();
-	setClickedPosts(
-	    // @ts-ignore
-	    Object.values(posts).concat(bundlePosts)
-	);
+  const showAllPosts = useCallback(() => {
+    const bundlePosts = Object.values(bundles).map((b: any) => Object.values(b.posts)).flat();
+    setClickedPosts(
+      // @ts-ignore
+      Object.values(posts).concat(bundlePosts)
+    );
   }, [bundles, posts, setClickedPosts]);
 
-    const controls = <div style={{
-	display: 'flex',
-	flexDirection: 'column',
-	position: 'absolute',
-	right: '1rem',
-	top: '1rem',
-	zIndex: 999
-    }}>
-	<LocateMeControl setCurrentLocation={changeCenter} />
-	{(bundlePostsLength + postsLength) > 0 &&
-	 <IonButton
-	   aria-label={intl.formatMessage({id: 'xxx'})}
-	   className='square has-badge'
-	   onClick={showAllPosts}>
-	   <IonIcon
-	     aria-hidden='true'
-	     slot='icon-only'
-	     src={ListsIcon} />
-	     <IonBadge color='light'>
-		 {bundlePostsLength + postsLength}
-	     </IonBadge>
-	 </IonButton>
-	}
-    </div>;
+  const controls = <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'absolute',
+    right: '1rem',
+    top: '1rem',
+    zIndex: 999
+  }}>
+    <LocateMeControl setCurrentLocation={changeCenter} />
+    {(bundlePostsLength + postsLength) > 0 &&
+     <IonButton
+       aria-label={intl.formatMessage({id: 'xxx'})}
+       className='square icon-only has-badge'
+       data-testid='pages.map.showAllPosts.button'
+       onClick={showAllPosts}>
+       <IonIcon
+	 aria-hidden='true'
+	 slot='icon-only'
+	 src={ListsIcon} />
+       <IonBadge color='light'>
+	 {bundlePostsLength + postsLength}
+       </IonBadge>
+     </IonButton>
+    }
+  </div>;
 
   // /map is the default place to land once you're logged in and verified
   // if they are trying to access a restricted page, push them as needed
@@ -246,21 +254,25 @@ export const Map: React.FC = () => {
      || center === null
      || (geolocationDenied && geolocationNoBackup)
      || (geolocationAwaitingPrompt && geolocationNoBackup)){
-    return <div style={{height: 'calc(100vh - 113px)'}}>
+    return <div
+	     data-testid='pages.map.loadingIndicator'
+	     style={{height: 'calc(100vh - 113px)'}}>
       <LoadingIndicator />
     </div>;
   }
-  return <div style={{
-    height: 'calc(100vh - 113px)',
-    position: 'relative'
-  }}>
+  return <div
+	   data-testid='pages.map'
+	   style={{
+	     height: 'calc(100vh - 113px)',
+	     position: 'relative'
+	   }}>
     <FRGMap
       center={center}
       controls={controls}
       layers={[
-	  currentLocationLayer,
-	  featuresLayer,
-	  ...bundlesLayer
+	currentLocationLayer,
+	featuresLayer,
+	...bundlesLayer
       ]}
       onFeatureClick={({data}: any) => {
 	// check if data is a list of features or not
@@ -268,7 +280,7 @@ export const Map: React.FC = () => {
 	  setClickedPosts(data)
 	}
       }}
-      zoom={14}
+      zoom={{level: 14}}
     />
     <InfoModal
       posts={clickedPosts}

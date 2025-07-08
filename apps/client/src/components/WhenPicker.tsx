@@ -11,6 +11,7 @@ import {
   IonNote,
 } from '@ionic/react';
 import {useFormContext} from 'react-hook-form';
+import {useIntl} from 'react-intl';
 
 interface WhenPickerProps {
   isLoading: boolean;
@@ -25,18 +26,28 @@ export const WhenPicker: React.FC<WhenPickerProps> = ({
     control,
     formState
   } = useFormContext();
+  const intl = useIntl();
   return <IonList className='ion-no-padding'>
     <IonItem className='no-hover no-ripple' lines='none'>
       <IonLabel>
 	<FormattedMessage id='common.label.starts' />
       </IonLabel>
-      <IonDatetimeButton datetime={`${name}_starts`} disabled={isLoading} />
-      <IonModal keepContentsMounted={true}>
+      <IonDatetimeButton
+	aria-label={intl.formatMessage({id: 'xxx'})}
+	data-testid='components.whenPicker.starts.button'
+	datetime={`${name}_starts`}
+	disabled={isLoading}
+	/>
+      <IonModal
+	aria-label={intl.formatMessage({id: 'xxx'})}
+	keepContentsMounted={true}
+	role='dialog'>
 	<Datetime
 	  control={control}
 	  id={`${name}_starts`}
 	  minuteValues='0,15,30,45'
 	  name='starts'
+	prefer-wheel={true}
 	/>
       </IonModal>
     </IonItem>
@@ -45,16 +56,22 @@ export const WhenPicker: React.FC<WhenPickerProps> = ({
 	<FormattedMessage id='common.label.ends' />
       </IonLabel>
       <IonDatetimeButton
+	aria-label={intl.formatMessage({id: 'xxx'})}
 	className={formState.isSubmitted && formState.errors.ends ? 'hasError' : undefined}
+	data-testid='components.whenPicker.ends.button'
 	datetime={`${name}_ends`}
 	disabled={isLoading}
       />
-      <IonModal keepContentsMounted={true}>
+      <IonModal
+	aria-label={intl.formatMessage({id: 'xxx'})}
+	keepContentsMounted={true}
+	role='dialog'>
 	<Datetime
 	  control={control}
 	  id={`${name}_ends`}
 	  minuteValues='0,15,30,45'
 	  name='ends'
+	prefer-wheel={true}
 	/>
       </IonModal>
     </IonItem>

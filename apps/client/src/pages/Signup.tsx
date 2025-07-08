@@ -36,6 +36,7 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword
 } from 'firebase/auth';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {
   useCallback,
   useRef,
@@ -187,6 +188,7 @@ const SignupForm: React.FC = () => {
 	<StateButton
 	  id='signup-submit-button'
 	  isLoading={isLoading}
+	  loadingIndicator={<StateButtonLoadingIndicator />}
 	  type='submit'>
 	  <FormattedMessage id='buttons.label.signup' />
 	</StateButton>
@@ -237,7 +239,8 @@ const SignupForm: React.FC = () => {
 }
 export const Signup: React.FC = () => {  
   const intl = useIntl();
-  return <IonGrid>
+  return <div data-testid='pages.signup'>
+    <IonGrid>
       <IonRow>
 	<IonCol size-xs='6' push-xs='3' push-sm='0'>
 	  <img
@@ -261,5 +264,6 @@ export const Signup: React.FC = () => {
 	  <SignupForm />
 	</IonCol>
       </IonRow>
-    </IonGrid>;
+    </IonGrid>
+  </div>;
 };

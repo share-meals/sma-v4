@@ -6,17 +6,7 @@ import {
 } from '@capacitor/push-notifications';
 import {AppWrapperLoadingIndicator} from '@/components/AppWrapper';
 import {Capacitor} from '@capacitor/core';
-import classnames from 'classnames';
-import {FormattedMessage} from 'react-intl';
-import {
-  IonBadge,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-} from '@ionic/react';
+import {IonRouterOutlet} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
 import {LayoutWrapper} from '@/components/LayoutWrapper';
 import {PostFormProvider} from '@/hooks/PostForm';
@@ -48,11 +38,13 @@ import {VerifyEmail} from '@/pages/VerifyEmail';
 import {ViewPost} from '@/pages/ViewPost';
 import {ViewShare} from '@/pages/ViewShare';
 
+/*
 import AccountIcon from '@material-symbols/svg-400/rounded/manage_accounts-fill.svg';
 import LoginIcon from '@material-symbols/svg-400/rounded/security_update_good-fill.svg';
 import MapIcon from '@material-symbols/svg-400/rounded/map-fill.svg';
 import SignupIcon from '@material-symbols/svg-400/rounded/person_add-fill.svg';
 import PostIcon from '@material-symbols/svg-400/rounded/rss_feed.svg';
+*/
 
 const PushNotificationActionListener: React.FC = () => {
   const history = useHistory();
@@ -82,85 +74,83 @@ const PushNotificationActionListener: React.FC = () => {
 
 export const Router: React.FC = () => {
   const {
-    bundlePostsLength,
-    features,
+    //bundlePostsLength,
+    //features,
     isLoggedIn,
-    postsLength,
+    //postsLength,
   } = useProfile();
   return <IonReactRouter>
     <PushNotificationActionListener />
-    <nav>
-      <IonTabs>
-	<IonRouterOutlet>
-	  <Route exact path='/app-wrapper'>
-	    <AppWrapperLoadingIndicator />
-	  </Route>
-	  <Route exact path='/login'>
-	    <LayoutWrapper>
-	      <Login />
-	    </LayoutWrapper>
-	  </Route>
+    <IonRouterOutlet animated={false}>
+      <Route exact path='/app-wrapper'>
+	<AppWrapperLoadingIndicator />
+      </Route>
+      <Route exact path='/login'>
+	<LayoutWrapper i18nKey='pages.login.title'>
+	  <Login />
+	</LayoutWrapper>
+      </Route>
 	  <Route exact path='/reset-password'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.resetPassword.title'>
 	      <ResetPassword />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/map'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.map.title'>
 	      <Map />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/verify-email'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.verifyEmail.title'>
 	      <VerifyEmail />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/post'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.post.title'>
 	      <PostFormProvider>
 		<Post />
 	      </PostFormProvider>
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/messages/dashboard'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.messageDashboard.title'>
 	      <MessagesDashboard />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/view-bundle-post/:bundleId/:id'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.viewPost.title'>
 	      <ViewPost source={'bundle'} />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/view-post/:id'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.viewPost.title'>
 	      <ViewPost />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/view-share/:id'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.viewShare.title'>
 	      <ViewShare />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/share'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.share.title'>
 	      <ShareFormProvider>
 		<Share />
 	      </ShareFormProvider>
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/signup'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.signup.title'>
 	      <Signup />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/account'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.account.title'>
 	      <Account />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/close-account'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.closeAccount.title'>
 	      <CloseAccount />
 	    </LayoutWrapper>
 	  </Route>
@@ -168,17 +158,19 @@ export const Router: React.FC = () => {
 	    {isLoggedIn ? <Redirect to='/map' /> : <Redirect to='/signup' />}
 	  </Route>
   	  <Route exact path='/privacy-policy'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.privacyPolicy.title'>
 	      <PrivacyPolicy />
 	    </LayoutWrapper>
 	  </Route>
-	  <Route exact path='/smart-pantry/:spid'>
-	    <LayoutWrapper>
+	  <Route
+	    exact
+	    path='/smart-pantry/:spid'>
+	    <LayoutWrapper i18nKey='pages.pantryLink.title'>
 	      <SmartPantryDashboard />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/page-not-found'>
-	    <LayoutWrapper>
+	    <LayoutWrapper i18nKey='pages.pageNotFound.title'>
 	      <PageNotFound />
 	    </LayoutWrapper>
 	  </Route>
@@ -186,6 +178,12 @@ export const Router: React.FC = () => {
 	    <Redirect to='/page-not-found' />
 	  </Route>
 	</IonRouterOutlet>
+  </IonReactRouter>;
+}
+
+
+/*
+
 	<IonTabBar color='primary' slot='bottom' aria-label='xxx'>
 	  {!isLoggedIn &&
 	   <IonTabButton
@@ -259,7 +257,4 @@ export const Router: React.FC = () => {
 	   </IonTabButton>
 	  }
 	</IonTabBar>
-      </IonTabs>
-    </nav>
-  </IonReactRouter>;
-}
+*/

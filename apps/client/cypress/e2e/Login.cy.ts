@@ -4,9 +4,10 @@ describe('Login', () => {
   before(() => {
     cy.logout();
   });
-
+  
   beforeEach(() => {
     cy.visit('/login');
+    cy.getByTestId('pages.login');
   });
 
   it('has no a11y violation on load', () => {

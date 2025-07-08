@@ -40,6 +40,7 @@ import {
   shareSchema
 } from '@sma-v4/schema';
 import {ShareTitle} from '@/components/ShareTitle';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {toast} from 'react-toastify';
 import {toastError} from '@/utilities/toastError';
 import {useForm} from 'react-hook-form';
@@ -304,8 +305,9 @@ const ShareContent: React.FC<{didIAsk: boolean, share: ShareType}> = ({
 	      isLoading={isLoading}
 	      size='large'
 	      slot='end'
+	      loadingIndicator={<StateButtonLoadingIndicator />}
 	      type='submit'>
-	      Ask
+	      <FormattedMessage id ='pages.viewShare.ask' />
 	    </StateButton>
 	    </IonItem>
 	  </form>

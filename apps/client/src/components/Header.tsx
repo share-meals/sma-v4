@@ -1,7 +1,9 @@
 import classnames from 'classnames';
-import {FormattedMessage} from 'react-intl';
 import {
-  IonBackButton,
+  FormattedMessage,
+  useIntl
+} from 'react-intl';
+import {
   IonBadge,
   IonButton,
   IonButtons,
@@ -14,7 +16,6 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import {useAlerts} from '@/hooks/Alerts';
-import {useIntl} from 'react-intl';
 import {useMessages} from '@/hooks/Messages';
 import {useProfile} from '@/hooks/Profile';
 import {useState} from 'react';
@@ -24,12 +25,12 @@ import WarningIcon from '@material-symbols/svg-400/rounded/warning.svg';
 import ChatIcon from '@material-symbols/svg-400/rounded/chat_bubble.svg';
 
 
-interface props {
-  translatedTitle: React.ReactNode
+interface HeaderProps {
+  i18nKey: string
 }
 
-export const Header: React.FC<React.PropsWithChildren<props>> = ({
-  translatedTitle
+export const Header: React.FC<HeaderProps> = ({
+  i18nKey
 }) => {
   const {alerts} = useAlerts();
   const intl = useIntl();
@@ -39,11 +40,8 @@ export const Header: React.FC<React.PropsWithChildren<props>> = ({
   return <>
     <IonHeader className='ion-no-border' style={{backgroundColor: 'var(--ion-color-primary)'}}>
       <IonToolbar color='primary' className='max-width-md margin-horizontal-auto'>
-	<IonButtons slot="start">
-	  <IonBackButton></IonBackButton>
-	</IonButtons>
 	<IonTitle>
-	  {translatedTitle}{import.meta.env.VITE_ENVIRONMENT !== 'live' && ` [${import.meta.env.VITE_ENVIRONMENT}]`}
+	  <FormattedMessage id={i18nKey} />{import.meta.env.VITE_ENVIRONMENT !== 'live' && ` [${import.meta.env.VITE_ENVIRONMENT}]`}
 	</IonTitle>
 	<IonButtons slot='end'>
 	  {Object.values(alerts).length > 0 &&
@@ -57,7 +55,7 @@ export const Header: React.FC<React.PropsWithChildren<props>> = ({
 	     />
 	   </IonButton>
 	  }
-	  {isLoggedIn &&
+	  {false && isLoggedIn &&
 	   <IonButton
 	     aria-label={intl.formatMessage({id: 'xxx'})}
 	     className={classnames({'has-badge': unreadCount > 0})}

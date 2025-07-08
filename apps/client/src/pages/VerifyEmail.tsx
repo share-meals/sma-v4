@@ -13,6 +13,7 @@ import {
 import {Notice} from '@/components/Notice';
 import {sendEmailVerification} from 'firebase/auth';
 import {StateButton} from '@share-meals/frg-ui';
+import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {
   useEffect,
   useRef,
@@ -70,6 +71,7 @@ export const VerifyEmail: React.FC = () => {
 	<StateButton
 	  expand='block'
 	  isLoading={isLoading}
+	  loadingIndicator={<StateButtonLoadingIndicator />}
 	  onClick={verifyStatus}
 	  size='large'>
 	  <FormattedMessage id='pages.verifyEmail.yesVerified' />
