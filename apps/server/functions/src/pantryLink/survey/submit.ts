@@ -10,7 +10,7 @@ import {
   WriteResult,
 } from 'firebase-admin/firestore';
 import {InsertRowsResponse} from '@google-cloud/bigquery';
-import {logSmartPantrySurveyResponse} from '@/log/smartpantry';
+import {logPantryLinkSurveyResponse} from '@/log/pantryLink';
 
 export const submit = onCall(
   async (request: CallableRequest<any>) => {
@@ -20,7 +20,7 @@ export const submit = onCall(
     let tasks: Promise<InsertRowsResponse | WriteResult>[] = [
       firestore.collection('users').doc(request.auth!.uid).set({
         private: {
-	  smartPantry: {
+	  pantryLink: {
 	    points: FieldValue.increment(
 	      10 * 100
 	    ),
@@ -32,7 +32,7 @@ export const submit = onCall(
     if (!process.env.FUNCTIONS_EMULATOR) {
       // emulator
       tasks.push(
-	logSmartPantrySurveyResponse({
+	logPantryLinkSurveyResponse({
           survey_id: request.data.surveyId,
           response_json: JSON.stringify(request.data.responseJson),
           user_id: request.auth!.uid, // todo: validate

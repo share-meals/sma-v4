@@ -1,4 +1,4 @@
-// TODO: export and import SMSP state type
+// TODO: export and import SMPL state type
 
 import {database} from '@/components/Firebase';
 import {
@@ -27,11 +27,12 @@ import {
   useIonViewWillLeave,
 } from '@ionic/react';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
+import Markdown from 'react-markdown';
 import {Notice} from '@/components/Notice';
-import {SmartPantryInfo} from '@sma-v4/schema';
+import {PantryLinkInfo} from '@sma-v4/schema';
 import {
-  SmartPantrySurvey,
-  SmartPantrySurveyProps
+  PantryLinkSurvey,
+  PantryLinkSurveyProps
 } from './Survey';
 import {StateButton} from '@share-meals/frg-ui';
 import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
@@ -47,79 +48,79 @@ import {useProfile} from '@/hooks/Profile';
 import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 import PageNotFoundSVG from '@/assets/svg/page-not-found.svg';
 
-export const SmartPantryDashboard: React.FC = () => {
+export const PantryLinkDashboard: React.FC = () => {
   const intl = useIntl();
-  const {spid} = useParams<{spid: string}>();
+  const {plid} = useParams<{plid: string}>();
   const {profile} = useProfile();
-  const points = profile.private.smartPantry.points;
-  const lastSurveyTaken = profile.private.smartPantry.timestamp.toDate();
-  const [spInfo, setSpInfo] = useState<SmartPantryInfo | null | undefined>(undefined);
-  const [spState, setSpState] = useState<string | null | undefined>(undefined);
-  const [spOutbox, setSpOutbox] = useState<string | null | undefined>(undefined);
+  const points = profile.private.pantryLink.points;
+  const lastSurveyTaken = profile.private.pantryLink.timestamp.toDate();
+  const [plInfo, setPlInfo] = useState<PantryLinkInfo | null | undefined>(undefined);
+  const [plState, setPlState] = useState<string | null | undefined>(undefined);
+  const [plOutbox, setPlOutbox] = useState<string | null | undefined>(undefined);
   const [sessionId, setSessionId] = useState<string | null | undefined>(undefined);
   const [sendingPoints, setSendingPoints] = useState<boolean>(false);
   const functions = getFunctions();
   // TODO: get input type from @sma-v4/schema
-  const getSmartPantryInfo = httpsCallable<{spid: string}, SmartPantryInfo>(functions, 'smart-pantry-info');
-  const requestVend = httpsCallable<{}, {sessionId: string}>(functions, 'smart-pantry-vend-request');
-  const cancelVend = httpsCallable(functions, 'smart-pantry-vend-cancel');
+  const getPantryLinkInfo = httpsCallable<{plid: string}, PantryLinkInfo>(functions, 'pantry-link-info');
+  const requestVend = httpsCallable<{}, {sessionId: string}>(functions, 'pantry-link-vend-request');
+  const cancelVend = httpsCallable(functions, 'pantry-link-vend-cancel');
   const modalRef = useRef<HTMLIonModalElement>(null);
 
   useEffect(() => {
     // TODO: listen for outbox
     // TODO: limit access rules for outbox to match user id
-    const statusRef = ref(database, `/smsp/${spid.toLowerCase().replace(/[^a-zA-Z0-9]/g, '')}/status`);
+    const statusRef = ref(database, `/pantryLinks/${plid.toLowerCase().replace(/[^a-zA-Z0-9]/g, '')}/status`);
     return onValue(statusRef, (snapshot) => {
       const val = snapshot.val();
-      setSpState(val === null ? null : val);
+      setPlState(val === null ? null : val);
     });
-  }, [setSpState]);
+  }, [setPlState]);
   
   useEffect(() => {
     if(sessionId !== undefined
        && sessionId !== null){
-      const outboxRef = ref(database, `/smsp/${spid.toLowerCase().replace(/[^a-zA-Z0-9]/g, '')}/outbox/${sessionId}`);
+      const outboxRef = ref(database, `/pantryLinks/${plid.toLowerCase().replace(/[^a-zA-Z0-9]/g, '')}/outbox/${sessionId}`);
       return onValue(outboxRef, (snapshot) => {
 	const val = snapshot.val();
-	setSpOutbox(val === null ? null : val.message);
+	setPlOutbox(val === null ? null : val.message);
       });
     }else{
       return; // needed for typescript checks
     }
-  }, [sessionId, setSpOutbox]);
+  }, [sessionId, setPlOutbox]);
 
   useEffect(() => {
-    switch(spOutbox){
+    switch(plOutbox){
       case 'approved':
 	toast.success(
-	  intl.formatMessage({id: 'pages.smartPantryDashboard.vend.approved'})
+	  intl.formatMessage({id: 'pages.pantryLinkDashboard.vend.approved'})
 	);
 	setSendingPoints(false);
 	setSessionId(null);
 	break;
       case 'denied':
 	toast.error(
-	  intl.formatMessage({id: 'pages.smartPantryDashboard.vend.denied'})
+	  intl.formatMessage({id: 'pages.pantryLinkDashboard.vend.denied'})
 	);
 	cancel({silent: false});
 	setSendingPoints(false);
 	setSessionId(null);
     }
-  }, [spOutbox]);
+  }, [plOutbox]);
   
   const sendPoints = async () => {
     setSendingPoints(true);
-    const {data: {sessionId}} = await requestVend({machineId: spid});
+    const {data: {sessionId}} = await requestVend({machineId: plid});
     setSessionId(sessionId);
   };
   
   const cancel = ({silent}: {silent: boolean}) => {
-    // TODO: only cancel if current user at sp
-    cancelVend({machineId: spid});
+    // TODO: only cancel if current user at pl
+    cancelVend({machineId: plid});
     setSendingPoints(false);
     if(!silent){
       toast.success(
-	intl.formatMessage({id: 'pages.smartPantryDashboard.vend.canceled'})
+	intl.formatMessage({id: 'pages.pantryLinkDashboard.vend.canceled'})
       );
     }
   };
@@ -127,11 +128,11 @@ export const SmartPantryDashboard: React.FC = () => {
   useEffect(() => {
     (async () => {
       try{
-	const response = await getSmartPantryInfo({spid});
-	setSpInfo(response.data);
+	const response = await getPantryLinkInfo({plid});
+	setPlInfo(response.data);
       }catch(error: any){
 	console.log(error);
-	setSpInfo(null);
+	setPlInfo(null);
 	// TODO: error checking
       }
     })()
@@ -141,7 +142,7 @@ export const SmartPantryDashboard: React.FC = () => {
     cancel({silent: true});
   });
 
-  switch(spInfo){
+  switch(plInfo){
     case undefined:
       return <LoadingIndicator />;
       break;
@@ -150,14 +151,14 @@ export const SmartPantryDashboard: React.FC = () => {
       break;
   }
   
-  switch(spState){
+  switch(plState){
     case undefined:
       return <div style={{height: 'calc(100vh - 113px)'}}>
 	<LoadingIndicator />
       </div>;
     case null:
     case 'OFFLINE':
-      return <Offline spName={spInfo!.name} />;
+      return <Offline plName={plInfo!.name} />;
     case 'ENABLED':
       // waiting! so use it
       break;
@@ -168,56 +169,55 @@ export const SmartPantryDashboard: React.FC = () => {
     lastSurveyTaken
   );
 
-  const daysRemainingUntilNextSurvey = Math.max(spInfo!.surveyInterval - daysSinceLastSurvey, 0);
-  const canSurvey = daysSinceLastSurvey >= spInfo!.surveyInterval;
+  const daysRemainingUntilNextSurvey = Math.max(plInfo!.surveyInterval - daysSinceLastSurvey, 0);
+  const canSurvey = daysSinceLastSurvey >= plInfo!.surveyInterval;
   return <>
     <div className='ion-text-center ion-padding'>
       <IonText>
-	<p className='ion-no-margin'>
-	  <FormattedMessage id='pages.smartPantryDashboard.youHave' />
-	</p>
-	<h1 className='ion-no-margin' style={{fontSize: '8rem'}}>
-	  {points / 100}
-	</h1>
-	<p className='ion-no-margin'>
-	  <FormattedMessage id='common.label.points' />
-	</p>
+  <h2>
+	  {plInfo!.name}
+	</h2>
+	<Markdown>
+	  {intl.formatMessage({id: 'pages.pantryLinkDashboard.youHaveXPoints'},
+			      {points})}
+	</Markdown>
       </IonText>
+      
       <div className='mb-3'>
 	<IonButton
 	  disabled={!canSurvey}
 	  fill='outline'
 	  id='showSurvey'>
-	  <FormattedMessage id='pages.smartPantryDashboard.getMorePoints' />
+	  <FormattedMessage id='pages.pantryLinkDashboard.getMorePoints' />
 	</IonButton>
 	{!canSurvey && <IonText>
 	  <p>
-	    <FormattedMessage id='pages.smartPantryDashboard.surveyWait' values={{days: daysRemainingUntilNextSurvey}} />
+	    <FormattedMessage id='pages.pantryLinkDashboard.surveyWait' values={{days: daysRemainingUntilNextSurvey}} />
 	  </p>
 	</IonText>}
       </div>
       <StateButton
 	isLoading={sendingPoints}
 	onClick={sendPoints}
-	disabled={points <= 0/* || spState !== 'ENABLED'*/}
+	disabled={points <= 0/* || plState !== 'ENABLED'*/}
 	loadingIndicator={<StateButtonLoadingIndicator />}
 	size='large'>
-	<FormattedMessage id='pages.smartPantryDashboard.sendPoints' values={{spName: spInfo!.name}} />
+	<FormattedMessage id='pages.pantryLinkDashboard.sendPoints' />
       </StateButton>
       {
 	/*
-	spState !== 'ENABLED' &&
-       <Notice color='warning'>
-	 <span style={{display: 'flex'}} className='ion-align-items-center ion-justify-content-between'>
-	   <FormattedMessage id='pages.smartPantryDashboard.machineBusy' />
-	 </span>
-       </Notice>
-	*/
+	   spState !== 'ENABLED' &&
+	   <Notice color='warning'>
+	   <span style={{display: 'flex'}} className='ion-align-items-center ion-justify-content-between'>
+	   <FormattedMessage id='pages.pantryLinkDashboard.machineBusy' />
+	   </span>
+	   </Notice>
+	 */
       }
       {sendingPoints &&
        <Notice color='success'>
 	 <span style={{display: 'flex'}} className='ion-align-items-center ion-justify-content-between'>
-	   <FormattedMessage id='pages.smartPantryDashboard.makeChoiceOnMachine' />
+	   <FormattedMessage id='pages.pantryLinkDashboard.makeChoiceOnMachine' />
 	   <IonButton slot='end' fill='outline' onClick={() => {cancel({silent: false});}}>
 	     <FormattedMessage id='buttons.label.cancel' />
 	   </IonButton>
@@ -226,7 +226,7 @@ export const SmartPantryDashboard: React.FC = () => {
       }
     </div>
     <SurveyModal
-      json={JSON.parse(spInfo!.surveyJson)}
+      json={JSON.parse(plInfo!.surveyJson)}
       modalRef={modalRef}
     />
   </>;
@@ -236,34 +236,34 @@ const InvalidCode: React.FC = () => <div className='ion-text-center'>
   <img src={PageNotFoundSVG} className='square responsive' />
   <IonText>
     <h1>
-      <FormattedMessage id='pages.smartPantryDashboard.spidNotFound.title' />
+      <FormattedMessage id='pages.pantryLinkDashboard.plidNotFound.title' />
     </h1>
     <p>
-      <FormattedMessage id='pages.smartPantryDashboard.spidNotFound.explanation' />
+      <FormattedMessage id='pages.pantryLinkDashboard.plidNotFound.explanation' />
     </p>
   </IonText>
 </div>;
 
-const Offline: React.FC<{spName: string}> = ({spName}) => <div className='ion-text-center'>
+const Offline: React.FC<{plName: string}> = ({plName}) => <div className='ion-text-center'>
   <img src={PageNotFoundSVG} className='square responsive' />
   <IonText>
     <h1>
-      <FormattedMessage id='pages.smartPantryDashboard.offline.title' values={{spName}} />
+      <FormattedMessage id='pages.pantryLinkDashboard.offline.title' values={{plName}} />
     </h1>
     <p>
-      <FormattedMessage id='pages.smartPantryDashboard.offline.explanation' />
+      <FormattedMessage id='pages.pantryLinkDashboard.offline.explanation' />
     </p>
   </IonText>
 </div>;
 
-const SurveyModal: React.FC<SmartPantrySurveyProps> = ({
+const SurveyModal: React.FC<PantryLinkSurveyProps> = ({
   json,
   modalRef,
 }) => <IonModal ref={modalRef} trigger='showSurvey'>
   <IonHeader className='ion-no-border'>
     <IonToolbar color='primary'>
       <IonTitle>
-	<FormattedMessage id='pages.smartPantryDashboard.survey.title' />
+	<FormattedMessage id='pages.pantryLinkDashboard.survey.title' />
       </IonTitle>
       <IonButtons slot='end'>
         <IonButton onClick={() => modalRef.current?.dismiss()}>
@@ -273,7 +273,7 @@ const SurveyModal: React.FC<SmartPantrySurveyProps> = ({
     </IonToolbar>
   </IonHeader>
   <IonContent className='ion-padding'>
-    <SmartPantrySurvey
+    <PantryLinkSurvey
       json={json}
       modalRef={modalRef}
     />

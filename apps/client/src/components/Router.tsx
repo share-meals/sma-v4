@@ -33,7 +33,7 @@ import {PrivacyPolicy} from '@/pages/PrivacyPolicy';
 import {ResetPassword} from '@/pages/ResetPassword';
 import {Share} from '@/pages/Share';
 import {Signup} from '@/pages/Signup';
-import {SmartPantryDashboard} from '@/pages/SmartPantry';
+import {PantryLinkDashboard} from '@/pages/PantryLink';
 import {VerifyEmail} from '@/pages/VerifyEmail';
 import {ViewPost} from '@/pages/ViewPost';
 import {ViewShare} from '@/pages/ViewShare';
@@ -164,9 +164,9 @@ export const Router: React.FC = () => {
 	  </Route>
 	  <Route
 	    exact
-	    path='/smart-pantry/:spid'>
+	    path='/pantry-link/:plid'>
 	    <LayoutWrapper i18nKey='pages.pantryLink.title'>
-	      <SmartPantryDashboard />
+	      <PantryLinkDashboard />
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/page-not-found'>

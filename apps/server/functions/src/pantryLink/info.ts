@@ -1,4 +1,4 @@
-// TODO: type return to match SmartPantryInfo
+// TODO: type return to match PantryLinkInfo
 
 import {
   CallableRequest,
@@ -13,8 +13,8 @@ import {
 } from '@/common';
 import {z} from 'zod';
 
-const smartpantryInfoSchema = z.object({
-  spid: z.string()
+const pantryLinkInfoSchema = z.object({
+  plid: z.string()
 });
 
 export const info = onCall(
@@ -22,24 +22,24 @@ export const info = onCall(
     requireAuthed(request.auth);
     validateSchema({
       data: request.data,
-      schema: smartpantryInfoSchema
+      schema: pantryLinkInfoSchema
     });
 
     const firestore = getFirestore();
-    const sp = await firestore
-    .collection('smartPantries')
+    const pl = await firestore
+    .collection('pantryLinks')
     .doc(
-      request.data.spid
+      request.data.plid
       .toLowerCase()
       .replace(/[^a-zA-Z0-9]/g, '')
     )
     .get();
-    if(!sp.exists){
+    if(!pl.exists){
       throw new HttpsError(
 	'invalid-argument',
 	functionsErrorCodes.invalidArgumentSchema
       );
     }
-    return sp.data();
+    return pl.data();
   }
 );

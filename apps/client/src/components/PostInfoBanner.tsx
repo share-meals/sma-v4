@@ -84,7 +84,7 @@ export const PostInfoBanner: React.FC<any & {onNavigate: () => void}> = (props) 
 	&& postInfo.photos.length > 0
 				  ? <Photo path={`postPhotos/${postInfo.id}-${postInfo.photos[0]}.png`} />
 				  : <img
-				      alt={intl.formatMessage({id: 'xxx'})}
+				      alt={intl.formatMessage({id: 'components.postInfoBanner.postPhoto.alt'})}
 				      src={postInfo.type === 'event' ? logo : cardOutline} />}
       </IonThumbnail>
     </IonItem>

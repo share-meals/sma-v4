@@ -37,7 +37,7 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
 }) => {
   const intl = useIntl();
   return <IonButton
-	   aria-label={intl.formatMessage({id: 'xxx'})}
+	   aria-label={intl.formatMessage({id: `${i18nKey}.ariaLabel`})}
 	   className={classnames('icon-top', {'has-badge': badge})}
 	   data-testid={testid}
 	   routerLink={link}

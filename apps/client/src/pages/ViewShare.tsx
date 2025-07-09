@@ -122,7 +122,7 @@ const MoreActions: React.FC<MoreActionsProps> = ({
   });
     return <>
 	<IonButton
-	  aria-label='more'
+	  aria-label={intl.formatMessage({id: 'common.openMoreActions.button.ariaLabel'})}
 	  id='openMoreActions'
 	  size='small'
 	  fill='clear'
@@ -135,7 +135,7 @@ const MoreActions: React.FC<MoreActionsProps> = ({
 	</IonButton>
 	<IonActionSheet
 	   trigger='openMoreActions'
-	   header={intl.formatMessage({id: 'pages.viewPost.moreActions'})}
+	   header={intl.formatMessage({id: 'common.moreActions.actionSheet.title'})}
 	   buttons={buttons}
 	/>
     </>

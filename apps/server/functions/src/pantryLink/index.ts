@@ -2,7 +2,7 @@ import {survey} from './survey';
 import {info} from './info';
 import {vend} from './vend';
 
-export const smartPantry = {
+export const pantryLink = {
   info,
   survey,
   vend,

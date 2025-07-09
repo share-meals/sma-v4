@@ -4,7 +4,7 @@ import {
 } from '@google-cloud/bigquery';
 import {generateBigQueryClient} from './bigQueryClient';
 
-type logSmartPantrySurveyResponse = (args: {
+type logPantryLinkSurveyResponse = (args: {
   survey_id: string,
   response_json: string,
   user_id: string,
@@ -41,14 +41,14 @@ const SurveyResponseSchema = [
 ];
 
 
-export const logSmartPantrySurveyResponse: logSmartPantrySurveyResponse = (args) => {
+export const logPantryLinkSurveyResponse: logPantryLinkSurveyResponse = (args) => {
   if (process.env.FUNCTIONS_EMULATOR) {
     // emulator
     return new Promise((resolve) => {resolve});
   }
   const bigQuery: BigQuery = generateBigQueryClient();
   return bigQuery
-      .dataset('smsp')
+      .dataset('smsp') // TODO: rename dataset
       .table('survey_response')
       .insert({
         timestamp: new Date(),
@@ -56,7 +56,7 @@ export const logSmartPantrySurveyResponse: logSmartPantrySurveyResponse = (args)
       });
 };
 
-type logSmartPantryVend = (args: {
+type logPantryLinkVend = (args: {
   item_number?: number,
   item_price?: number,
   machine_id: string,
@@ -98,14 +98,14 @@ const vendSchema = [
     }
 ];
 
-export const logSmartPantryVend: logSmartPantryVend = (args) => {
+export const logPantryLinkVend: logPantryLinkVend = (args) => {
   if (process.env.FUNCTIONS_EMULATOR) {
     // emulator
     return new Promise((resolve) => resolve);
   }
   const bigQuery: BigQuery = generateBigQueryClient();
   return bigQuery
-      .dataset('smsp')
+      .dataset('smsp') // TODO: rename dataset
       .table('vend')
       .insert({
         timestamp: new Date(),

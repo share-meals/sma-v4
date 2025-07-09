@@ -184,15 +184,16 @@ export const Account: React.FC = () => {
 	</IonLabel>
 	<IonButtons slot='end'>
 	  <StateButton
-	    aria-label={intl.formatMessage({id: 'xxx'})}
+	    aria-label={intl.formatMessage({id: 'pages.account.showJoinCommunity.button.ariaLabel'})}
 	    color='light'
 	    data-testid='pages.account.showJoinCommunity.button'
 	    fill='outline'
 	    loadingIndicator={<StateButtonLoadingIndicator />}
 	    onClick={() => {setShowJoinCommunity(true);}}>
 	    <IonIcon
-	      aria-label={intl.formatMessage({id: 'xxx'})}
-	      slot='icon-only' src={AddIcon} />
+	      aria-hidden='true'
+	      slot='icon-only'
+	      src={AddIcon} />
 	  </StateButton>
 	</IonButtons>
       </IonItem>

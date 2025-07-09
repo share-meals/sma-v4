@@ -46,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({
 	<IonButtons slot='end'>
 	  {Object.values(alerts).length > 0 &&
 	   <IonButton
-	     aria-label={intl.formatMessage({id: 'xxx'})}
+	     aria-label={intl.formatMessage({id: 'components.header.alerts.button.ariaLabel'})}
 	     onClick={() => {setShowAlerts(true);}}>
 	     <IonIcon
 	       aria-hidden='true'
@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({
 	  }
 	  {false && isLoggedIn &&
 	   <IonButton
-	     aria-label={intl.formatMessage({id: 'xxx'})}
+	     aria-label={intl.formatMessage({id: 'components.header.messages.button.ariaLabel'})}
 	     className={classnames({'has-badge': unreadCount > 0})}
 	     routerDirection='root'
 	     routerLink='/messages/dashboard'>
