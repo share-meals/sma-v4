@@ -56,7 +56,7 @@ const InfoModal: React.FC<{posts: PostType[]}> = ({posts}) => {
   }, []);
   
   return <IonModal
-	   aria-label={intl.formatMessage({id: 'xxx'})}
+	   aria-label={intl.formatMessage({id: 'pages.map.postsList.modal.ariaLabel'})}
 	   isOpen={isOpen}
 	   onDidDismiss={() => {setIsOpen(false);}}
 	   role='dialog'>
@@ -67,7 +67,7 @@ const InfoModal: React.FC<{posts: PostType[]}> = ({posts}) => {
 	</IonTitle>
 	<IonButtons slot='end'>
 	  <IonButton
-	    aria-label={intl.formatMessage({id: 'xxx'})}
+	    aria-label={intl.formatMessage({id: 'pages.map.postsList.modal.close.button.ariaLabel'})}
 	    onClick={() => {setIsOpen(false);}}>
 	    <IonIcon aria-hidden='true' src={CloseIcon}/>
 	  </IonButton>
@@ -227,7 +227,7 @@ export const Map: React.FC = () => {
     <LocateMeControl setCurrentLocation={changeCenter} />
     {(bundlePostsLength + postsLength) > 0 &&
      <IonButton
-       aria-label={intl.formatMessage({id: 'xxx'})}
+       aria-label={intl.formatMessage({id: 'pages.map.showAllPosts.button.ariaLabel'})}
        className='square icon-only has-badge'
        data-testid='pages.map.showAllPosts.button'
        onClick={showAllPosts}>

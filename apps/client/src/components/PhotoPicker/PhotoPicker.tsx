@@ -72,7 +72,7 @@ const AddPhotoButton: React.FC = () => {
     setValue('photos', photos ? [...photos, photoBase64] : [photoBase64]);
   };
   return <IonButton
-	   aria-label={intl.formatMessage({id: 'xxx'})}
+	   aria-label={intl.formatMessage({id: 'components.photoPicker.addPhoto.button.ariaLabel'})}
 	   className='pr-1'
 	   color='light'
 	   data-testid='components.photoPicker.addPhoto.button'
@@ -111,7 +111,7 @@ export const PhotoPicker: React.FC<PhotoPickerProps> = () => {
 	  {photos && photos.map((photo: string, index: number) => (
 	    <IonCol className='photopicker-tile' key={photo.slice(-10) + index}>
 	      <IonButton
-		aria-label={intl.formatMessage({id: 'xxx'})}
+		aria-label={intl.formatMessage({id: 'components.photoPicker.removePhoto.button.ariaLabel'})}
 		data-testid='components.photoPicker.removePhoto.button'
 		color='danger'
 		onClick={() => {

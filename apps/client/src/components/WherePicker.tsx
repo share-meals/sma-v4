@@ -257,7 +257,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 
   const controls = <div style={controlsRightStyle}>
     <IonButton
-      aria-label={intl.formatMessage({id: 'xxx'})}
+      aria-label={intl.formatMessage({id: 'components.wherePicker.lock.button.ariaLabel'})}
       data-testid='components.wherePicker.lock.button'
       className='square'
       onClick={() => {setIsLocked(!isLocked);}}>
@@ -392,7 +392,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
        readonly={true}
        value={address}>
        <IonButton
-	 aria-label={intl.formatMessage({id: 'xxx'})}
+	 aria-label={intl.formatMessage({id: 'components.wherePicker.refreshCurrentLocation.button.ariaLabel'})}
 	 disabled={isLoading}
 	 fill='clear'
 	 slot='end'

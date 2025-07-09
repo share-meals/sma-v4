@@ -13,7 +13,7 @@ import {
   Firestore,
   getFirestore,
 } from 'firebase-admin/firestore';
-import {logSmartPantryVend} from '@/log/smartpantry';
+import {logPantryLinkVend} from '@/log/pantryLink';
 
 export const approved = onCall(
   async (request: CallableRequest<any>) => {
@@ -27,9 +27,8 @@ export const approved = onCall(
       sessionId,
       userId,
     } = request.data;
-    console.log(JSON.stringify(request.data));
     try {
-      logSmartPantryVend({
+      logPantryLinkVend({
 	item_number: itemNumber,
 	item_price: itemPrice,
 	machine_id: machineId,
@@ -44,27 +43,17 @@ export const approved = onCall(
       // deduct points
       firestore.collection('users').doc(userId).update({
 	// todo: just in case, check if points goes below 0
-	'private.smartPantry.points': FieldValue.increment(itemPrice * -1)
+	'private.pantryLink.points': FieldValue.increment(itemPrice * -1)
       }),
-      // log it
-      /*
-      logSmartPantryVend({
-	itemNumber: itemNumber,
-	itemPrice: itemPrice,
-	machineId: machineId,
-	status: 'approved',
-	userId: userId
-      }),
-      */
       // send message to user
-      database.ref(`/smsp/${machineId}/outbox`).set({
+      database.ref(`/pantryLinks/${machineId}/outbox`).set({
 	message: 'approved',
 	sessionId,
 	timestamp: ServerValue.TIMESTAMP
       }),
       // tell machine to reset
       /*
-      database.ref(`/smsp/${machineId}/inbox`).set({
+      database.ref(`/pantryLinks/${machineId}/inbox`).set({
 	message: 'reset',
 	timestamp: ServerValue.TIMESTAMP
       })

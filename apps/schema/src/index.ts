@@ -5,5 +5,5 @@ export * from './location';
 export * from './messaging';
 export * from './post';
 export * from './share';
-export * from './smartPantry';
+export * from './pantryLink';
 export * from './user';

@@ -104,7 +104,8 @@ export const logPostView = async ({communities, ...data}: any) => {
 	...data
       })
       .catch((error: any) => {
-	console.log(JSON.stringify(error));
+	console.log(error);
+	//console.log(JSON.stringify(error));
       })
     );
   }

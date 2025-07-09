@@ -7,7 +7,7 @@ import {
   getDatabase,
   ServerValue,
 } from 'firebase-admin/database';
-import {logSmartPantryVend} from '@/log/smartpantry';
+import {logPantryLinkVend} from '@/log/pantryLink';
 
 export const cancel = onCall(
   async (request: CallableRequest<any>) => {
@@ -15,12 +15,12 @@ export const cancel = onCall(
     const {machineId} = request.data;
     const database: Database = getDatabase();
     return Promise.all([
-      database.ref(`/smsp/${machineId}/inbox`).set({
+      database.ref(`/pantryLinks/${machineId}/inbox`).set({
 	message: 'cancelRequest',
 	timestamp: ServerValue.TIMESTAMP
       }),
-      database.ref(`/smsp/${machineId}/outbox`).remove(),
-      logSmartPantryVend({
+      database.ref(`/pantryLinks/${machineId}/outbox`).remove(),
+      logPantryLinkVend({
 	machine_id: machineId,
 	status: 'canceled',
 	user_id: request.auth!.uid!

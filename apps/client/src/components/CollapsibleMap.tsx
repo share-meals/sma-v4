@@ -104,7 +104,7 @@ export const CollapsibleMap: React.FC<Location> = ({
   }}>
     <LocateMeControl setCurrentLocation={changeCenter} />
     <IonButton
-      aria-label={intl.formatMessage({id: 'xxx'})}
+      aria-label={intl.formatMessage({id: 'components.collapsibleMap.centerOnPost.button.ariaLabel'})}
       className='square' onClick={() => {changeCenter(postCenter);}}>
       <IonIcon aria-hidden='true' slot='icon-only' src={PostLocationIcon} />
     </IonButton>

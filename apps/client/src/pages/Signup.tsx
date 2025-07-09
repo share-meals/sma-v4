@@ -203,7 +203,7 @@ const SignupForm: React.FC = () => {
       </Notice>}
     </form>
     <IonModal
-      aria-label='xxx'
+      aria-label={intl.formatMessage({id: 'pages.signup.privacyPolicy.modal.ariaLabel'})}
       aria-modal='true'
       data-testid='pages.signup.privacyPolicy.modal'
       ref={modal}
@@ -218,11 +218,11 @@ const SignupForm: React.FC = () => {
 	  </IonTitle>
           <IonButtons slot='end'>
             <IonButton
-	      aria-label={intl.formatMessage({id: 'pages.signUp.closePrivacyPolicyModal'})}
+	      aria-label={intl.formatMessage({id: 'pages.signUp.privacyPolicy.modal.close.ariaLabel'})}
 	      data-testid='pages.signup.privacyPolicy.close.button'
 	      onClick={() => modal.current?.dismiss()}>
 	      <IonIcon
-		aria-label={intl.formatMessage({id: 'buttons.label.closeButton'})}
+		aria-hidden='true'
 		icon={CloseIcon}
 		slot='icon-only'
 	      />
@@ -244,7 +244,7 @@ export const Signup: React.FC = () => {
       <IonRow>
 	<IonCol size-xs='6' push-xs='3' push-sm='0'>
 	  <img
-	    alt={intl.formatMessage({id: 'img.alt.signupPage'})}
+	    alt={intl.formatMessage({id: 'pages.signupPage.image.alt'})}
 	    src={SignupSVG}
 	    className='square responsive'
 	  />

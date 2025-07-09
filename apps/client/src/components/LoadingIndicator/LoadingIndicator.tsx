@@ -5,12 +5,14 @@ import {
   useEffect,
   useState,
 } from 'react';
+import {useIntl} from 'react-intl';
 
 type Props = React.ComponentProps<typeof IonSpinner>;
 
 const DELAY = 200;
 
 export const LoadingIndicator: React.FC<Props> = (props) => {
+  const intl = useIntl();
   const [shouldRender, setShouldRender] = useState<boolean>(false);
   useEffect(() => {
     const timeoutId: number = window.setTimeout(() => {
@@ -23,9 +25,8 @@ export const LoadingIndicator: React.FC<Props> = (props) => {
   if(shouldRender){
     return <div className='centered-wrapper'>
       <IonSpinner
-	aria-label='loading indicator'
+	aria-label={intl.formatMessage({id: 'components.loadingIndicator.spinner.ariaLabel'})}
 	color='primary'
-	data-testid='loading indicator'
 	style={{
 	  height: '50%',
 	  width: '50%',
