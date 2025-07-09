@@ -9,29 +9,29 @@ import {useState} from 'react';
 import {useParams} from 'react-router-dom';
 
 
-export interface SmartPantrySurveyProps {
+export interface PantryLinkSurveyProps {
   json: any;
   modalRef: any;
 }
 
-export const SmartPantrySurvey: React.FC<SmartPantrySurveyProps> = ({
+export const PantryLinkSurvey: React.FC<PantryLinkSurveyProps> = ({
   json,
   modalRef,
 }) => {
   const intl = useIntl();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const functions = getFunctions();
-  const submitResponses = httpsCallable(functions, 'smart-pantry-survey-submit');
-  const {spid} = useParams<{spid: string}>();
+  const submitResponses = httpsCallable(functions, 'pantry-link-survey-submit');
+  const {plid} = useParams<{plid: string}>();
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     await submitResponses({
       surveyId: json.meta.id,
       responseJson: data,
-      machineId: spid
+      machineId: plid
     });
     modalRef.current?.dismiss();
-    toast.success(intl.formatMessage({id: 'pages.smartPantryDashboard.surveySent'}));
+    toast.success(intl.formatMessage({id: 'pages.pantryLinkDashboard.surveySent'}));
     setIsLoading(false);
   };
   

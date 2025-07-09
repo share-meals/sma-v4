@@ -9,7 +9,7 @@ import {
 } from 'firebase-admin/database';
 const {error} = require('firebase-functions/logger');
 import {InsertRowsResponse} from '@google-cloud/bigquery';
-import {logSmartPantryVend} from '@/log/smartpantry';
+import {logPantryLinkVend} from '@/log/pantryLink';
 
 export const denied = onCall(
   async (request: CallableRequest<any>) => {
@@ -23,7 +23,7 @@ export const denied = onCall(
     } = request.data;
     const userId: string = request.auth!.uid!;
     try{
-      await logSmartPantryVend({
+      await logPantryLinkVend({
 	item_number: itemNumber,
 	item_price: itemPrice,
 	machine_id: machineId,
@@ -37,7 +37,7 @@ export const denied = onCall(
     const tasks: Promise<InsertRowsResponse | void>[] = [
       // log it
       // send message to user
-      database.ref(`/smsp/${machineId}/outbox`).set({
+      database.ref(`/pantryLinks/${machineId}/outbox`).set({
 	message: 'denied',
 	sessionId,
 	timestamp: ServerValue.TIMESTAMP

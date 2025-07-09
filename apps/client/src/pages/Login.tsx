@@ -161,7 +161,7 @@ export const Login: React.FC = () => {
       <IonRow>
 	<IonCol size-xs='6' push-xs='3' push-sm='0'>
 	  <img
-	    alt={intl.formatMessage({id: 'img.alt.loginPage'})}
+	    alt={intl.formatMessage({id: 'pages.login.image.alt'})}
 	    className='square responsive'
 	    src={LoginIcon}
 	  />
@@ -185,7 +185,7 @@ export const Login: React.FC = () => {
       </IonRow>
     </IonGrid>
     <IonModal
-      aria-label={intl.formatMessage({id: 'xxx'})}
+      aria-label={intl.formatMessage({id: 'pages.login.resetPasswordModal.ariaLabel'})}
       aria-modal='true'
       ref={modal}
       role='dialog'
@@ -199,11 +199,11 @@ export const Login: React.FC = () => {
 	  </IonTitle>
           <IonButtons slot='end'>
             <IonButton
-	      aria-label={intl.formatMessage({id: 'pages.login.closeResetPasswordModal'})}
+	      aria-label={intl.formatMessage({id: 'pages.login.resetPasswordModal.close.ariaLabel'})}
 	      onClick={() => modal.current?.dismiss()}
 	    >
 	      <IonIcon
-	      	aria-label={intl.formatMessage({id: 'buttons.label.closeButton'})}
+		aria-hidden='true'
 		icon={CloseIcon}
 		slot='icon-only' />
 	    </IonButton>

@@ -5,7 +5,7 @@ export const PageNotFound: React.FC = () => {
   const intl = useIntl();
   return <div className='ion-text-center'>
     <img
-      alt={intl.formatMessage({id: 'img.alt.PageNotFound'})}
+      alt={intl.formatMessage({id: 'pages.pageNotFound.image.alt'})}
       src={PageNotFoundSVG}
       className='square responsive'
     />

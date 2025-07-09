@@ -24,7 +24,7 @@ export const communitySchema = z.object({
   features: z.object({
     canShare: z.boolean(),
     canPost: z.boolean(),
-    canSmartPantry: z.boolean(),
+    canPantryLink: z.boolean(),
     mustWhitelistPost: z.boolean()
   }),
   locations: locationSchema.array(),

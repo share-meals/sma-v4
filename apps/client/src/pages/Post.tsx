@@ -214,14 +214,14 @@ export const Post: React.FC = () => {
       <div className='ion-align-items-center ion-justify-content-between' style={{display: 'flex', width: '100%'}}>
 	<FormattedMessage id='common.label.when' />
 	<IonButton
-	  aria-label={intl.formatMessage({id: 'xxx'})}
+	  aria-label={intl.formatMessage({id: 'components.whenPicker.happeningNow.button.ariaLabel'})}
 	  className='pr-1'
 	  color='light'
 	  data-testid='pages.post.happeningNow.button'
 	  disabled={isLoading}
 	  fill='outline'
 	  onClick={resetWhenPickerToNow}>
-	  <FormattedMessage id='components.whenPicker.happeningNow' />
+	  <FormattedMessage id='components.whenPicker.happeningNow.button.text' />
 	</IonButton>
       </div>
     </IonListHeader>
@@ -244,7 +244,7 @@ export const Post: React.FC = () => {
     }
     <div className='pt-3 ion-text-center'>
       <StateButton
-	aria-label={intl.formatMessage({id: 'xxx'})}
+	aria-label={intl.formatMessage({id: 'pages.post.submit.button.ariaLabel'})}
 	data-testid='pages.post.submit.button'
 	form='post-form'
 	isLoading={isLoading || !isWherePickerReady}

@@ -33,13 +33,13 @@ export const WhenPicker: React.FC<WhenPickerProps> = ({
 	<FormattedMessage id='common.label.starts' />
       </IonLabel>
       <IonDatetimeButton
-	aria-label={intl.formatMessage({id: 'xxx'})}
+	aria-label={intl.formatMessage({id: 'components.whenPicker.starts.button.ariaLabel'})}
 	data-testid='components.whenPicker.starts.button'
 	datetime={`${name}_starts`}
 	disabled={isLoading}
 	/>
       <IonModal
-	aria-label={intl.formatMessage({id: 'xxx'})}
+	aria-label={intl.formatMessage({id: 'components.whenPicker.starts.modal.ariaLabel'})}
 	keepContentsMounted={true}
 	role='dialog'>
 	<Datetime
@@ -56,14 +56,14 @@ export const WhenPicker: React.FC<WhenPickerProps> = ({
 	<FormattedMessage id='common.label.ends' />
       </IonLabel>
       <IonDatetimeButton
-	aria-label={intl.formatMessage({id: 'xxx'})}
+	aria-label={intl.formatMessage({id: 'components.whenPicker.ends.button.ariaLabel'})}
 	className={formState.isSubmitted && formState.errors.ends ? 'hasError' : undefined}
 	data-testid='components.whenPicker.ends.button'
 	datetime={`${name}_ends`}
 	disabled={isLoading}
       />
       <IonModal
-	aria-label={intl.formatMessage({id: 'xxx'})}
+	aria-label={intl.formatMessage({id: 'components.whenPicker.ends.modal.ariaLabel'})}
 	keepContentsMounted={true}
 	role='dialog'>
 	<Datetime

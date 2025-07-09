@@ -141,7 +141,7 @@ const ChatForm: React.FC<ChatFormProps> = ({
 	<IonRow className='ion-align-items-top'>
 	  <IonCol>
 	    <Input
-	      aria-label={intl.formatMessage({id: 'xxx'})}
+	      aria-label={intl.formatMessage({id: 'components.chat.text.input.ariaLabel'})}
 	      control={control}
 	      data-testid='components.chat.text.input'
 	      disabled={isLoading}
@@ -155,7 +155,7 @@ const ChatForm: React.FC<ChatFormProps> = ({
 	  </IonCol>
 	  <IonCol size='auto' style={{paddingTop: 10}}>
 	    <StateButton
-	      aria-label={intl.formatMessage({id: 'xxx'})}
+	      aria-label={intl.formatMessage({id: 'components.chat.submit.button.ariaLabel'})}
 	      data-testid='components.chat.submit.button'
 	      isLoading={isLoading}
 	      loadingIndicator={<StateButtonLoadingIndicator />}
