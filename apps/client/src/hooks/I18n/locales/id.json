@@ -132,6 +132,8 @@
   "pages.map.title": "Peta",
   "pages.pageNotFound.image.alt": "Seekor kucing terjebak di tanda 404 raksasa",
   "pages.pageNotFound.title": "Halaman tidak ditemukan",
+  "pages.pantryLink.surveyModal.ariaLabel": "Modal survei",
+  "pages.pantryLink.surveyModal.close.button.ariaLabel": "Tutup modal survei",
   "pages.pantryLink.title": "Pantry Link",
   "pages.pantryLinkDashboard.getMorePoints": "Dapatkan lebih banyak Poin",
   "pages.pantryLinkDashboard.machineBusy": "Pantry Link ini sedang sibuk.",
