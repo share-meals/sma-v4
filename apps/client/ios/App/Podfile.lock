@@ -17,6 +17,8 @@ PODS:
     - Capacitor
   - CapacitorKeyboard (5.0.8):
     - Capacitor
+  - CapacitorNetwork (7.0.1):
+    - Capacitor
   - CapacitorPreferences (5.0.7):
     - Capacitor
   - CapacitorPushNotifications (5.1.1):
@@ -81,6 +83,7 @@ DEPENDENCIES:
   - "CapacitorGeolocation (from `../../../../node_modules/@capacitor/geolocation`)"
   - "CapacitorHaptics (from `../../../../node_modules/@capacitor/haptics`)"
   - "CapacitorKeyboard (from `../../../../node_modules/@capacitor/keyboard`)"
+  - "CapacitorNetwork (from `../../../../node_modules/@capacitor/network`)"
   - "CapacitorPreferences (from `../../../../node_modules/@capacitor/preferences`)"
   - "CapacitorPushNotifications (from `../../../../node_modules/@capacitor/push-notifications`)"
   - "CapacitorStatusBar (from `../../../../node_modules/@capacitor/status-bar`)"
@@ -115,6 +118,8 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/@capacitor/haptics"
   CapacitorKeyboard:
     :path: "../../../../node_modules/@capacitor/keyboard"
+  CapacitorNetwork:
+    :path: "../../../../node_modules/@capacitor/network"
   CapacitorPreferences:
     :path: "../../../../node_modules/@capacitor/preferences"
   CapacitorPushNotifications:
@@ -123,18 +128,19 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/@capacitor/status-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: fc155ee2ee45a2093d716f13cf5aa5a865e2d85a
-  CapacitorApp: 17fecd0e6cb23feafac7eb0939417389038b0979
-  CapacitorCamera: d333715364b5d85422c627aae6db87ef6161352c
+  Capacitor: 04ccd5c7ad3949b25baf174a5c61594f1c031ee9
+  CapacitorApp: b23ce4279972fa24721b9ad7aefdf05e36c29db7
+  CapacitorCamera: 916a67c6726fabcc623df79d3f934828f2520103
   CapacitorCordova: e825fce1a2e14e4b5730641c7e098dccf74397b7
-  CapacitorDevice: fc91bdb484dc0e70755e9b621cd557afe642613a
-  CapacitorFirebaseMessaging: ff3b2e81e11f1e20e4e349dc9a920516cf649345
-  CapacitorGeolocation: 918a292459542bcce98433f9e7c7909f8c72838a
-  CapacitorHaptics: 7c7c206f0c96a628fed073830c96d28c4b2e772e
-  CapacitorKeyboard: aec619a578235c6ce279075009a2689c2cf5c42c
-  CapacitorPreferences: 77ac427e98db83bace772455f8ba447430382c4c
-  CapacitorPushNotifications: 2327900bc002f5ff49ee6d2231796d0635b4a1b0
-  CapacitorStatusBar: f390fbb49b82ffb754ea4b3cf71dc8b048baf3e7
+  CapacitorDevice: b8d2ddde4e7f3711f64eb58a69a776e7fc3e53b8
+  CapacitorFirebaseMessaging: ee2a6f40389a0615262c3c20c62663170d6f85e3
+  CapacitorGeolocation: b3ae8c9ed961eebf4d389d7d4cf7e84ee31ecb91
+  CapacitorHaptics: 85a1ecd1d3026089642518d789f0fb81fe93cf80
+  CapacitorKeyboard: d878396bca6a0fefb313b1546c169648b5ae812a
+  CapacitorNetwork: 15cb4385f0913a8ceb5e9a4d7af1ec554bdb8de8
+  CapacitorPreferences: cbf7f033bd08dd33b07090fe9ff54344dc02d6e2
+  CapacitorPushNotifications: cd84a50f7a410514cdcb91ccdcb1130b8d9b38ee
+  CapacitorStatusBar: 37ca5200a1791340c519239521ec2519d384eacb
   FirebaseCore: 74f647ad9739ea75112ce6c3b3b91f5488ce1122
   FirebaseCoreInternal: 43c1788eaeee9d1b97caaa751af567ce11010d00
   FirebaseInstallations: 390ea1d10a4d02b20c965cbfd527ee9b3b412acb
@@ -144,6 +150,6 @@ SPEC CHECKSUMS:
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
 
-PODFILE CHECKSUM: e23fff90642f0d7bd3757fffe93112a52479180b
+PODFILE CHECKSUM: a2c3dc02b06c4039f0d752454141b336c4eb1130
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
