@@ -132,6 +132,8 @@
   "pages.map.title": "Mapa",
   "pages.pageNotFound.image.alt": "Un gato atrapado en una señal gigante 404",
   "pages.pageNotFound.title": "Página No Encontrada",
+  "pages.pantryLink.surveyModal.ariaLabel": "Encuesta modal",
+  "pages.pantryLink.surveyModal.close.button.ariaLabel": "Cerrar modal de encuesta",
   "pages.pantryLink.title": "Pantry Link",
   "pages.pantryLinkDashboard.getMorePoints": "Consigue más puntos",
   "pages.pantryLinkDashboard.machineBusy": "Esta Pantry Link encuentra ocupada actualmente.",

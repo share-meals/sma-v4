@@ -132,6 +132,8 @@
   "pages.map.title": "Map",
   "pages.pageNotFound.image.alt": "A cat stuck in a giant 404 sign",
   "pages.pageNotFound.title": "Page Not Found",
+  "pages.pantryLink.surveyModal.ariaLabel": "Survey modal",
+  "pages.pantryLink.surveyModal.close.button.ariaLabel": "Close survey modal",
   "pages.pantryLink.title": "Pantry Link",
   "pages.pantryLinkDashboard.getMorePoints": "Get more points",
   "pages.pantryLinkDashboard.machineBusy": "This Pantry Link is currently busy.",

@@ -185,6 +185,7 @@ export const PantryLinkDashboard: React.FC = () => {
       
       <div className='mb-3'>
 	<IonButton
+	  data-testid='pages.pantryLink.getMorePoints.button'
 	  disabled={!canSurvey}
 	  fill='outline'
 	  id='showSurvey'>
@@ -259,23 +260,36 @@ const Offline: React.FC<{plName: string}> = ({plName}) => <div className='ion-te
 const SurveyModal: React.FC<PantryLinkSurveyProps> = ({
   json,
   modalRef,
-}) => <IonModal ref={modalRef} trigger='showSurvey'>
-  <IonHeader className='ion-no-border'>
-    <IonToolbar color='primary'>
-      <IonTitle>
-	<FormattedMessage id='pages.pantryLinkDashboard.survey.title' />
-      </IonTitle>
-      <IonButtons slot='end'>
-        <IonButton onClick={() => modalRef.current?.dismiss()}>
-	  <IonIcon icon={CloseIcon} slot='icon-only' />
+}) => {
+  const intl = useIntl();
+  return <IonModal
+	   aria-label={intl.formatMessage({id: 'pages.pantryLink.surveyModal.ariaLabel'})}
+	   aria-modal='true'
+	   ref={modalRef}
+	   role='dialog'
+	   trigger='showSurvey'>
+    <IonHeader className='ion-no-border'>
+      <IonToolbar color='primary'>
+	<IonTitle>
+	  <FormattedMessage id='pages.pantryLinkDashboard.survey.title' />
+	</IonTitle>
+	<IonButtons slot='end'>
+          <IonButton
+	    aria-label={intl.formatMessage({id: 'pages.pantryLink.surveyModal.close.button.ariaLabel'})}
+	    onClick={() => modalRef.current?.dismiss()}>
+	    <IonIcon
+	      aria-hidden='true'
+	      icon={CloseIcon}
+	      slot='icon-only' />
 	</IonButton>
-      </IonButtons>
-    </IonToolbar>
-  </IonHeader>
-  <IonContent className='ion-padding'>
-    <PantryLinkSurvey
-      json={json}
-      modalRef={modalRef}
-    />
-  </IonContent>
-</IonModal>;
+	</IonButtons>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent className='ion-padding'>
+      <PantryLinkSurvey
+	json={json}
+	modalRef={modalRef}
+      />
+    </IonContent>
+  </IonModal>;
+}
