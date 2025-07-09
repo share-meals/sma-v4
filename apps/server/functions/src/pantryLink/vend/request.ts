@@ -21,7 +21,7 @@ export const request = onCall(
       const userRecord = await firestore.collection('users').doc(request.auth!.uid!).get();
       const data = userRecord.data();
       // todo: check it exists
-      const points: number = data?.private?.smartPantry?.points || 0;
+      const points: number = data?.private?.pantryLink?.points || 0;
       // check if points > 0
       if (points === 0) {
         throw new HttpsError(
@@ -32,7 +32,7 @@ export const request = onCall(
       // todo: verify schema
       const machineId: string = request.data.machineId;
       const sessionId: string = uuidv4();
-      await database.ref(`/smsp/${machineId}/inbox`).set({
+      await database.ref(`/pantryLinks/${machineId}/inbox`).set({
         message: `addPoints:${sessionId}:${points}`,
 	userId: request.auth!.uid!,
         timestamp: ServerValue.TIMESTAMP

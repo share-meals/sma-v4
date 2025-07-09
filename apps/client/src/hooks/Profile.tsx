@@ -44,7 +44,7 @@ const defaultProfile: any = {
   private: {
     communities: {},
     language: 'en',
-    smartPantry: {
+    pantryLink: {
       points: 0,
       timestamp: Timestamp.fromDate(new Date(0)) // 1970-1-1
     }
@@ -166,7 +166,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	const communitiesUnsub = onSnapshot(communitiesQuery, (snapshot) => {
 	  let canPost: string[] = [];
 	  let canShare: string[] = [];
-	  let canSmartPantry: string[] = [];
+	  let canPantryLink: string[] = [];
 	  const comms = Object.fromEntries(snapshot.docs.map((doc) => {
 	    const {codes, ...data} = doc.data();
 	    // todo: typing
@@ -178,8 +178,8 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	    if(data.features.canShare){
 	      canShare.push(doc.id);
 	    }
-	    if(data.features.canSmartPantry){
-	      canSmartPantry.push(doc.id);
+	    if(data.features.canPantryLink){
+	      canPantryLink.push(doc.id);
 	    }
 	    return [doc.id, {
 	      id: doc.id,
@@ -190,7 +190,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	  setFeatures({
 	    canPost,
 	    canShare,
-	    canSmartPantry,
+	    canPantryLink,
 	  });
 	  setCommunities(comms);
 	  updateCommunitySubscriptions(communityIds);
@@ -288,7 +288,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	setFeatures({
 	  canPost: [],
 	  canShare: [],
-	  canSmartPantry: [],
+	  canPantryLink: [],
 	});
       }
     }else{
@@ -311,7 +311,7 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	setFeatures({
 	  canPost: [],
 	  canShare: [],
-	  canSmartPantry: [],
+	  canPantryLink: [],
 	});
       }
     }

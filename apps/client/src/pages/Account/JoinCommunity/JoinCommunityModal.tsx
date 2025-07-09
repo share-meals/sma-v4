@@ -39,7 +39,7 @@ export const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
   const [hasError, setHasError] = useState<JoinCommunityErrorMessage | null>(null);
   const [hasSuccess, setHasSuccess] = useState<JoinCommunitySuccessMessage[] | null>(null);
   return <IonModal
-  aria-label={intl.formatMessage({id: 'xxx'})}
+	   aria-label={intl.formatMessage({id: 'pages.account.joinCommunityModal.ariaLabel'})}
 	   aria-modal='true'
 	   role='dialog'
 	   isOpen={showJoinCommunity}
@@ -55,7 +55,7 @@ export const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
 	</IonTitle>
 	<IonButtons slot='end'>
 	  <IonButton
-	    aria-label={intl.formatMessage({id: 'xxx'})}
+	    aria-label={intl.formatMessage({id: 'pages.account.joinCommunityModal.close.button.ariaLabel'})}
 	    onClick={() => {setShowJoinCommunity(false);}}>
 	    <IonIcon aria-hidden='true' src={CloseIcon}/>
 	  </IonButton>

@@ -139,12 +139,13 @@ export const Share: React.FC = () => {
       <div className='ion-align-items-center ion-justify-content-between' style={{display: 'flex', width: '100%'}}>
 	<FormattedMessage id='common.label.when' />
 	<IonButton
+	  aria-label={intl.formatMessage({id: 'components.whenPicker.happeningNow.button.ariaLabel'})}
 	  className='pr-1'
 	  color='light'
 	  disabled={isLoading}
 	  fill='outline'
 	  onClick={resetWhenPickerToNow}>
-	  <FormattedMessage id='components.whenPicker.happeningNow' />
+	  <FormattedMessage id='components.whenPicker.happeningNow.button.text' />
 	</IonButton>
       </div>
     </IonListHeader>

@@ -1,7 +1,7 @@
 import {initializeApp} from "firebase-admin/app";
 import {post} from './post';
 import {share} from './share';
-import {smartPantry} from "./smartPantry";
+import {pantryLink} from "./pantryLink";
 import {user} from "./user";
 
 initializeApp();
@@ -9,8 +9,8 @@ initializeApp();
 const endpoints = {
   post,
   share,
-  smart: {
-    pantry: smartPantry
+  pantry: {
+    link: pantryLink
   },
   user,
 };
