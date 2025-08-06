@@ -1,7 +1,6 @@
 import {FormattedMessage} from 'react-intl';
 import {IonLabel} from '@ionic/react';
 import {
-  getMapStyle,
   Map as FRGMap,
   MapLayerProps,
   MapProvider,
@@ -10,6 +9,7 @@ import {
 } from '@share-meals/frg-ui';
 import {Notice} from '@/components/Notice';
 import {useGeolocation} from '@/hooks/Geolocation';
+import mapStyle from './style.json';
 
 interface MapProps {
   center: TimestampedLatLng;
@@ -73,10 +73,7 @@ export const Map: React.FC<MapProps> = ({
       <FRGMap
 	controls={controls}
 	protomapsApiKey={import.meta.env.VITE_PROTOMAPS_API_KEY}
-	protomapsStyles={getMapStyle({
-	  apiKey: import.meta.env.VITE_PROTOMAPS_API_KEY,
-	  theme: 'grayscale'
-	})}
+	protomapsStyles={mapStyle}
 	{...props}
       />
     </MapProvider>
