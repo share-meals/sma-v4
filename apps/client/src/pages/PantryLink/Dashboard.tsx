@@ -179,7 +179,7 @@ export const PantryLinkDashboard: React.FC = () => {
 	</h2>
 	<Markdown>
 	  {intl.formatMessage({id: 'pages.pantryLinkDashboard.youHaveXPoints'},
-			      {points})}
+			      {points: points / 100})}
 	</Markdown>
       </IonText>
       
