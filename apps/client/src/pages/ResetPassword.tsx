@@ -7,7 +7,6 @@ import {
   Input,
   StateButton
 } from '@share-meals/frg-ui';
-import {IonLabel} from '@ionic/react';
 import {Notice} from '@/components/Notice';
 import {sendPasswordResetEmail} from 'firebase/auth';
 import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
@@ -75,11 +74,7 @@ export const ResetPassword: React.FC = () => {
 	  <FormattedMessage id='buttons.label.reset' />
 	</StateButton>
       </div>
-      {showNotice && <Notice color='success'>
-	<IonLabel>
-	  <FormattedMessage id='pages.resetPassword.successNotice' />
-	</IonLabel>
-      </Notice>}
+      {showNotice && <Notice color='success' i18nKey='pages.resetPassword.successNotice' />}
     </form>
   </div>
 }

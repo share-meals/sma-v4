@@ -54,16 +54,16 @@ const signupFunction = httpsCallable(functions, 'user-create');
 
 const SignupForm: React.FC = () => {
   const intl = useIntl();
-  const [error, setError] = useState<string | null>(null);
+  const [errorI18nKey, setErrorI18nKey] = useState<string | null>(null);
   const getMessage = useCallback((code: string, message?: string) => {
     switch(code){
       case 'auth/email-already-exists':
       case 'functions/already-exists':
-	return intl.formatMessage({id: 'pages.signup.error.email-already-exists'});
+	return 'pages.signup.error.email-already-exists';
       case 'functions/invalid-argument':
 	switch(message){
 	  case 'no matched communities':
-	    return intl.formatMessage({id: 'common.errors.noCommunitiesFound'});
+	    return 'common.errors.noCommunitiesFound';
 	    break;
 	  default:
 	    // do nothing?
@@ -71,7 +71,7 @@ const SignupForm: React.FC = () => {
 	}
 	
       default:
-	return intl.formatMessage({id: 'pages.login.error.default'});
+	return 'pages.login.error.default';
     }
   }, []);
 
@@ -97,7 +97,7 @@ const SignupForm: React.FC = () => {
 	  sendEmailVerification(response.user);
 	}).catch((error: unknown) => {
 	  if(error instanceof FirebaseError){
-	    setError(getMessage(error.code, error.message));
+	    setErrorI18nKey(getMessage(error.code, error.message));
 	  }
 	}).finally(() => {
 	  setIsLoading(false);
@@ -195,12 +195,8 @@ const SignupForm: React.FC = () => {
       </div>
       {formState.isSubmitted
       && Object.keys(formState.errors).length > 0
-      && <Notice color='danger'>
-	<FormattedMessage id='common.label.formHasErrors' />
-      </Notice>}
-      {error && <Notice color='danger'>
-	{error}
-      </Notice>}
+      && <Notice color='danger' i18nKey='common.label.formHasErrors' />}
+      {errorI18nKey && <Notice color='danger' i18nKey={errorI18nKey} />}
     </form>
     <IonModal
       aria-label={intl.formatMessage({id: 'pages.signup.privacyPolicy.modal.ariaLabel'})}

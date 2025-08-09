@@ -2,6 +2,7 @@
 
 import {auth} from '@/components/Firebase';
 import {FormattedMessage} from 'react-intl';
+import {getEnumValueOrNull} from '@/utilities/getEnumValueOrNull';
 import {
   IonButton,
   IonCol,
@@ -24,6 +25,11 @@ import {useHistory} from 'react-router-dom';
 
 import VerifyEmailSVG from '@/assets/svg/verifyEmail.svg';
 
+enum mockEmailVerifiedValues {
+  True = 'true',
+  False = 'false'
+}
+
 export const VerifyEmail: React.FC = () => {
   const history = useHistory();
   const unblock = useRef<any>();
@@ -31,6 +37,8 @@ export const VerifyEmail: React.FC = () => {
   const [stillUnverified, setStillUnverified] = useState(false);
   const [verifyEmailResent, setVerifyEmailResent] = useState(false);
   const {user} = useProfile();
+  const queryParams = new URLSearchParams(window.location.search);
+  const mockEmailVerified = getEnumValueOrNull(mockEmailVerifiedValues, queryParams.get('mockEmailVerified'));
 
   useEffect(() => {
     unblock.current = history.block();
@@ -49,7 +57,8 @@ export const VerifyEmail: React.FC = () => {
   const verifyStatus = async () => {
     setIsLoading(true);
     await auth.currentUser!.reload();
-    if(auth.currentUser!.emailVerified){
+    if(auth.currentUser!.emailVerified
+       && mockEmailVerified !== 'false'){
       unblock.current();
       history.replace('/map');
     }else{
@@ -69,6 +78,7 @@ export const VerifyEmail: React.FC = () => {
 	  </p>
 	</IonText>
 	<StateButton
+	  data-testid='pages.verifyEmail.verifyEmail.button'
 	  expand='block'
 	  isLoading={isLoading}
 	  loadingIndicator={<StateButtonLoadingIndicator />}
@@ -77,9 +87,7 @@ export const VerifyEmail: React.FC = () => {
 	  <FormattedMessage id='pages.verifyEmail.yesVerified' />
 	</StateButton>
 	{stillUnverified &&
-	 <Notice color='danger'>
-	   <FormattedMessage id='pages.verifyEmail.stillUnverified' />
-	 </Notice>
+	 <Notice color='danger' i18nKey='pages.verifyEmail.stillUnverified' />
 	}
       </IonCol>
     </IonRow>
@@ -94,15 +102,15 @@ export const VerifyEmail: React.FC = () => {
       </IonCol>
       <IonCol size-xs='6' className='ion-text-right'>
 	<IonButton
+	  data-testid='pages.verifyEmail.resendVerificationEmail.button'
 	  fill='outline'
 	  onClick={resendVerificationEmail}
 	  size='default'>
+	  {/* TODO: rename these i18n keys */}
 	  <FormattedMessage id='pages.verifyEmail.resendButton' />
 	</IonButton>
 	{verifyEmailResent &&
-	 <Notice color='success'>
-	   <FormattedMessage id='pages.verifyEmail.verifyEmailResent' />
-	 </Notice>
+	 <Notice color='success' i18nKey='pages.verifyEmail.verifyEmailResent' />
 	}
 
       </IonCol>

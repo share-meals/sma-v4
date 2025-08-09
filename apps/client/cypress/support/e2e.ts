@@ -14,22 +14,30 @@ function wireGeolocation(win: Window, lat?: number, lon?: number) {
 
   // ----- 1. Stub the plain Web API (Capacitor’s web layer calls this) -----
   if (win.navigator?.geolocation) {
-    cy.stub(win.navigator.geolocation, 'getCurrentPosition').callsFake(cb => cb(pos));
-    cy.stub(win.navigator.geolocation, 'watchPosition').callsFake(cb => {
-      cb(pos);
-      return 1;                     // watch-ID
-    });
+    const geo = win.navigator.geolocation;
+
+    if (!geo.getCurrentPosition?.isSinonProxy) {
+      cy.stub(geo, 'getCurrentPosition').callsFake(cb => cb(pos));
+    }
+
+    if (!geo.watchPosition?.isSinonProxy) {
+      cy.stub(geo, 'watchPosition').callsFake(cb => {
+        cb(pos);
+        return 1; // watch-ID
+      });
+    }
   }
 
   // ----- 2. Short-circuit the permissions poll ---------------------------
-  cy.stub(win.navigator.permissions, 'query').callsFake(({ name }) =>
-    name === 'geolocation'
-      ? Promise.resolve({ state: 'granted' })
-      : win.navigator.permissions.query({ name }),
-  );
+  if (win.navigator?.permissions?.query && !win.navigator.permissions.query.isSinonProxy) {
+    cy.stub(win.navigator.permissions, 'query').callsFake(({ name }) =>
+      name === 'geolocation'
+        ? Promise.resolve({ state: 'granted' })
+        : win.navigator.permissions.query({ name }),
+    );
+  }
 
   // ----- 3. Replace the Capacitor proxy with a dead-simple object ---------
-  //  (works for both `import { Geolocation } ...` *and* `Capacitor.Plugins.Geolocation`)
   win.Capacitor = win.Capacitor || ({} as any);
   win.Capacitor.Plugins = win.Capacitor.Plugins || {};
   win.Capacitor.Plugins.Geolocation = {

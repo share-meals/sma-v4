@@ -17,7 +17,6 @@ import {
   IonButton,
   IonCol,
   IonGrid,
-  IonLabel,
   IonListHeader,
   IonRow,
   isPlatform,
@@ -38,7 +37,6 @@ import {useFormContext} from 'react-hook-form';
 import {useHistory} from 'react-router-dom';
 import {usePostForm} from '@/hooks/PostForm';
 import {useProfile} from '@/hooks/Profile';
-
 
 export const Post: React.FC = () => {
   const formRef = useRef<null | HTMLFormElement>(null);
@@ -255,11 +253,10 @@ export const Post: React.FC = () => {
       </StateButton>
       {formState.isSubmitted
       && Object.keys(formState.errors).length > 0
-      && <Notice color='danger' className='ion-margin'>
-	<IonLabel>
-	  <FormattedMessage id='common.label.formHasErrors' />
-	</IonLabel>
-      </Notice>}
+      && <Notice
+	   color='danger'
+	   className='ion-margin'
+	   i18nKey='common.label.formHasErrors' />}
     </div>
     <div className='pv-1 ion-text-right'>
       <IonButton
