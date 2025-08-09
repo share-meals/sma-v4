@@ -216,14 +216,12 @@ export const PantryLinkDashboard: React.FC = () => {
 	 */
       }
       {sendingPoints &&
-       <Notice color='success'>
-	 <span style={{display: 'flex'}} className='ion-align-items-center ion-justify-content-between'>
-	   <FormattedMessage id='pages.pantryLinkDashboard.makeChoiceOnMachine' />
-	   <IonButton slot='end' fill='outline' onClick={() => {cancel({silent: false});}}>
-	     <FormattedMessage id='buttons.label.cancel' />
-	   </IonButton>
-	 </span>
-       </Notice>
+       <div>
+	 <Notice color='success' i18nKey='pages.pantryLinkDashboard.makeChoiceOnMachine' />
+	 <IonButton slot='end' fill='outline' onClick={() => {cancel({silent: false});}}>
+	   <FormattedMessage id='buttons.label.cancel' />
+	 </IonButton>
+       </div>
       }
     </div>
     <SurveyModal

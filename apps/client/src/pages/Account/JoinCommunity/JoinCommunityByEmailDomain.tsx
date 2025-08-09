@@ -11,8 +11,8 @@ import type {JoinCommunityFormProps} from './JoinCommunityForm';
 import type {JoinCommunitySuccessMessage} from './JoinCommunity.d.ts';
 
 export const JoinCommunityByEmailDomain: React.FC<JoinCommunityFormProps> = ({
-  setHasError,
-  setHasSuccess,
+  setErrorMessage,
+  setSuccessI18nKeys,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const functions = getFunctions();
@@ -25,18 +25,17 @@ export const JoinCommunityByEmailDomain: React.FC<JoinCommunityFormProps> = ({
       loadingIndicator={<StateButtonLoadingIndicator />}
       onClick={() => {
 	setIsLoading(true);
-	setHasSuccess(null);
-	setHasError(null);
+	setSuccessI18nKeys([]);
+	setErrorMessage(null);
 	addByEmailDomainFunction()
 	  .then((response) => {
-	    setHasSuccess(response.data as JoinCommunitySuccessMessage[]);
+	    setSuccessI18nKeys(response.data as JoinCommunitySuccessMessage[]);
 	  })
 	  .catch((error) => {
-	    setHasError(error.message);
+	    setErrorMessage(error.message);
 	  }).finally(() => {
 	    setIsLoading(false);
 	  });
-
 	//	setIsLoading(false);
       }}
     >

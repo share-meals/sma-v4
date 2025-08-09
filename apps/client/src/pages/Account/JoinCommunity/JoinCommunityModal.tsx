@@ -10,16 +10,12 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonLabel,
   IonModal,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
 import {JoinCommunityByEmailDomain} from './JoinCommunityByEmailDomain';
-import type {
-  JoinCommunityErrorMessage,
-  JoinCommunitySuccessMessage,
-} from './JoinCommunity.d.ts';
+import type {JoinCommunitySuccessMessage} from './JoinCommunity.d.ts';
 import {JoinCommunityForm} from './JoinCommunityForm';
 import {Notice} from '@/components/Notice';
 import {useIntl} from 'react-intl';
@@ -31,21 +27,26 @@ interface JoinCommunityModalProps {
   showJoinCommunity: boolean,
 }
 
+const errorMessageI18nKeyLookup: Record<string, string> = {
+  'no matched communities': 'common.errors.noCommunitiesFound',
+  'no new communities to join': 'common.errors.noNewCommunitiesToJoin'
+};
+
 export const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
   setShowJoinCommunity,
   showJoinCommunity
 }) => {
   const intl = useIntl();
-  const [hasError, setHasError] = useState<JoinCommunityErrorMessage | null>(null);
-  const [hasSuccess, setHasSuccess] = useState<JoinCommunitySuccessMessage[] | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successI18nKeys, setSuccessI18nKeys] = useState<JoinCommunitySuccessMessage[]>([]);
   return <IonModal
 	   aria-label={intl.formatMessage({id: 'pages.account.joinCommunityModal.ariaLabel'})}
 	   aria-modal='true'
 	   role='dialog'
 	   isOpen={showJoinCommunity}
 	   onDidDismiss={() => {
-	     setHasError(null);
-	     setHasSuccess(null);
+	     setErrorMessage(null);
+	     setSuccessI18nKeys([]);
 	     setShowJoinCommunity(false);
 	   }}>
     <IonHeader className='ion-no-border' role='none'>
@@ -64,45 +65,39 @@ export const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
     </IonHeader>
     <IonContent className='ion-padding' role='complementary'>
       <JoinCommunityForm
-	setHasError={setHasError}
-	setHasSuccess={setHasSuccess}
+	setErrorMessage={setErrorMessage}
+	setSuccessI18nKeys={setSuccessI18nKeys}
       />
       <div className='ion-text-right mt-2'>
 	<JoinCommunityByEmailDomain
-	  setHasError={setHasError}
-	  setHasSuccess={setHasSuccess}
+	  setErrorMessage={setErrorMessage}
+	  setSuccessI18nKeys={setSuccessI18nKeys}
 	/>
       </div>
-      {hasSuccess !== null
-      && <Notice color='success' className='ion-margin'>
-	{hasSuccess.map((m) => {
-	  switch(m.level){
-	    case 'admin':
-	      return <FormattedMessage
-		       id='pages.account.addedCommunity.asAdmin'
-		       values={{communityName: m.communityName}} />;
-	      break;
-	    case 'member':
-	    default:
-	      return <FormattedMessage
-		       id='pages.account.addedCommunity.asMember'
-		       values={{communityName: m.communityName}} />;
-	      break;
-	  }
-	}).map((m, index) => {
-	  return <IonLabel key={index}>
-	    {m}
-	  </IonLabel>
-	})}
-      </Notice>}
+      {successI18nKeys.length > 0
+      && 
+       successI18nKeys.map((m) => {
+	 switch(m.level){
+	   case 'admin':
+	     return <Notice
+		      color='success'
+		      className='ion-margin'
+		      i18nKey='pages.account.addedCommunity.asAdmin'
+		      i18nValues={{communityName: m.communityName}} />;
+	     break;
+	   case 'member':
+	     return <Notice
+		      color='success'
+		      className='ion-margin'
+		      i18nKey='pages.account.addedCommunity.asMember'
+		      i18nValues={{communityName: m.communityName}} />;
+	     break;
+	 }
+      })
+      }
 
-      {hasError !== null
-      && <Notice color='danger' className='ion-margin'>
-	<IonLabel>
-	  {hasError === 'no matched communities' && <FormattedMessage id='common.errors.noCommunitiesFound' />}
-	  {hasError === 'no new communities to join' && <FormattedMessage id='common.errors.noNewCommunitiesToJoin' />}
-	</IonLabel>
-      </Notice>}
+      {errorMessage !== null
+      && <Notice color='danger' className='ion-margin' i18nKey={errorMessageI18nKeyLookup[errorMessage]} />}
     </IonContent>
   </IonModal>
 }

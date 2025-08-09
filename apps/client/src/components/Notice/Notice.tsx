@@ -8,6 +8,7 @@ import {
   IonRow,
   IonText,
 } from '@ionic/react';
+import {FormattedMessage} from 'react-intl';
 
 import CheckCircle from '@material-symbols/svg-400/rounded/check_circle.svg';
 import Warning from '@material-symbols/svg-400/rounded/warning.svg';
@@ -15,8 +16,10 @@ import Warning from '@material-symbols/svg-400/rounded/warning.svg';
 import './Notice.css';
 
 export interface NoticeProps {
-  className?: string,
-  color: string
+  className?: string;
+  color: string;
+  i18nKey: string;
+  i18nValues?: Record<string, string>;
 };
 
 const getIcon = (color: string) => {
@@ -30,20 +33,22 @@ const getIcon = (color: string) => {
   }
 }
 
-export const Notice: React.FC<React.PropsWithChildren<NoticeProps>> = ({
-  children,
+export const Notice: React.FC<NoticeProps> = ({
   className,
-  color
+  color,
+  i18nKey,
+  i18nValues = {}
 }) => {
   return <IonCard
-      className={classNames(['notice', 'ion-no-margin', className])}
-      style={{
-	border: `2px solid var(--ion-color-${color}`,
-	boxShadow: 'none'
-      }}>
-      <IonCardContent className='ion-text-left ion-no-padding'>
-	<IonGrid>
-	  <IonRow className='ion-align-items-center'>
+	   className={classNames(['notice', 'ion-no-margin', className])}
+	   data-testid={`components.notice.${i18nKey}`}
+	   style={{
+	     border: `2px solid var(--ion-color-${color}`,
+	     boxShadow: 'none'
+	   }}>
+    <IonCardContent className='ion-text-left ion-no-padding'>
+      <IonGrid>
+	<IonRow className='ion-align-items-center'>
 	  <IonCol size='auto'>
 	    <IonIcon
 	      aria-hidden='true'
@@ -54,9 +59,7 @@ export const Notice: React.FC<React.PropsWithChildren<NoticeProps>> = ({
 	  </IonCol>
 	  <IonCol>
 	    <IonText>
-	      <p>
-		{children}
-	      </p>
+	      <FormattedMessage id={i18nKey} values={i18nValues} />
 	    </IonText>
 	  </IonCol>
 	</IonRow>
