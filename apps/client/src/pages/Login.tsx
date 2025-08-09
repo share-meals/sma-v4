@@ -62,13 +62,13 @@ const LoginForm: React.FC = () => {
     ),
     reValidateMode: 'onSubmit'
   });
-  const getMessage = useCallback((code: string) => {
+  const getI18nKey = useCallback((code: string) => {
     switch(code){
       case 'auth/user-not-found':
       case 'auth/wrong-password':
-	return intl.formatMessage({id: 'pages.login.error.incorrectEmailOrPassword'});
+	return 'pages.login.error.incorrectEmailOrPassword';
       default:
-	return intl.formatMessage({id: 'pages.login.error.default'});
+	return 'pages.login.error.default';
     }
   }, []);
 
@@ -84,7 +84,6 @@ const LoginForm: React.FC = () => {
       await enable();
       await sendMessagingToken();
     }catch(error){
-      console.log('------------');
       console.log(error);
       if(error instanceof FirebaseError){
 	log({
@@ -143,12 +142,8 @@ const LoginForm: React.FC = () => {
     </div>
     {formState.isSubmitted
     && Object.keys(formState.errors).length > 0
-    && <Notice color='danger'>
-      <FormattedMessage id='common.label.formHasErrors' />
-    </Notice>}
-    {error && <Notice color='danger'>
-      {getMessage(error)}
-    </Notice>}
+    && <Notice color='danger' i18nKey='common.label.formHasErrors' />}
+    {error && <Notice color='danger' i18nKey={getI18nKey(error)} />}
   </form>
   </>;
 }

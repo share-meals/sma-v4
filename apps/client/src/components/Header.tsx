@@ -24,7 +24,6 @@ import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 import WarningIcon from '@material-symbols/svg-400/rounded/warning.svg';
 import ChatIcon from '@material-symbols/svg-400/rounded/chat_bubble.svg';
 
-
 interface HeaderProps {
   i18nKey: string
 }
@@ -47,6 +46,7 @@ export const Header: React.FC<HeaderProps> = ({
 	  {Object.values(alerts).length > 0 &&
 	   <IonButton
 	     aria-label={intl.formatMessage({id: 'components.header.alerts.button.ariaLabel'})}
+	     data-testid='components.head.alerts.button'
 	     onClick={() => {setShowAlerts(true);}}>
 	     <IonIcon
 	       aria-hidden='true'
@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
 	     />
 	   </IonButton>
 	  }
-	  {false && isLoggedIn &&
+	  {false && isLoggedIn && // TODO: remove hardcoded false
 	   <IonButton
 	     aria-label={intl.formatMessage({id: 'components.header.messages.button.ariaLabel'})}
 	     className={classnames({'has-badge': unreadCount > 0})}
@@ -71,22 +71,35 @@ export const Header: React.FC<HeaderProps> = ({
 	</IonButtons>
       </IonToolbar>
     </IonHeader>
-    <IonModal isOpen={showAlerts} onDidDismiss={() => {setShowAlerts(false);}}>
+    <IonModal
+      aria-label={intl.formatMessage({id: 'components.header.alertsModal.ariaLabel'})}
+      aria-modal='true'
+      isOpen={showAlerts}
+      onDidDismiss={() => {setShowAlerts(false);}}
+      role='dialog'>
       <IonHeader className='ion-no-border'>
 	<IonToolbar color='primary'>
 	  <IonTitle>
 	    <FormattedMessage id='components.header.alertsModal' />
 	  </IonTitle>
 	  <IonButtons slot='end'>
-	    <IonButton onClick={() => {setShowAlerts(false);}}>
-	      <IonIcon src={CloseIcon}/>
+	    <IonButton
+	      aria-label={intl.formatMessage({id: 'components.header.alertsModal.close.ariaLabel'})}
+	      onClick={() => {setShowAlerts(false);}}>
+	      <IonIcon
+		aria-hidden='true'
+		src={CloseIcon}
+		slot='icon-only'
+	      />
 	    </IonButton>
 	  </IonButtons>
 	</IonToolbar>
       </IonHeader>
       <IonContent className='ion-padding'>
 	{Object.keys(alerts).map((key) =>
-	  <IonItem key={key}>
+	  <IonItem
+	    data-testid={`alertMessage.${key}`}
+	    key={key}>
 	    <FormattedMessage id={alerts[key].message} />
 	  </IonItem>)}	
       </IonContent>

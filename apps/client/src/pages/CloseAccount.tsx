@@ -66,9 +66,8 @@ export const CloseAccount: React.FC = () => {
     }).finally(() => {
       setIsLoading(false);
     });
-    //////
   });
-  
+  // TODO: need to add aria labels
   return <>
     <form
       noValidate
@@ -82,9 +81,9 @@ export const CloseAccount: React.FC = () => {
 	      </IonText>
 	    </div>
 	    <Input
-	    control={control}
-	    data-testid='input-password'
-	    disabled={isLoading}
+	      control={control}
+	      data-testid='pages.closeAccount.password.input'
+	      disabled={isLoading}
 	      fill='outline'
 	      label={intl.formatMessage({id: 'common.label.password'})}
 	      labelPlacement='floating'
@@ -94,16 +93,14 @@ export const CloseAccount: React.FC = () => {
 	    />
 	    <div className='ion-padding-top ion-text-center'>
 	      <StateButton
-		data-testid='button-submit'
+		data-testid='pages.closeAccount.submit.button'
 		isLoading={isLoading}
 		loadingIndicator={<StateButtonLoadingIndicator />}
 		type='submit'>
 		<FormattedMessage id='buttons.label.submit' />
 	      </StateButton>
 	    </div>
-	    {hasError && <Notice color='danger'>
-	      <FormattedMessage id='pages.closeAccount.badPassword' />
-	    </Notice>}
+	    {hasError && <Notice color='danger' i18nKey='pages.closeAccount.badPassword' />}
 	  </IonCol>
 	</IonRow>
       </IonGrid>

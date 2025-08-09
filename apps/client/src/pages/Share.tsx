@@ -14,7 +14,6 @@ import {
 } from 'react-intl';
 import {
   IonButton,
-  IonLabel,
   IonListHeader,
   useIonViewWillEnter,
 } from '@ionic/react';
@@ -175,11 +174,7 @@ export const Share: React.FC = () => {
       </StateButton>
       {formState.isSubmitted
       && Object.keys(formState.errors).length > 0
-      && <Notice color='danger' className='ion-margin'>
-	<IonLabel>
-	  <FormattedMessage id='common.label.formHasErrors' />
-	</IonLabel>
-      </Notice>}
+      && <Notice color='danger' className='ion-margin' i18nKey='common.label.formHasErrors' />}
     </div>
     <div className='pv-1 ion-text-right'>
       <IonButton

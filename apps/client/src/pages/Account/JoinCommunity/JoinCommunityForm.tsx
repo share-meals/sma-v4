@@ -1,14 +1,10 @@
-import {
-  communityCodeSchema,
-} from '@sma-v4/schema';
+import {communityCodeSchema} from '@sma-v4/schema';
 import {
   Dispatch,
   SetStateAction,
   useState
 } from 'react';
-import {
-  FormattedMessage,
-} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import {
   getFunctions,
   httpsCallable,
@@ -23,10 +19,7 @@ import {
   IonRow,
   useIonViewDidLeave,
 } from '@ionic/react';
-import type {
-  JoinCommunityErrorMessage,
-  JoinCommunitySuccessMessage,
-} from './JoinCommunity.d.ts';
+import type {JoinCommunitySuccessMessage} from './JoinCommunity.d.ts';
 import {StateButtonLoadingIndicator} from '@/components/StateButtonLoadingIndicator';
 import {useForm} from 'react-hook-form';
 import {useIntl} from 'react-intl';
@@ -34,13 +27,13 @@ import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
 export interface JoinCommunityFormProps {
-  setHasError: Dispatch<SetStateAction<JoinCommunityErrorMessage | null>>,
-  setHasSuccess: Dispatch<SetStateAction<JoinCommunitySuccessMessage[] | null>>
+  setErrorMessage: Dispatch<SetStateAction<string | null>>,
+  setSuccessI18nKeys: Dispatch<SetStateAction<JoinCommunitySuccessMessage[]>>
 }
 
 export const JoinCommunityForm: React.FC<JoinCommunityFormProps> = ({
-  setHasError,
-  setHasSuccess
+  setErrorMessage,
+  setSuccessI18nKeys
 }) => {
   const intl = useIntl();
   const functions = getFunctions();
@@ -60,21 +53,21 @@ export const JoinCommunityForm: React.FC<JoinCommunityFormProps> = ({
     reValidateMode: 'onSubmit'
   });
   useIonViewDidLeave(() => {
-    setHasSuccess(null);
-    setHasError(null);
+    setSuccessI18nKeys([]);
+    setErrorMessage(null);
     reset();
   });
   const onSubmit = handleSubmit((data: any) => {
     setIsLoading(true);
-    setHasSuccess(null);
-    setHasError(null);
+    setSuccessI18nKeys([]);
+    setErrorMessage(null);
     addByCommunityCodeFunction(data)
       .then((response: any) => {
-	setHasSuccess(response.data as JoinCommunitySuccessMessage[]);
+	setSuccessI18nKeys(response.data as JoinCommunitySuccessMessage[]);
 	reset();
       })
       .catch((error: any) => {
-	setHasError(error.message);
+	setErrorMessage(error.message);
       }).finally(() => {
 	setIsLoading(false);
       });
