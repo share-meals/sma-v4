@@ -12,6 +12,7 @@ import {
   communitySchema,
   latlngSchema,
 } from '@sma-v4/schema';
+import {getEnumValueOrNull} from '@/utilities/getEnumValueOrNull';
 import {useAlerts} from '@/hooks/Alerts';
 import {
   useCallback,
@@ -32,6 +33,17 @@ interface GeolocationState {
   permissionState: PermissionState,
 }
 
+interface GeolocationError {
+  code: string | number;
+  message: string;
+}
+
+enum mockGeolocationPermissionValues {
+  Granted = 'granted',
+  Denied = 'denied',
+  Prompt = 'prompt'
+}
+
 const GeolocationContext = createContext<GeolocationState>({} as GeolocationState);
 
 export const useGeolocation = () => useContext(GeolocationContext);
@@ -43,6 +55,8 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
   const [presentAlert] = useIonAlert();
   const [lastGeolocation, setLastGeolocation]  = useState<latlngType | undefined>(undefined);
   const [permissionState, setPermissionState] = useState<PermissionState>('prompt'); // assume default is prompt?
+  const queryParams = new URLSearchParams(window.location.search);
+  const mockGeolocationPermission = getEnumValueOrNull(mockGeolocationPermissionValues, queryParams.get('mockGeolocationPermission'));
   const getBackupGeolocation = useCallback(() => {
     // try to get center from a community
     // @ts-ignore
@@ -67,6 +81,11 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
   }, [communities]);
   const getGeolocation = useCallback(async () => {
     const geolocationPermissions: PermissionStatus = await Geolocation.checkPermissions();
+    if(mockGeolocationPermission === 'denied'){
+      setPermissionState('denied');
+      addAlert('geolocation', {message: 'errors.geolocation.denied'});
+      return getBackupGeolocation();
+    }
     switch(geolocationPermissions.location){
       case 'denied':
 	if(permissionState !== 'denied'){
@@ -78,19 +97,7 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
       case 'granted':
 	    setPermissionState('granted');
 	try{
-	  console.log('BEFORE');
-	  console.log('BEFORE');
-	  console.log('BEFORE');
-	  console.log('BEFORE');
-	  console.log('BEFORE');
-	  console.log('BEFORE');
 	  const position: GeolocationPosition = await Geolocation.getCurrentPosition();
-	  console.log('AFTER');
-	  console.log('AFTER');
-	  console.log('AFTER');
-	  console.log('AFTER');
-	  console.log('AFTER');
-	  console.log('AFTER');
 	  const location: latlngType = {
 	    lat: position.coords.latitude,
 	    lng: position.coords.longitude
@@ -118,15 +125,27 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
 		return;
 	      }
 	    }
-	    // todo: Geolocation.requestPermissions is not implemented on web
-	    const position: GeolocationPosition = await Geolocation.getCurrentPosition();
-	    setPermissionState('granted');
-	    const location: latlngType = {
-	      lat: position.coords.latitude,
-	      lng: position.coords.longitude
-	    };
-	    setLastGeolocation(location);
-	    return location;
+	    try{
+	      // todo: Geolocation.requestPermissions is not implemented on web
+	      const position: GeolocationPosition = await Geolocation.getCurrentPosition();
+	      setPermissionState('granted');
+	      const location: latlngType = {
+		lat: position.coords.latitude,
+		lng: position.coords.longitude
+	      };
+	      setLastGeolocation(location);
+	      return location;
+	    }catch(errorRaw){/////////////
+	      const error = errorRaw as GeolocationError;
+	      switch(error.code){
+		case 1:
+		case '1':
+		default:
+		  setPermissionState('denied');
+		  addAlert('geolocation', {message: 'errors.geolocation.denied'});
+	      }
+	      return lastGeolocation;
+	    }
 	  }
 	});
 	break;
@@ -138,6 +157,7 @@ export const GeolocationProvider: React.FC<React.PropsWithChildren> = ({children
   }, [
     Geolocation,
     getBackupGeolocation,
+    mockGeolocationPermission,
     setPermissionState,
     setLastGeolocation,
   ]);

@@ -52,6 +52,7 @@ export const LocateMeControl: React.FC<LocateMeControlProps> = ({
   return <StateButton
 	   aria-label={intl.formatMessage({id: 'components.locateMeControl.button.ariaLabel'})}
 	   className='square'
+	   data-testid='components.locateMeControl.button'
 	   disabled={permissionState === 'denied'}
 	   isLoading={isLoading}
 	   loadingIndicator={<StateButtonLoadingIndicator />}

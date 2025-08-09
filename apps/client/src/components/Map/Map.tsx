@@ -1,5 +1,3 @@
-import {FormattedMessage} from 'react-intl';
-import {IonLabel} from '@ionic/react';
 import {
   Map as FRGMap,
   MapLayerProps,
@@ -32,11 +30,11 @@ const GeolocationError: React.FC = () => (
     width: `${NOTIFICATION_WIDTH}rem`,
     zIndex: 999,
   }}>
-    <Notice color='danger'>
-      <IonLabel>
-	<FormattedMessage id='errors.geolocation.denied' />
-      </IonLabel>
-    </Notice>
+    <Notice
+      color='danger'
+      data-testid='notice-errors.geolocation.denied'
+      i18nKey='errors.geolocation.denied'
+    />
   </div>
 );
 

@@ -224,7 +224,7 @@ export const Map: React.FC = () => {
     top: '1rem',
     zIndex: 999
   }}>
-    <LocateMeControl setCurrentLocation={changeCenter} />
+    {!geolocationDenied && <LocateMeControl setCurrentLocation={changeCenter} />}
     {(bundlePostsLength + postsLength) > 0 &&
      <IonButton
        aria-label={intl.formatMessage({id: 'pages.map.showAllPosts.button.ariaLabel'})}

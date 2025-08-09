@@ -74,4 +74,10 @@ describe('Post', () => {
     .selectFile('cypress/fixtures/cat.jpg', { force: true });
     cy.checkA11y();
   });
+
+  it('shows an error notice if a user tries to submit a post with errors', () => {
+    cy.getByTestId('components.notice.common.label.formHasErrors').should('not.exist');
+    cy.getByTestId('pages.post.submit.button').click();
+    cy.getByTestId('components.notice.common.label.formHasErrors').should('exist');
+  });
 });
