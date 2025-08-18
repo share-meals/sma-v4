@@ -21,7 +21,6 @@ describe('Login', () => {
     cy.checkA11y();
   });
 
-  // invalid email
   it('shows invalid email error', () => {
     cy.getByTestId('login.input.email').type('test');
     cy.getByTestId('login.input.password').type('testtest');
@@ -29,7 +28,6 @@ describe('Login', () => {
     cy.getByTestId('login.input.email').get('.error-text').should('exist');
   })
 
-  // invalid password
   it('shows invalid password error', () => {
     cy.getByTestId('login.input.email').type('test1@nasa.edu');
     cy.getByTestId('login.input.password').type('test');
@@ -58,7 +56,7 @@ describe('Login', () => {
     });
   });
 
-  it('shows invalid email error', () => {  // might be component test
+  it('shows invalid email error', () => {
     cy.getByTestId('pages.login.showResetPassword.button').click();
     cy.getByTestId('pages.resetPassword.email.input').type('test');
     cy.getByTestId('pages.resetPassword.reset.button').click();
@@ -71,15 +69,12 @@ describe('Login', () => {
     cy.getByTestId('pages.login.resetPasswordModal').should('not.have.class', 'show-modal');
   });
 
-  // after correctly sending password reset, the modal closes. 
   it.only('closes the modal after correctly sending a reset password request with no a11y violation', () => {
-    // send request
     cy.getByTestId('pages.login.showResetPassword.button').click();
     cy.getByTestId('pages.resetPassword.email.input').type('test1@nasa.edu');
     cy.getByTestId('pages.resetPassword.reset.button').click();
     cy.getByTestId('components.notice.pages.resetPassword.successNotice').should('exist');
 
-    // close the modal
     cy.getByTestId('pages.login.resetPasswordModal.close').click();
     cy.getByTestId('pages.login.resetPasswordModal').should('not.have.class', 'show-modal');
 
