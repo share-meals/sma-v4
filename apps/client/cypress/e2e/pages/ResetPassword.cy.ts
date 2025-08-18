@@ -29,7 +29,7 @@ describe('Reset Password', () => {
     });
   });
 
-  it('shows invalid email error', () => {  // might be component test
+  it('shows invalid email error', () => { 
     cy.getByTestId('pages.resetPassword.email.input').type('test');
     cy.getByTestId('pages.resetPassword.reset.button').click();
     cy.getByTestId('pages.resetPassword.email.input').get('.error-text').should('exist');
