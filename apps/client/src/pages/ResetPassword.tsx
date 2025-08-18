@@ -58,6 +58,7 @@ export const ResetPassword: React.FC = () => {
 	  onSubmit={onSubmit}>
       <Input
 	control={control}
+  data-testid='pages.resetPassword.email.input'
 	disabled={isLoading}
 	fill='outline'
 	label={intl.formatMessage({id: 'common.label.email'})}
@@ -68,13 +69,14 @@ export const ResetPassword: React.FC = () => {
       />
       <div className='ion-padding-top ion-text-center'>
 	<StateButton
+    data-testid='pages.resetPassword.reset.button'
 	  isLoading={isLoading}
 	  loadingIndicator={<StateButtonLoadingIndicator />}
 	  type='submit'>
 	  <FormattedMessage id='buttons.label.reset' />
 	</StateButton>
       </div>
-      {showNotice && <Notice color='success' i18nKey='pages.resetPassword.successNotice' />}
+      {showNotice && <Notice color='success' i18nKey='pages.resetPassword.successNotice'/>}
     </form>
   </div>
 }
