@@ -32,4 +32,8 @@ describe('Signup', () => {
     cy.checkA11y();
   });
 
+  // email in use already -- test1@nasa.edu OR test2@nasa.edu
+  // signup with new email -> pages.verifyEmail should exist -- test email can be timestamp@nasa.edu
+  // passwords are different -> error
+  // community code: empty, exists (membercode), or doesn't exist (nocode) -> sign up either way
 });

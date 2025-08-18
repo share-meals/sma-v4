@@ -182,6 +182,7 @@ export const Login: React.FC = () => {
     <IonModal
       aria-label={intl.formatMessage({id: 'pages.login.resetPasswordModal.ariaLabel'})}
       aria-modal='true'
+      data-testid='pages.login.resetPasswordModal'
       ref={modal}
       role='dialog'
       trigger='showResetPassword'
@@ -195,6 +196,7 @@ export const Login: React.FC = () => {
           <IonButtons slot='end'>
             <IonButton
 	      aria-label={intl.formatMessage({id: 'pages.login.resetPasswordModal.close.ariaLabel'})}
+        data-testid='pages.login.resetPasswordModal.close'
 	      onClick={() => modal.current?.dismiss()}
 	    >
 	      <IonIcon
