@@ -31,5 +31,4 @@ describe('Signup', () => {
     cy.injectAxe();
     cy.checkA11y();
   });
-
 });
