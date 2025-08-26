@@ -20,8 +20,8 @@ export const denied = onCall(
       itemNumber,
       machineId,
       sessionId,
+      userId
     } = request.data;
-    const userId: string = request.auth!.uid!;
     try{
       await logPantryLinkVend({
 	item_number: itemNumber,
