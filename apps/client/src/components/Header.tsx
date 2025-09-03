@@ -3,6 +3,7 @@ import {
   FormattedMessage,
   useIntl
 } from 'react-intl';
+import {Helmet} from 'react-helmet';
 import {
   IonBadge,
   IonButton,
@@ -104,5 +105,10 @@ export const Header: React.FC<HeaderProps> = ({
 	  </IonItem>)}	
       </IonContent>
     </IonModal>
+    <Helmet>
+      <title>
+	{intl.formatMessage({id: i18nKey})} | Share Meals
+      </title>
+    </Helmet>
   </>;
 }
