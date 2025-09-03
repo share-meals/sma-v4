@@ -49,7 +49,7 @@ This report evaluates conformance against:
 | 1.2.4 Captions (Live) | AA | Not Applicable | No live video content. |
 | 1.2.5 Audio Description (Prerecorded) | AA | Not Applicable | No prerecorded video content. |
 | 1.3.1 Info and Relationships | A | Supports | Semantic HTML and ARIA attributes convey structure and meaning. Automated axe-core testing confirmed compliance. |
-| 1.3.2 Meaningful Sequence | A | Partially Supports | Logical reading and focus order maintained, except one button group on Accounts page not tabbable. |
+| 1.3.2 Meaningful Sequence | A | Supports | Reading and focus order follow a logical sequence throughout the application. |
 | 1.3.3 Sensory Characteristics | A | Supports | Instructions do not rely solely on sensory cues. |
 | 1.4.1 Use of Color | A | Supports | Color is not the sole method of conveying information. |
 | 1.4.3 Contrast (Minimum) | AA | Supports | All text meets or exceeds contrast requirements in light mode. |

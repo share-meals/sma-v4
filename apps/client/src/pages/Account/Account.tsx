@@ -197,15 +197,13 @@ export const Account: React.FC = () => {
 	  </StateButton>
 	</IonButtons>
       </IonItem>
-      <div className='mv-1 ph-1'>
-	<CommunityTags communities={Object.keys(communities)} onClose={(communityId) => {
-	  removeFromCommunityFunction({communityId})
-	    .catch((error) => {
-	      console.log(error);
-	    });
-	}}/>
-	{Object.keys(communities).length === 0 && <FormattedMessage id='pages.account.noCommunities' />}
-      </div>
+      <CommunityTags communities={Object.keys(communities)} onClose={(communityId) => {
+	removeFromCommunityFunction({communityId})
+	  .catch((error) => {
+	    console.log(error);
+	  });
+      }}/>
+      {Object.keys(communities).length === 0 && <div className='mb-1' ><FormattedMessage id='pages.account.noCommunities' /></div>}
       <IonListHeader color='dark'>
       </IonListHeader>
       <IonItem
