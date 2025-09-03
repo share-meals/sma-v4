@@ -17,6 +17,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import {useAlerts} from '@/hooks/Alerts';
+import {useI18n} from '@/hooks/I18n';
 import {useMessages} from '@/hooks/Messages';
 import {useProfile} from '@/hooks/Profile';
 import {useState} from 'react';
@@ -34,6 +35,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const {alerts} = useAlerts();
   const intl = useIntl();
+  const {language} = useI18n();
   const [showAlerts, setShowAlerts] = useState<boolean>(false);
   const {isLoggedIn} = useProfile();
   const {unreadCount} = useMessages();
@@ -106,6 +108,7 @@ export const Header: React.FC<HeaderProps> = ({
       </IonContent>
     </IonModal>
     <Helmet>
+      <html lang={language} />
       <title>
 	{intl.formatMessage({id: i18nKey})} | Share Meals
       </title>
