@@ -66,7 +66,7 @@ This report evaluates conformance against:
 | 2.2.2 Pause, Stop, Hide | A | Not Applicable | No moving content requiring controls. |
 | 2.3.1 Three Flashes or Below Threshold | A | Supports | No flashing content above threshold. |
 | 2.4.1 Bypass Blocks | A | Supports | Landmarks allow skipping repeated content. |
-| 2.4.2 Page Titled | A | Partially Supports | Visible titles change, HTML `<title>` does not update. |
+| 2.4.2 Page Titled | A | Supports | Each page/view has a descriptive and updated HTML `<title>` element that reflects its purpose. |
 | 2.4.3 Focus Order | A | Supports | Logical, predictable focus order. |
 | 2.4.4 Link Purpose (In Context) | A | Supports | Links are descriptive in context. |
 | 2.4.5 Multiple Ways | AA | Supports | All primary pages accessible via persistent bottom navigation. |
