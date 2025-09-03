@@ -73,7 +73,7 @@ This report evaluates conformance against:
 | 2.4.6 Headings and Labels | AA | Supports | Clear, descriptive headings and labels. |
 | 2.4.7 Focus Visible | AA | Supports | Visible focus indicator present for all interactive elements. |
 | 3.1.1 Language of Page | A | Supports | Root HTML element specifies language. |
-| 3.1.2 Language of Parts | AA | Partially Supports | Language attribute does not update when app language changes. |
+| 3.1.2 Language of Parts | AA | Supports | The HTML `lang` attribute updates appropriately when the application language changes, ensuring correct announcements by assistive technologies. |
 | 3.2.1 On Focus | A | Supports | No changes triggered solely on focus. |
 | 3.2.2 On Input | A | Supports | No unexpected context changes on input. |
 | 3.2.3 Consistent Navigation | AA | Supports | Navigation is consistent. |
