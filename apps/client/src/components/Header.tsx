@@ -80,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({
       <IonHeader className='ion-no-border'>
 	<IonToolbar color='primary'>
 	  <IonTitle>
-	    <FormattedMessage id='components.header.alertsModal' />
+	    <FormattedMessage id='components.header.alertsModal.title' />
 	  </IonTitle>
 	  <IonButtons slot='end'>
 	    <IonButton

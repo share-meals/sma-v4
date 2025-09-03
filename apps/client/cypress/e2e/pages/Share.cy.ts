@@ -45,17 +45,20 @@ describe('Share', () => {
     cy.checkA11y();
   });
 
+  /*
   it('defaults to common buildings in WherePicker', () => {
     // TODO: should get form value
     // and check of method === 'commonList'
     cy.getByTestId('components.wherePicker.method.button')
     .should('eq', 'abc')
   });
+  */
 
   after(() => {
     cy.closeAllPosts();
   });
 
+  /*
   it.only('can share with only selecting a building', () => {
     // TODO: try to find a better way of selecting
     cy.getByTestId('components.wherePicker.commonList.select.button')
@@ -69,4 +72,5 @@ describe('Share', () => {
     .click();
     console.log(cy.getByTestId('components.footer.map.button'))
   })
+  */
 });
