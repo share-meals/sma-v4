@@ -3,12 +3,13 @@ import {
   membershipSchema
 } from '@sma-v4/schema';
 import {
-  IonChip,
+  IonButton,
   IonIcon,
-  IonLabel,
+  IonItem,
+  useIonAlert,
 } from '@ionic/react';
 import {person} from 'ionicons/icons';
-
+import {useIntl} from 'react-intl';
 import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
 
@@ -16,6 +17,44 @@ import StarIcon from '@material-symbols/svg-400/rounded/star-fill.svg';
 import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 
 type OnClose = (communityId: string) => void;
+
+interface Theme {
+  color: string,
+  type: 'dark' | 'light'
+}
+
+interface CommunityTagIconProps {
+  membership: 'admin' | 'member';
+  theme: Theme
+}
+
+const CommunityTagIcon: React.FC<CommunityTagIconProps> = ({
+  membership,
+  theme,
+}) => {
+  const intl = useIntl();
+  switch(membership){
+    case 'admin':
+      return <IonIcon
+	       aria-label={intl.formatMessage({id: `components.communityTags.icon.admin`})}
+	       icon={StarIcon}
+	       slot='start'
+	       style={{
+		 'color': theme.color
+	       }}
+      />;      
+    case 'member':
+    default:
+      return <IonIcon
+	       aria-label={intl.formatMessage({id: `components.communityTags.icon.member`})}
+	       icon={person}
+	       slot='start'
+	       style={{
+		 'color': theme.color
+	       }}
+      />;
+  }
+}
 
 interface CommunityTagProps {
   community: Community;
@@ -28,35 +67,55 @@ const CommunityTag: React.FC<CommunityTagProps> = ({
   membership,
   onClose,
 }) => {
-  const theme = community.colors ? community.colors[0] : {
+  const [presentAlert] = useIonAlert();
+  const intl = useIntl();
+  const theme: Theme = community.colors ? community.colors[0] : {
     color: '#000000',
     type: 'dark'
   };
-  return <IonChip style={{
-    '--background': theme.color,
-    '--color': theme.type === 'dark' ? '#ffffff' : '#000000'
-  }}>
-    <IonIcon
-      aria-hidden='true'
-      icon={membership === 'admin' ? StarIcon : person}
-      style={{
-	'color': theme.type === 'dark' ? '#ffffff' : '#000000'
-      }}
-    />
-    <IonLabel>
-      {community.name}
-    </IonLabel>
-    {onClose && 
-     <IonIcon
-       aria-hidden='true'
-       icon={CloseIcon}
-       onClick={() => {onClose(community.id);}}
-       style={{
-	 'color': theme.type === 'dark' ? '#ffffff' : '#000000'
+
+  return <IonItem lines='none'>
+    <CommunityTagIcon {...{membership, theme}} />
+    {community.name}
+    {onClose &&
+     <IonButton
+       aria-label={intl.formatMessage({id: 'components.communityTags.leaveCommunity'})}
+       color='danger'
+       fill='outline'
+       onClick={() => {
+        presentAlert({
+	  header: intl.formatMessage({id: 'common.label.confirm'}),
+	  message: intl.formatMessage({id: 'common.label.confirmLeaveCommunity'}, {communityName: community.name}),
+	  buttons: [
+	    {
+	      htmlAttributes: {
+		'data-testid': 'pages.viewPost.closePost.confirm.no.button'
+	      },
+	      role: 'cancel',
+	      text: intl.formatMessage({id: 'common.label.no'}),
+	    },
+	    {
+	      handler: () => {
+		onClose(community.id);
+	      },
+	      htmlAttributes: {
+		'data-testid': 'pages.viewPost.closePost.confirm.yes.button'
+	      },
+	      role: 'confirm',
+	      text: intl.formatMessage({id: 'common.label.yes'}),
+	    },
+	  ]
+        })
        }}
-     />
+       slot='end'>
+       <IonIcon
+	 aria-hidden='true'
+	 icon={CloseIcon}
+	 slot='icon-only'
+       />
+     </IonButton>
     }
-  </IonChip>;
+  </IonItem>  
 }
 
 interface CommunityTagsProps {
