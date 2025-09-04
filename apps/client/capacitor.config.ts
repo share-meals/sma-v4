@@ -5,6 +5,12 @@ const config: CapacitorConfig = {
   appName: 'Share Meals',
   webDir: 'dist',
   plugins: {
+    EdgeToEdge: {
+      backgroundColor: '#106535'
+    },
+    Keyboard: {
+      resizeOnFullScreen: false
+    },
     PushNotifications: {
       presentationOptions: ['alert', 'badge', 'sound'],
     },
