@@ -16,7 +16,7 @@ interface MapProps {
   locked?: boolean;
   maxZoom?: number;
   minZoom?: number;
-  onFeatureClick?: any;
+  onMapClick?: any;
   zoom?: TimestampedZoom;
 }
 

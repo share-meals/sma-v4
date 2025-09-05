@@ -39,6 +39,7 @@ import {useGeolocation} from '@/hooks/Geolocation';
 import {useIntl} from 'react-intl';
 import {useFormContext} from 'react-hook-form';
 import {useProfile} from '@/hooks/Profile';
+import {vectorLayerConstants} from '@/utilities/map';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 
@@ -283,9 +284,6 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   }, [permissionState, lastGeolocation, isWherePickerReady, setIsWherePickerReady]);
 
   const layer: MapLayerProps = useMemo(() => ({
-    featureRadius: 20,
-    featureWidth: 20,
-    fillColor: '#106535',
     geojson: {
       type: 'FeatureCollection',
       features: [
@@ -302,8 +300,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
       ]
     },
     name: 'marker',
-    strokeColor: 'rgba(255, 255, 255, 0.5)',
-    type: 'vector'
+    ...vectorLayerConstants
   }), [internalLat, internalLng]);
 
   if(
