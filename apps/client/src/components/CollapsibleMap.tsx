@@ -3,10 +3,13 @@ import {
   useIntl
 } from 'react-intl';
 import {
+  generateCurrentLocationLayer,
+  vectorLayerConstants
+} from '@/utilities/map';
+import {
   IonButton,
   IonIcon,
 } from '@ionic/react';
-
 import {
   LocateMeControl,
   Map,
@@ -23,7 +26,6 @@ import {
 } from 'react';
 import {useGeolocation} from '@/hooks/Geolocation';
 
-import LocationMarkerIcon from '@/assets/svg/locationMarker.svg';
 import PostLocationIcon from '@material-symbols/svg-400/rounded/location_on-fill.svg';
 
 
@@ -51,29 +53,13 @@ export const CollapsibleMap: React.FC<Location> = ({
     });
   }, [setCenter]);
 
-  const currentLocationLayer = {
-    fillColor: '#ffffff',
-    icon: LocationMarkerIcon,
-    geojson: {
-      type: 'FeatureCollection',
-      features: [{
-	type: 'Feature',
-	geometry: {
-	  coordinates: lastGeolocation ? [lastGeolocation.lng, lastGeolocation.lat] : defaultLocation,
-	  type: 'Point'
-	},
-	properties: {}
-      }]
-    },
-    name: 'Current Location',
-    strokeColor: '#ffffff',
-    type: 'vector',
-    zIndex: 1
-  };
+  const currentLocationLayer = useMemo(() => {
+    return generateCurrentLocationLayer({
+      defaultLocation,
+      lastGeolocation
+    });
+  }, [defaultLocation, lastGeolocation]);
   const layer: MapLayerProps = useMemo(() => ({
-    featureRadius: 20,
-    featureWidth: 20,
-    fillColor: 'rgba(11, 167, 100, 0.5)',
     geojson: {
       type: 'FeatureCollection',
       features: [
@@ -90,8 +76,7 @@ export const CollapsibleMap: React.FC<Location> = ({
       ]
     },
     name: 'marker',
-    strokeColor: 'rgba(255, 255, 255, 0.5)',
-    type: 'vector'
+    ...vectorLayerConstants
   }), [lat, lng]);
 
   const controls = <div style={{
