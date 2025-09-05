@@ -3,6 +3,10 @@ import {
   useIntl,
 } from 'react-intl';
 import {
+  generateCurrentLocationLayer,
+  vectorLayerConstants
+} from '@/utilities/map';
+import {
   IonBadge,
   IonButton,
   IonButtons,
@@ -14,7 +18,6 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import {postSchema} from '@sma-v4/schema';
-import {TimestampedLatLng} from '@share-meals/frg-ui';
 import {LoadingIndicator} from '@/components/LoadingIndicator';
 import {
   LocateMeControl,
@@ -22,6 +25,7 @@ import {
 } from '@/components/Map';
 import {PostInfoBanner} from '@/components/PostInfoBanner';
 import {Redirect} from 'react-router-dom';
+import {TimestampedLatLng} from '@share-meals/frg-ui';
 import {
   useCallback,
   useEffect,
@@ -36,7 +40,6 @@ type PostType = z.infer<typeof postSchema>;
 
 import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 import ListsIcon from '@material-symbols/svg-400/rounded/lists.svg';
-import LocationMarkerIcon from '@/assets/svg/locationMarker.svg';
 
 const defaultLocation: TimestampedLatLng = {lat: 40.78016900410382, lng: -73.96877450706982}; // Delacorte Theater
 
@@ -134,16 +137,8 @@ export const Map: React.FC = () => {
       return {
 	name: bundle.name,
 	geojson,
-	featureWidth: 4,
-	fillColor: 'rgba(11, 167, 100, 0.5)',
-	strokeColor: 'rgba(255, 255, 255, 1)',
-	textScale: 1.5,
-	textFillColor: '#ffffff',
-	textStrokeColor: '#000000',
-	textStrokeWidth: 4,
-	type: 'cluster',
-	clusterDistance: 50,
-	zIndex: 2
+	zIndex: 2,
+	...vectorLayerConstants
       }
     });
   }, [bundles]);
@@ -165,37 +160,16 @@ export const Map: React.FC = () => {
     return {
       name: 'Posts',
       geojson,
-      featureWidth: 4,
-      fillColor: 'rgba(11, 167, 100, 0.5)',
-      strokeColor: 'rgba(255, 255, 255, 1)',
-      textScale: 1.5,
-      textFillColor: '#ffffff',
-      textStrokeColor: '#000000',
-      textStrokeWidth: 4,
-      type: 'cluster',
-      clusterDistance: 50,
-      zIndex: 2
+      zIndex: 2,
+      ...vectorLayerConstants
     };
   }, [posts]);
-  const currentLocationLayer = {
-    fillColor: '#ffffff',
-    icon: LocationMarkerIcon,
-    geojson: {
-      type: 'FeatureCollection',
-      features: [{
-	type: 'Feature',
-	geometry: {
-	  coordinates: lastGeolocation ? [lastGeolocation.lng, lastGeolocation.lat] : defaultLocation,
-	  type: 'Point'
-	},
-	properties: {}
-      }]
-    },
-    name: 'Current Location',
-    strokeColor: '#ffffff',
-    type: 'vector',
-    zIndex: 1
-  };
+  const currentLocationLayer = useMemo(() => {
+    return generateCurrentLocationLayer({
+      defaultLocation,
+      lastGeolocation
+    });
+  }, [defaultLocation, lastGeolocation]);
   const postsNotReady = posts === null;
   const geolocationNoBackup = lastGeolocation === undefined;
   const geolocationDenied = permissionState === 'denied';
@@ -274,11 +248,10 @@ export const Map: React.FC = () => {
 	featuresLayer,
 	...bundlesLayer
       ]}
-      onFeatureClick={({data}: any) => {
-	// check if data is a list of features or not
-	if(data instanceof Array){
-	  setClickedPosts(data)
-	}
+      onMapClick={({data}: any) => {
+	setClickedPosts(
+	  data.filter((datum: any) => datum.layerName !== 'Current Location')
+	)
       }}
       zoom={{level: 14}}
     />
