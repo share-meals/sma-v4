@@ -22,7 +22,7 @@ export const AppWrapper: React.FC<React.PropsWithChildren> = ({children}) => {
 	* 1000);
     }
   }, [isProfileLoading]);
-
+  
   if(!isProfileLoading
      || language === undefined
      || dateFnsLocale === undefined
