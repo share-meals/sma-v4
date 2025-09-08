@@ -228,6 +228,13 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
   const isOwner = uid === post.userId;
   const isAdmin = post.communities.filter((c) => profile.private.communities[`community-${c}`] === 'admin').length > 0;
   const {communities} = useProfile();
+  const postCanChat = post.canChat === undefined ? true : post.canChat;
+  const communitiesCanChat = Object.values(communities).reduce(
+    // TODO: using any for community because features should be defined at this point, not allowed to be undefined
+    (accumulator: boolean, community: any) => (
+      accumulator && community.features.canChat
+    ), true);
+  const canChat = postCanChat && communitiesCanChat;
   return <>
     <div className='ion-padding'>
       <div style={{display: 'flex'}}>
@@ -297,7 +304,7 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
 	)}
       </IonRow>
     </IonGrid>}
-    {post.cannotChat !== true
+    {canChat
     && <>
       <IonList className='ion-no-padding' role='presentation'>
 	<IonListHeader color='dark'>
