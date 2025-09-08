@@ -52,7 +52,7 @@ export const frg = ({
     return [
 	record.id,
 	{
-	    cannotChat: true,
+	    canChat: false,
 	    communities,
 	    details: `${hours}${hours !== '' ? '\n' : ''}${record.notes ?? ''}`,
 	ends: null,
