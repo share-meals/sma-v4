@@ -28,11 +28,26 @@ Cypress.Commands.add('addPost', ({
   .should('exist')
   .type(details);
 
+  cy.getByTestId('pages.post.communities.select')
+  .click();
+
+  // select the first community, only if it's not clicked already
+  cy.get('ion-alert button')
+  .first()
+  .then(($btn) => {
+    if ($btn.attr('aria-checked') === 'false') {
+      cy.wrap($btn).click();
+    }
+  });
+
+  cy.get('ion-alert button')
+  .last()
+  .click();
+  
   cy.getByTestId('components.wherePicker.loadingIndicator')
   .should('not.exist');
   
   cy.getByTestId('pages.post.submit.button')
-  .should('exist')
   .click();
   
   cy.location('pathname')
