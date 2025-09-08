@@ -22,10 +22,11 @@ export const communitySchema = z.object({
   }).array().optional(),
   domains: z.string().array().optional(),
   features: z.object({
-    canShare: z.boolean(),
-    canPost: z.boolean(),
-    canPantryLink: z.boolean(),
-    mustWhitelistPost: z.boolean()
+    canChat: z.boolean().optional(),
+    canPost: z.boolean().optional(),
+    canPantryLink: z.boolean().optional(),
+    canShare: z.boolean().optional(),
+    mustWhitelistPost: z.boolean().optional()
   }),
   locations: locationSchema.array(),
   name: z.string(),
