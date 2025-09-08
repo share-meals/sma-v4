@@ -25,7 +25,7 @@ const baseSchema = z.object({
 })
 
 const basePostSchema = baseSchema.merge(z.object({
-  cannotChat: z.boolean().optional(),
+  canChat: z.boolean().optional(),
 //  chat: chatSchema.array().optional(),
   details: z.string().max(500).min(5),
   evergreen: z.boolean().optional(),
