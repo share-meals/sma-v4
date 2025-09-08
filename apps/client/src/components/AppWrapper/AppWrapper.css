@@ -8,6 +8,7 @@
 
     img {
 	height: 50vh;
+	padding: 2rem;
     }
     
     ion-progress-bar{
