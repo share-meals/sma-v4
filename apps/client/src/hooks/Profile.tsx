@@ -51,6 +51,14 @@ const defaultProfile: any = {
   }
 };
 
+const defaultCommunityFeatures: any = {
+  canChat: true,
+  canPost: true,
+  canShare: false,
+  canPantryLink: false,
+  mustWhitelistPost: false
+}
+
 interface Profile {
   bundles: any;
   bundlePostsLength: number;
@@ -168,7 +176,10 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	  let canShare: string[] = [];
 	  let canPantryLink: string[] = [];
 	  const comms = Object.fromEntries(snapshot.docs.map((doc) => {
-	    const {codes, ...data} = doc.data();
+	    const {codes, ...rawData} = doc.data();
+	    const data: any = merge({
+	      features: defaultCommunityFeatures
+	    }, rawData);
 	    // todo: typing
 	    const membership = profile.private.communities[`community-${doc.id}`];
 	    if((data.features.canPost && !data.features.mustWhitelistPost)
@@ -182,9 +193,9 @@ export const ProfileProvider: React.FC<React.PropsWithChildren> = ({children}) =
 	      canPantryLink.push(doc.id);
 	    }
 	    return [doc.id, {
-	      id: doc.id,
 	      //myMembership: membership,
-	      ...data
+	      ...data,
+	      id: doc.id,
 	    }];
 	  }));
 	  setFeatures({
