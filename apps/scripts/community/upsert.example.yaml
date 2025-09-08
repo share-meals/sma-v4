@@ -17,9 +17,10 @@ community:
   domains:
     - nasa.edu
   features:
+    canChat: true
     canPost: true
     canShare: false
-    canSmartPantry: false
+    canPantryLink: false
     mustWhitelistPost: false
   locations:
     - name: Patriots Plaza II
