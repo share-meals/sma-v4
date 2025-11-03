@@ -16,8 +16,13 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import {
+  Redirect,
+  useLocation
+} from 'react-router-dom';
 import {useAlerts} from '@/hooks/Alerts';
 import {useI18n} from '@/hooks/I18n';
+import {useKioskPantryLinkMode} from '@/store/useKioskPantryLinkMode';
 import {useMessages} from '@/hooks/Messages';
 import {useProfile} from '@/hooks/Profile';
 import {useState} from 'react';
@@ -39,10 +44,19 @@ export const Header: React.FC<HeaderProps> = ({
   const [showAlerts, setShowAlerts] = useState<boolean>(false);
   const {isLoggedIn} = useProfile();
   const {unreadCount} = useMessages();
+  const location = useLocation();
+  const {kioskPantryLinkId} = useKioskPantryLinkMode();
+
   return <>
+    {isLoggedIn
+    && !location.pathname?.startsWith('/pantry-link')
+    && kioskPantryLinkId !== null
+    && <Redirect to={`/pantry-link/${kioskPantryLinkId}`} />}
     <IonHeader className='ion-no-border' style={{backgroundColor: 'var(--ion-color-primary)'}}>
       <IonToolbar color='primary' className='max-width-md margin-horizontal-auto'>
 	<IonTitle>
+	  {kioskPantryLinkId !== null
+	  && <><FormattedMessage id='components.header.kioskMode' />&nbsp;</>}
 	  <FormattedMessage id={i18nKey} />{import.meta.env.VITE_ENVIRONMENT !== 'live' && ` [${import.meta.env.VITE_ENVIRONMENT}]`}
 	</IonTitle>
 	<IonButtons slot='end'>

@@ -28,12 +28,13 @@ import {
 } from '@/pages/Messages';
 import {normalizeForUrl} from '@/utilities/normalizeForUrl';
 import {PageNotFound} from '@/pages/PageNotFound';
+import {PantryLinkDashboard} from '@/pages/PantryLink';
 import {Post} from '@/pages/Post';
 import {PrivacyPolicy} from '@/pages/PrivacyPolicy';
 import {ResetPassword} from '@/pages/ResetPassword';
 import {Share} from '@/pages/Share';
 import {Signup} from '@/pages/Signup';
-import {PantryLinkDashboard} from '@/pages/PantryLink';
+import {useKioskPantryLinkMode} from '@/store/useKioskPantryLinkMode';
 import {VerifyEmail} from '@/pages/VerifyEmail';
 import {ViewPost} from '@/pages/ViewPost';
 import {ViewShare} from '@/pages/ViewShare';
@@ -79,6 +80,7 @@ export const Router: React.FC = () => {
     isLoggedIn,
     //postsLength,
   } = useProfile();
+  const {kioskPantryLinkId} = useKioskPantryLinkMode();
   return <IonReactRouter>
     <PushNotificationActionListener />
     <IonRouterOutlet animated={false}>
@@ -155,7 +157,8 @@ export const Router: React.FC = () => {
 	    </LayoutWrapper>
 	  </Route>
 	  <Route exact path='/'>
-	    {isLoggedIn ? <Redirect to='/map' /> : <Redirect to='/signup' />}
+	    {isLoggedIn ? <Redirect to='/map' />
+	    : <Redirect to={kioskPantryLinkId !== null ? '/login' : '/signup'} />}
 	  </Route>
   	  <Route exact path='/privacy-policy'>
 	    <LayoutWrapper i18nKey='pages.privacyPolicy.title'>
