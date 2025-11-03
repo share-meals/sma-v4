@@ -2673,9 +2673,9 @@ __metadata:
   linkType: hard
 
 "@ctrl/tinycolor@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "@ctrl/tinycolor@npm:4.1.0"
-  checksum: 10c0/813dd960366df057006a1b93d7403ec7a48db1e79bec846d38fab15a1e0f37efd3ab96b0c780a14867ddc1f4c5a473e403c5c88e96d212c544ad934411e5307f
+  version: 4.2.0
+  resolution: "@ctrl/tinycolor@npm:4.2.0"
+  checksum: 10c0/374034581953f6debd950e4b07da833d1d8f7af5aead5117c91545fbe1583c91b2407bc285e1625529839135d6465c2e7549e7a8ad70979cab4c207486798064
   languageName: node
   linkType: hard
 
@@ -4997,9 +4997,9 @@ __metadata:
   linkType: hard
 
 "@petamoriken/float16@npm:^3.4.7":
-  version: 3.9.2
-  resolution: "@petamoriken/float16@npm:3.9.2"
-  checksum: 10c0/af229a0fc429083e76c459cc3bf7e682f578518c34c21e2d1c1b1c2744e69a5208b94245c41757f500ef722dd79fb6c55e8858d29d7fb57d4fe2b3e5734f1149
+  version: 3.9.3
+  resolution: "@petamoriken/float16@npm:3.9.3"
+  checksum: 10c0/de0a1a0224862cba16e6b614e6a5dd557c545c3f0372db21f61d7bcce7595fa63a28d10512c908acfbe177d209a39cea406f190159936f5891b3c095d460fdc2
   languageName: node
   linkType: hard
 
@@ -5304,9 +5304,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@share-meals/frg-ui@npm:^0.0.25":
-  version: 0.0.25
-  resolution: "@share-meals/frg-ui@npm:0.0.25::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.25%2Fefe957fdf8b2aa30aa78990c804b6e081b3ea758"
+"@share-meals/frg-ui@npm:^0.0.26":
+  version: 0.0.26
+  resolution: "@share-meals/frg-ui@npm:0.0.26::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40share-meals%2Ffrg-ui%2F0.0.26%2F632e906ee89fa86fb029183a0a76d3f970909240"
   dependencies:
     "@ctrl/tinycolor": "npm:^4.1.0"
     "@react-google-maps/api": "npm:^2.20.6"
@@ -5323,7 +5323,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-hook-form: "*"
-  checksum: 10c0/b670afd5010dca34c526cbee607be17807884b86ba903c9958cb3a0598c0ca91b532e3247239540509b09b34abce0f9ea7c179aec022a2bb0672d815af3c5155
+  checksum: 10c0/1b4385d0ddd5c6d483a553d60afdc29a783fd3afbf074f507788ef26a4063081968621809c93b580d4ded5105b482c6de2add82e5337e0b8d3086dafc6485e20
   languageName: node
   linkType: hard
 
@@ -5382,7 +5382,7 @@ __metadata:
     "@ionic/react-router": "npm:^7.0.0"
     "@material-symbols/svg-400": "npm:^0.16.0"
     "@material-symbols/svg-700": "npm:^0.23.0"
-    "@share-meals/frg-ui": "npm:^0.0.25"
+    "@share-meals/frg-ui": "npm:^0.0.26"
     "@storybook/addon-a11y": "npm:^8.0.2"
     "@storybook/addon-actions": "npm:^8.0.4"
     "@storybook/addon-console": "npm:^3.0.0"
@@ -9374,9 +9374,9 @@ __metadata:
   linkType: hard
 
 "color-name@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "color-name@npm:2.0.0"
-  checksum: 10c0/fc0304606e5c5941f4649a9975c03a2ecd52a22aba3dadb3309b3e4ee61d78c3e13ff245e80b9a930955d38c5f32a9004196a7456c4542822aa1fcfea8e928ed
+  version: 2.0.2
+  resolution: "color-name@npm:2.0.2"
+  checksum: 10c0/40372a581fdeca099b824b6a14dac095387ae83457ed0fafe6f37053515c1094365f0d26b5f29df941be748051b490a0aa3f2ea0c29126a90ab2add482942701
   languageName: node
   linkType: hard
 
@@ -10104,9 +10104,9 @@ __metadata:
   linkType: hard
 
 "dayjs@npm:^1.11.10":
-  version: 1.11.13
-  resolution: "dayjs@npm:1.11.13"
-  checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
+  version: 1.11.19
+  resolution: "dayjs@npm:1.11.19"
+  checksum: 10c0/7d8a6074a343f821f81ea284d700bd34ea6c7abbe8d93bce7aba818948957c1b7f56131702e5e890a5622cdfc05dcebe8aed0b8313bdc6838a594d7846b0b000
   languageName: node
   linkType: hard
 

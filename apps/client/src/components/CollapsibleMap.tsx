@@ -18,6 +18,7 @@ import type {Location} from '@sma-v4/schema';
 import {
   MapLayerProps,
   TimestampedLatLng,
+  ZoomControls
 } from '@share-meals/frg-ui';
 import {
   useCallback,
@@ -25,6 +26,8 @@ import {
   useMemo,
 } from 'react';
 import {useGeolocation} from '@/hooks/Geolocation';
+
+import '@/components/Map/ZoomControls.css';
 
 import PostLocationIcon from '@material-symbols/svg-400/rounded/location_on-fill.svg';
 
@@ -79,7 +82,8 @@ export const CollapsibleMap: React.FC<Location> = ({
     ...vectorLayerConstants
   }), [lat, lng]);
 
-  const controls = <div style={{
+  const controls = <>
+    <div style={{
     display: 'flex',
     flexDirection: 'column',
     position: 'absolute',
@@ -93,7 +97,16 @@ export const CollapsibleMap: React.FC<Location> = ({
       className='square' onClick={() => {changeCenter(postCenter);}}>
       <IonIcon aria-hidden='true' slot='icon-only' src={PostLocationIcon} />
     </IonButton>
-  </div>;
+    </div>
+    <ZoomControls increment={1}
+		  zoomOutControlProps={{
+		    className: 'square',
+		  }}
+		  zoomInControlProps={{
+		    className: 'square'
+		  }}
+    />
+  </>;
   ////////////////////////
   // TODO: add room to address
   return <>
