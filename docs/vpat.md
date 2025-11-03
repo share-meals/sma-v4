@@ -59,7 +59,7 @@ This report evaluates conformance against:
 | 1.4.11 Non-text Contrast | AA | Supports | All non-text UI elements meet contrast requirements. |
 | 1.4.12 Text Spacing | AA | Supports | Meets WCAG-recommended spacing without loss of content/function. |
 | 1.4.13 Content on Hover or Focus | AA | Not Applicable | No hover/focus-triggered transient content; toast messages are user-triggered, short, and pausable. |
-| 2.1.1 Keyboard | A | Partially Supports | Map panning/zooming requires mouse/touch; alternative location info provided. |
+| 2.1.1 Keyboard | A | Supports | All map functionality, including panning and zooming, is fully operable via keyboard. The map container is focusable using tabindex, allowing arrow-key panning once focused. Dedicated + and – zoom buttons are provided with clear focus indicators and accessible labels. All equivalent location information remains available through non-map views. |
 | 2.1.2 No Keyboard Trap | A | Supports | No keyboard traps present. |
 | 2.1.4 Character Key Shortcuts | A | Not Applicable | No single-character shortcuts. |
 | 2.2.1 Timing Adjustable | A | Not Applicable | No time limits. |
@@ -98,8 +98,8 @@ This report evaluates conformance against:
 | 302.4 Without Hearing | Supports | No audio content. |
 | 302.5 With Limited Hearing | Supports | No audio content. |
 | 302.6 Without Speech | Supports | Fully operable without speech input. |
-| 302.7 With Limited Manipulation | Partially Supports | Map panning/zooming not fully keyboard accessible. |
-| 302.8 With Limited Reach and Strength | Partially Supports | Map panning/zooming requires mouse/touch; alternatives available. |
+| 302.7 With Limited Manipulation | Supports | Map interactions are fully accessible without fine motor control. Users can pan using arrow keys after focusing the map and zoom using + and – buttons with large, well-spaced touch targets. |
+| 302.8 With Limited Reach and Strength | Supports | All map controls can be operated using standard keyboard input or touch gestures requiring minimal reach or strength. Interactive controls meet minimum size and spacing requirements, ensuring accessibility for users with limited mobility. |
 | 302.9 With Limited Language, Cognitive, and Learning Abilities | Supports | Clear language and consistent navigation. |
 
 ---
