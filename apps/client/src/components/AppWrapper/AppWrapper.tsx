@@ -3,8 +3,8 @@ import {
   useEffect,
   useState,
 } from 'react';
-import {useProfile} from '@/hooks/Profile';
 import {useI18n} from '@/hooks/I18n';
+import {useProfile} from '@/hooks/Profile';
 
 import './AppWrapper.css';
 

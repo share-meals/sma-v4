@@ -14,6 +14,8 @@ import {MessagingProvider} from '@/hooks/Messaging';
 import {ProfileProvider} from '@/hooks/Profile';
 import {Router} from '@/components/Router';
 import {ToastContainer} from 'react-toastify';
+import {useKioskPantryLinkMode} from '@/store/useKioskPantryLinkMode';
+import {useEffect} from 'react';
 import {UsersProvider} from '@/hooks/Users';
 
 /* Core CSS required for Ionic components to work properly */
@@ -50,6 +52,16 @@ CapApp.addListener('appUrlOpen', (data) => {
 });
 
 export const App: React.FC = () => {
+  const {setKioskPantryLinkId} = useKioskPantryLinkMode();
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const kioskPantryLinkId = params.get('kplid');
+
+    if(params.has('kplid')){
+      setKioskPantryLinkId(kioskPantryLinkId);
+    }
+  }, [setKioskPantryLinkId]);
+
   return <IonApp>
     <LoggerProvider>
       <I18nProvider>

@@ -10,6 +10,8 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import {useIntl} from 'react-intl';
+import {useKioskPantryLinkMode} from '@/store/useKioskPantryLinkMode';
+import {useLogger} from '@/hooks/Logger';
 import {useProfile} from '@/hooks/Profile';
 
 import './Footer.css';
@@ -24,7 +26,8 @@ interface NavigationButtonProps {
   badge?: React.ReactElement<React.ComponentProps<typeof IonBadge>>;
   i18nKey: string;
   icon: string;
-  link: string;
+  link?: string;
+  onClick?: () => void;
   testid: string;
 }
 
@@ -33,6 +36,7 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
   i18nKey,
   icon,
   link,
+  onClick,
   testid,
 }) => {
   const intl = useIntl();
@@ -40,6 +44,7 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
 	   aria-label={intl.formatMessage({id: `${i18nKey}.ariaLabel`})}
 	   className={classnames('icon-top', {'has-badge': badge})}
 	   data-testid={testid}
+	   onClick={onClick}
 	   routerLink={link}
 	 >
     <IonIcon
@@ -61,16 +66,74 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
    icon={}
    link=''
    />
-*/
+ */
 
-export const Footer: React.FC = () => {
+const LoggedInButtons: React.FC = () => {
   const {
     bundlePostsLength,
     features,
-    isLoggedIn,
     postsLength,
   } = useProfile();
+  const {kioskPantryLinkId} = useKioskPantryLinkMode();
+  const {signout} = useProfile();
+  const {log} = useLogger();
+  if(kioskPantryLinkId !== null){
+    return <>
+      <NavigationButton
+	i18nKey='common.label.logout'
+	icon={PostIcon}
+	onClick={() => {
+	  log({
+	    component: 'footer',
+	    level: 'debug',
+	    message: 'logout'
+	  });
+	  signout();
+	}}
+	testid='components.footer.logout.button'
+      />
+    </>;
+  }
+  return <>
+    <NavigationButton
+      badge={postsLength + bundlePostsLength > 0
+					     ? <IonBadge color='light'>
+					       {postsLength + bundlePostsLength}
+					     </IonBadge>
+					     : undefined}
+      i18nKey='pages.map.title'
+      icon={MapIcon}
+      link='/map'
+      testid='components.footer.map.button'
+    />
+    {features.canPost.length > 0 &&
+     <NavigationButton
+       i18nKey='pages.post.title'
+       icon={PostIcon}
+       link='/post'
+       testid='components.footer.post.button'
+     />}
+    {features.canShare.length > 0 &&
+     false &&
+     <NavigationButton
+       i18nKey='pages.share.title'
+       icon={PostIcon}
+       link='/share'
+       testid='components.footer.share.button'
+     />}
+    <NavigationButton
+      i18nKey='pages.account.title'
+      icon={AccountIcon}
+      link='/account'
+      testid='components.footer.account.button'
+    />
+  </>;
+};
 
+export const Footer: React.FC = () => {
+  const {
+    isLoggedIn,
+  } = useProfile();
   return <IonFooter className='ion-no-border' id='footer'>
     <IonToolbar
       className='max-width-md margin-horizontal-auto'
@@ -89,47 +152,8 @@ export const Footer: React.FC = () => {
 	    link='/signup'
 	    testid='components.footer.signup.button'
 	  />
-	</>
-	}
-  {isLoggedIn &&
-   <NavigationButton
-     badge={postsLength + bundlePostsLength > 0
-					    ? <IonBadge color='light'>
-					      {postsLength + bundlePostsLength}
-					    </IonBadge>
-					    : undefined}
-     i18nKey='pages.map.title'
-     icon={MapIcon}
-     link='/map'
-     testid='components.footer.map.button'
-    />
-  }  
-  {features.canPost.length > 0 &&
-   isLoggedIn &&
-   <NavigationButton
-     i18nKey='pages.post.title'
-     icon={PostIcon}
-     link='/post'
-     testid='components.footer.post.button'
-    />
-  }
-  {features.canShare.length > 0 &&
-   isLoggedIn &&
-   false &&
-   <NavigationButton
-     i18nKey='pages.share.title'
-     icon={PostIcon}
-     link='/share'
-     testid='components.footer.share.button'
-    />
-  }
-  {isLoggedIn &&
-   <NavigationButton
-     i18nKey='pages.account.title'
-     icon={AccountIcon}
-     link='/account'
-     testid='components.footer.account.button'
-   />}
+	</>}
+	{isLoggedIn && <LoggedInButtons />}
       </IonButtons>
     </IonToolbar>
   </IonFooter>
