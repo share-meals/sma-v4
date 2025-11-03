@@ -25,7 +25,10 @@ import {
 } from '@/components/Map';
 import {PostInfoBanner} from '@/components/PostInfoBanner';
 import {Redirect} from 'react-router-dom';
-import {TimestampedLatLng} from '@share-meals/frg-ui';
+import {
+  TimestampedLatLng,
+  ZoomControls,
+} from '@share-meals/frg-ui';
 import {
   useCallback,
   useEffect,
@@ -35,6 +38,8 @@ import {
 import {useGeolocation} from '@/hooks/Geolocation';
 import {useProfile} from '@/hooks/Profile';
 import {z} from 'zod';
+
+import '@/components/Map/ZoomControls.css';
 
 type PostType = z.infer<typeof postSchema>;
 
@@ -190,31 +195,41 @@ export const Map: React.FC = () => {
     );
   }, [bundles, posts, setClickedPosts]);
 
-  const controls = <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    right: '1rem',
-    top: '1rem',
-    zIndex: 999
-  }}>
-    {!geolocationDenied && <LocateMeControl setCurrentLocation={changeCenter} />}
-    {(bundlePostsLength + postsLength) > 0 &&
-     <IonButton
-       aria-label={intl.formatMessage({id: 'pages.map.showAllPosts.button.ariaLabel'})}
-       className='square icon-only has-badge'
-       data-testid='pages.map.showAllPosts.button'
-       onClick={showAllPosts}>
-       <IonIcon
-	 aria-hidden='true'
-	 slot='icon-only'
-	 src={ListsIcon} />
-       <IonBadge color='light'>
-	 {bundlePostsLength + postsLength}
-       </IonBadge>
-     </IonButton>
-    }
-  </div>;
+  const controls = <>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'absolute',
+      right: '1rem',
+      top: '1rem',
+      zIndex: 999
+    }}>
+      {!geolocationDenied && <LocateMeControl setCurrentLocation={changeCenter} />}
+      {(bundlePostsLength + postsLength) > 0 &&
+       <IonButton
+	 aria-label={intl.formatMessage({id: 'pages.map.showAllPosts.button.ariaLabel'})}
+	 className='square icon-only has-badge'
+	 data-testid='pages.map.showAllPosts.button'
+	 onClick={showAllPosts}>
+	 <IonIcon
+	   aria-hidden='true'
+	   slot='icon-only'
+	   src={ListsIcon} />
+	 <IonBadge color='light'>
+	   {bundlePostsLength + postsLength}
+	 </IonBadge>
+       </IonButton>
+      }
+    </div>
+    <ZoomControls increment={1}
+		  zoomOutControlProps={{
+		    className: 'square',
+		  }}
+		  zoomInControlProps={{
+		    className: 'square'
+		  }}
+    />
+  </>;
 
   // /map is the default place to land once you're logged in and verified
   // if they are trying to access a restricted page, push them as needed
