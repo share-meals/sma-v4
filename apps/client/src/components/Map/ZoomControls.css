@@ -1,0 +1,8 @@
+.frg-ui-map-zoom-wrapper {
+    position: absolute;
+    bottom: 0.66rem;
+    right: 1rem;
+    z-index: 999;
+    scale: 66%;
+    transform-origin: 100% 100%;
+}
