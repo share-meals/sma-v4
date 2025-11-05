@@ -89,6 +89,7 @@ const InfoModal: React.FC<{posts: PostType[]}> = ({posts}) => {
 };
 
 export const Map: React.FC = () => {
+  const mapHeight = 'calc(100vh - 112px - var(--ion-safe-area-top) - var(--ion-safe-area-bottom))'
   const {
     getGeolocation,
     lastGeolocation,
@@ -245,14 +246,14 @@ export const Map: React.FC = () => {
      || (geolocationAwaitingPrompt && geolocationNoBackup)){
     return <div
 	     data-testid='pages.map.loadingIndicator'
-	     style={{height: 'calc(100vh - 113px)'}}>
+	     style={{height: mapHeight}}>
       <LoadingIndicator />
     </div>;
   }
   return <div
 	   data-testid='pages.map'
 	   style={{
-	     height: 'calc(100vh - 113px)',
+	     height: mapHeight,
 	     position: 'relative'
 	   }}>
     <FRGMap
