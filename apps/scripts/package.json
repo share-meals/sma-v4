@@ -6,6 +6,8 @@
     "firestore-export-import": "^1.4.0",
     "glob": "^11.0.1",
     "js-yaml": "^4.1.0",
+    "pino": "^10.1.0",
+    "pino-pretty": "^13.1.2",
     "prompt-sync": "^4.2.0"
   }
 }
