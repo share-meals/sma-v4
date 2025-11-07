@@ -17,12 +17,19 @@ export const submit = onCall(
     // todo: lookup points
     // todo: validate
     const firestore: Firestore = getFirestore();
+    let pointsToAward: number = 0;
+    const pantryLink = await firestore.collection('pantryLinks').doc(request.data.machineId).get();
+    if(pantryLink.exists){
+      pointsToAward = pantryLink.data()!.pointsToAward;
+    }else{
+      // TODO: error handling
+    }
     let tasks: Promise<InsertRowsResponse | WriteResult>[] = [
       firestore.collection('users').doc(request.auth!.uid).set({
         private: {
 	  pantryLink: {
 	    points: FieldValue.increment(
-	      10 * 100
+	      pointsToAward * 100
 	    ),
 	    timestamp: new Date(),
 	  },
