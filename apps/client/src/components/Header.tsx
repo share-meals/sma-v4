@@ -16,6 +16,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import Markdown from 'react-markdown';
 import {useAlerts} from '@/hooks/Alerts';
 import {useI18n} from '@/hooks/I18n';
 import {useMessages} from '@/hooks/Messages';
@@ -103,7 +104,16 @@ export const Header: React.FC<HeaderProps> = ({
 	  <IonItem
 	    data-testid={`alertMessage.${key}`}
 	    key={key}>
-	    <FormattedMessage id={alerts[key].message} />
+	    <Markdown>
+	      {intl.formatMessage({id: alerts[key].message})}
+	    </Markdown>
+	    {alerts[key].button
+	    && <IonButton
+		 slot='end'
+		 onClick={alerts[key].button!.action}>
+	      {alerts[key].button!.label}
+	    </IonButton>
+	    }
 	  </IonItem>)}	
       </IonContent>
     </IonModal>
