@@ -76,6 +76,7 @@ const SignupForm: React.FC = () => {
   }, []);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isEduEmail, setIsEduEmail] = useState<boolean | null>(null);
   const modal = useRef<HTMLIonModalElement>(null);
   const {
     control,
@@ -117,6 +118,9 @@ const SignupForm: React.FC = () => {
 	name='email'
 	required={true}
 	type='email'
+	onIonBlur={(event) => {
+	  setIsEduEmail((event.target.value as string).endsWith('.edu'));
+	}}
       />
       <Input
 	control={control}
@@ -148,7 +152,10 @@ const SignupForm: React.FC = () => {
 	required={true}
 	type='text'
       />
-      <Input
+      {
+	!isEduEmail
+	&& isEduEmail !== null
+	&& <Input
 	control={control}
 	disabled={isLoading}
 	fill='outline'
@@ -157,7 +164,8 @@ const SignupForm: React.FC = () => {
 	labelPlacement='floating'
 	name='communityCode'
 	type='text'
-      />
+	/>
+      }
       <IonList lines='none'>
 	<IonItem lines='none'>
 	  <IonLabel>

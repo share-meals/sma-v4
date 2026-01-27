@@ -170,7 +170,7 @@
   "pages.share.success": "Your swipes have been posted to share!",
   "pages.share.swipesHelperText": "After you have accepted this number of asks, your post will be automatically taken down.",
   "pages.share.title": "Share Swipes",
-  "pages.signup.communityCodeOptional": "Don't have a .edu email address? Enter a community code to join a specific community. Have a .edu email address? No need for a community code!",
+  "pages.signup.communityCodeOptional": "Don't have a .edu email address? Enter a community code to join a specific community.",
   "pages.signup.emailEduAddress": "Use your .edu email address to automatically get connected to your university's community!",
   "pages.signup.error.email-already-exists": "The email address you are attempting to signup with is already in use.",
   "pages.signup.greeting": "Welcome to the Share Meals app! Begin sharing by creating an account.",
