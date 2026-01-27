@@ -1,8 +1,11 @@
 import {Redirect} from 'react-router-dom';
+import {useAlerts} from '@/hooks/Alerts';
 import {
   useEffect,
   useState
 } from 'react';
+import {useIonViewDidEnter} from '@ionic/react';
+import {useMessaging} from '@/hooks/Messaging';
 import {useProfile} from '@/hooks/Profile';
 
 // assume any pages not listed require authentication
@@ -21,7 +24,34 @@ export const AuthGuard: React.FC<React.PropsWithChildren> = ({children}) => {
     requestedUrlSignoutFlag,
     user,    
   } = useProfile();
+  const {
+    enable,
+    permission
+  } = useMessaging();
+  const {addAlert} = useAlerts();
+  useIonViewDidEnter(() => {
+    if(user !== null
+       && user.emailVerified === true){
+      switch(permission){
+	case undefined:
+	case null:
+	case 'prompt':
+	case 'prompt-with-rationale':
+	  enable();
+	  break;
+	case 'denied':
+	  addAlert('messaging.alert.denied', {message: 'messaging.alert.denied'});
+	  break;
+      }
+    }
+  }, [
+    enable,
+    permission,
+    user,
+  ]);
+
   const [pathname, setPathname] = useState<string | null>(null);
+  
   useEffect(() => {
     setPathname(window.location.pathname);
   }, []);
