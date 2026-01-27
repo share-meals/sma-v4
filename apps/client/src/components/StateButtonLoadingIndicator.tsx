@@ -8,5 +8,8 @@ export const StateButtonLoadingIndicator: React.FC = () => {
 	   aria-label={intl.formatMessage({id: 'components.stateButtonLoadingIndicator.ariaLabel'})}
 	   color='light'
 	   name='circular'
+	   style={{
+	     zIndex: 999
+	   }}
   />
 };

@@ -170,7 +170,7 @@
   "pages.share.success": "¡Tus deslizamientos se han publicado para compartir!",
   "pages.share.swipesHelperText": "Después de haber aceptado esta cantidad de solicitudes, su publicación se eliminará automáticamente.",
   "pages.share.title": "Compartir deslizamientos",
-  "pages.signup.communityCodeOptional": "¿No tienes una dirección de correo electrónico .edu? Ingrese un código de comunidad para unirse a una comunidad específica. ¿Tiene una dirección de correo electrónico .edu? ¡No es necesario un código comunitario!",
+  "pages.signup.communityCodeOptional": "¿No tienes una dirección de correo electrónico .edu? Introduce un código de comunidad para unirte a una comunidad específica.",
   "pages.signup.emailEduAddress": "¡Utiliza tu dirección de correo electrónico .edu para conectarte automáticamente con la comunidad de tu universidad!",
   "pages.signup.error.email-already-exists": "La dirección de correo electrónico con la que intenta registrarse ya está en uso.",
   "pages.signup.greeting": "¡Bienvenido a la aplicación Compartir Comidas! Comience a compartir creando una cuenta.",
