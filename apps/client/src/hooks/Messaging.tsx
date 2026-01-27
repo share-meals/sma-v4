@@ -39,11 +39,14 @@ import {useLogger} from '@/hooks/Logger';
 
 import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 
+export type Permission = 'prompt' | 'prompt-with-rationale' | 'granted' | 'denied' | null;
+
 interface MessagingState {
   enable: () => Promise<void>,
   sendMessagingToken: () => Promise<void>,
   clearMessagingToken: (uid: string) => Promise<void>,
   getMessagingToken: () => Promise<string>,
+  permission: Permission,
   updateCommunitySubscriptions: (fixedCommunityIds: string[] | null) => Promise<void>,
 }
 
@@ -58,7 +61,7 @@ const userCommunitySubscribeFunction = httpsCallable(functions, 'user-community-
 const userCommunityUnsubscribeFunction = httpsCallable(functions, 'user-community-unsubscribe');
 
 export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children}) => {
-  const [permission, setPermission] = useState<'prompt' | 'prompt-with-rationale' | 'granted' | 'denied' | null>(null);
+  const [permission, setPermission] = useState<Permission>(null);
   const [needPrompt, setNeedPrompt] = useState<boolean>(false);
   const subscribedCommunities = useRef<string[] | null>(null);
   const {addAlert} = useAlerts();
@@ -250,6 +253,7 @@ export const MessagingProvider: React.FC<React.PropsWithChildren> = ({children})
 	     clearMessagingToken,
 	     enable,
 	     getMessagingToken,
+	     permission,
 	     sendMessagingToken,
 	     updateCommunitySubscriptions
 	   }}>

@@ -4,18 +4,25 @@ import {
   useContext,
   useState,
 } from 'react';
+import omit from 'lodash/fp/omit';
 import {useLogger} from '@/hooks/Logger';
 
 // todo: add onClick handler for alerts
 export interface Alert {
+  button?: {
+    action: () => void,
+    label: string,
+  },
   message: string
 }
 
 interface Alerts {[key: string]: Alert};
 type AddAlert = (s: string, a: Alert) => void;
+type RemoveAlert = (s: string) => void;
 
 interface AlertsState {
   addAlert: AddAlert,
+  removeAlert: RemoveAlert,
   alerts: Alerts,
 }
 
@@ -33,12 +40,16 @@ export const AlertsProvider: React.FC<React.PropsWithChildren> = ({children}) =>
       message: `adding alert: ${JSON.stringify(alert)}`
     });
     setAlerts({...alerts, [key]: alert});
-  }, []);
+  }, [alerts, setAlerts]);
+  const removeAlert = useCallback<RemoveAlert>((key) => {
+    setAlerts(omit([key], alerts));
+  }, [alerts, setAlerts]);
   return <AlertsContext.Provider
 	   children={children}
 	   value={{
 	     addAlert,
-	     alerts
+	     alerts,
+	     removeAlert
 	   }}
   />
 };

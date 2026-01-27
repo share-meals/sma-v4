@@ -41,6 +41,8 @@ import {useProfile} from '@/hooks/Profile';
 import {userSchema} from '@sma-v4/schema';
 import {zodResolver} from '@hookform/resolvers/zod';
 
+import {useAlerts} from '@/hooks/Alerts';
+
 import CloseIcon from '@material-symbols/svg-400/rounded/close.svg';
 import AddIcon from '@material-symbols/svg-400/rounded/add.svg';
 
@@ -139,6 +141,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 };
 
 export const Account: React.FC = () => {
+  const {addAlert, removeAlert} = useAlerts();
   const intl = useIntl();
   const [showDebugTaps, setShowDebugTaps] = useState<number>(0);
   const {log, logs} = useLogger();
@@ -164,8 +167,25 @@ export const Account: React.FC = () => {
   const showLogsModal = async () => {
     setShowLogs(true);
   };
-
   return <div data-testid='pages.account'>
+    <IonButton onClick={() => {
+      addAlert('abc', {
+	message: 'abc',
+	button: {
+	  label: 'abc',
+	  action: () => {
+	    alert(1);
+	  }
+	}
+      });
+      }}>
+      add
+    </IonButton>
+    <IonButton onClick={() => {
+      removeAlert('abc');
+      }}>
+      remove
+    </IonButton>
     <IonListHeader color='dark'>
       <FormattedMessage id='pages.account.settings' />
     </IonListHeader>
