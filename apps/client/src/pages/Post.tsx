@@ -104,7 +104,17 @@ export const Post: React.FC = () => {
       reset();
     }
   }, [formState]);
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit((rawData) => {
+    // hotfix
+    // including room: undefined in payload gets flagged by the server
+    // so wipe it if possible
+    const data: any = {
+      ...rawData,
+      location: Object.fromEntries(
+	Object.entries(rawData.location)
+	      .filter((field) => field[1] !== undefined)
+	)
+    }
     setIsLoading(true);
     postFunction({
       ...data,
