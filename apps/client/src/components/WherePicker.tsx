@@ -132,6 +132,11 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   }, []);
   const [internalLat, setInternalLat] = useState<number>();
   const [internalLng, setInternalLng] = useState<number>();
+  const [internalRoom, setInternalRoom] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    setInternalValue('room', internalRoom, setValueOptions);
+  }, [internalRoom]);
   const {
     clearErrors: clearInternalErrors,
     control: internalControl,
@@ -244,10 +249,10 @@ export const WherePicker: React.FC<WherePickerProps> = ({
   useEffect(() => {
     if(rerenderTrigger !== null){
       // reset form
-//      setInternalValue('method', defaultMethod);
-      // @ts-ignore
+      setInternalValue('method', defaultMethod);
       resetInternalField('commonBuilding');
       resetInternalField('room');
+      setInternalRoom(undefined);
       setValue('location.address', undefined, setValueOptions);
       setValue('location.lat', undefined, setValueOptions);
       setValue('location.lng', undefined, setValueOptions);
@@ -372,7 +377,9 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	 setValue('location.lat', selection.lat, setValueOptions);
 	 setValue('location.lng', selection.lng, setValueOptions);
 	 setValue('location.name', selection.name, setValueOptions);
+	 setValue('location.room', selection.room, setValueOptions);
 	 setInternalValue('commonBuilding', selectionRaw.detail.value, setValueOptions);
+	 setInternalRoom(selection.room);
 	 setInternalLat(selection.lat);
 	 setInternalLng(selection.lng);
        }}
