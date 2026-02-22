@@ -17,6 +17,7 @@ import {CollapsibleMap} from '@/components/CollapsibleMap';
 import {CommunityTags} from '@/components/CommunityTags';
 import {DateTimeDisplay} from '@/components/DateTimeDisplay';
 import {DietaryTags} from '@/components/DietaryTags';
+import {ExternalLink} from '@/components/ExternalLink';
 import {
   FormattedMessage,
   useIntl
@@ -276,7 +277,20 @@ const PostContent: React.FC<{post: PostType}> = ({post}) => {
 	  </IonRow>
       </IonGrid>
       }
-      <CollapsibleMap {...post.location} />
+      {
+	post.location.lat !== -999
+	&& post.location.lng !== -999
+	&& <CollapsibleMap {...post.location} />
+      }
+      {
+	post.location.lat === -999
+	&& post.location.lng === -999
+	&& <>
+	  <FormattedMessage id='common.label.link' />
+	&nbsp;
+	<ExternalLink value={post.location.address} />
+	</>
+      }
       {post.tags && <div>
 	<DietaryTags tags={post.tags} />
       </div>}

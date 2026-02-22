@@ -58,10 +58,11 @@ const methodSchema = z.enum([
 type method = z.infer<typeof methodSchema>;
 
 const internalForm = z.object({
-  commonBuilding: z.string(),
+  commonBuilding: z.string().optional(),
+  url: z.string().trim().min(1, 'Required'),
   method: methodSchema,
-  room: z.string().optional()
-});
+  room: z.string().optional(),
+})
 
 export interface WherePickerProps {
   defaultMethod?: method;
@@ -80,7 +81,7 @@ const setValueCleanOptions = {
 const setValueOptions = {
   shouldDirty: true,
   shouldTouch: true,
-  shouldValidate: true
+  shouldValidate: false
 };
 
 export const WherePicker: React.FC<WherePickerProps> = ({
@@ -164,7 +165,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
     }
   }, [formState]);
   const [method] = internalWatch(['method']);
-  
+
   useEffect(() => {
     setDefaults({
       key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -252,6 +253,7 @@ export const WherePicker: React.FC<WherePickerProps> = ({
       setInternalValue('method', defaultMethod);
       resetInternalField('commonBuilding');
       resetInternalField('room');
+      resetInternalField('url');
       setInternalRoom(undefined);
       setValue('location.address', undefined, setValueOptions);
       setValue('location.lat', undefined, setValueOptions);
@@ -353,13 +355,10 @@ export const WherePicker: React.FC<WherePickerProps> = ({
 	  label: intl.formatMessage({id: 'components.wherePicker.manualAddress'}),
 	  value: 'manualAddress',
 	},
-	/*
-	   // todo: implement virtual checking
-	   {
-	   label: intl.formatMessage({id: 'components.wherePicker.virtual'}),
-	   value: 'virtual',
-	   },
-	 */
+	{
+	  label: intl.formatMessage({id: 'components.wherePicker.virtual'}),
+	  value: 'virtual',
+	},
       ]}
     />
 
@@ -409,44 +408,83 @@ export const WherePicker: React.FC<WherePickerProps> = ({
      </IonInput>
     }
     
+    {method === 'virtual' &&
+     <Input
+       className='margin-between-form-components'
+       control={internalControl}
+       data-testid='input-url'
+       disabled={isLoading}
+       fill='outline'
+       label={intl.formatMessage({id: 'common.label.url'})}
+       labelPlacement='floating'
+       name='url'
+       onIonChange={(event) => {
+	 setValue('location.address', event.detail.value, setValueCleanOptions);
+	 setValue('location.lat', -999, setValueCleanOptions);
+	 setValue('location.lng', -999, setValueCleanOptions);
+       }}
+       required={true}
+       type='text'
+     />
+     /*
+     <IonInput
+       disabled={isLoading}
+       fill='outline'
+       label={intl.formatMessage({id: 'common.label.url'})}
+       labelPlacement='floating'
+       onIonChange={(event) => {
+	 setValue('location.address', event.detail.value, setValueCleanOptions);
+	 setValue('location.lat', -999, setValueCleanOptions);
+	 setValue('location.lng', -999, setValueCleanOptions);
+       }}
+     >
+     </IonInput>
+    */
+    }
+
+
     {method === 'manualAddress' &&
      <ManualAddressPicker />
     }
 
-    <Input
-      className='margin-between-form-components'
-      control={internalControl}
-      data-testid='input-room'
-      disabled={isLoading}
-      fill='outline'
-      helperText={intl.formatMessage({id: 'common.label.optional'})}
-      label={intl.formatMessage({id: 'common.label.room'})}
-      labelPlacement='floating'
-      name='room'
-      onIonChange={(event) => {
-	setValue('location.room', event.detail.value, setValueCleanOptions)
-      }}
-      required={false}
-      type='text'
-    />
+    {method !== 'virtual' &&
+     <Input
+       className='margin-between-form-components'
+       control={internalControl}
+       data-testid='input-room'
+       disabled={isLoading}
+       fill='outline'
+       helperText={intl.formatMessage({id: 'common.label.optional'})}
+       label={intl.formatMessage({id: 'common.label.room'})}
+       labelPlacement='floating'
+       name='room'
+       onIonChange={(event) => {
+	 setValue('location.room', event.detail.value, setValueCleanOptions)
+       }}
+       required={false}
+       type='text'
+     />
+    }
 
-    <div className='mt-2 a' style={{height: '20rem'}}>
-      {(internalLat === undefined
-      || internalLng === undefined)
-      && <LoadingIndicator
-	   data-testid='components.wherePicker.loadingIndicator'
-      />
-      }
-      {(internalLat != undefined
-      && internalLng != undefined) &&
-       <Map
-	 center={{lat: internalLat, lng: internalLng, timestamp: new Date()}}
-	 controls={controls}
-	 layers={[layer]}
-	 locked={isLocked}
-	 minZoom={14}
+    {method !== 'virtual' &&
+     <div className='mt-2 a' style={{height: '20rem'}}>
+       {(internalLat === undefined
+       || internalLng === undefined)
+       && <LoadingIndicator
+	    data-testid='components.wherePicker.loadingIndicator'
        />
-      }
-    </div>
+       }
+       {(internalLat != undefined
+       && internalLng != undefined) &&
+	<Map
+	  center={{lat: internalLat, lng: internalLng, timestamp: new Date()}}
+	  controls={controls}
+	  layers={[layer]}
+	  locked={isLocked}
+	  minZoom={14}
+	/>
+       }
+     </div>
+    }
   </>;
 };
