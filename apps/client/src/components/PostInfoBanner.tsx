@@ -21,7 +21,9 @@ import {Photo} from '@/components/Photo';
 import {ShareTitle} from '@/components/ShareTitle';
 import {useI18n} from '@/hooks/I18n';
 
-import cardOutline from '@material-symbols/svg-400/rounded/credit_card.svg';
+//import cardOutline from '@material-symbols/svg-400/rounded/credit_card.svg';
+import computerOutline from '@material-symbols/svg-400/rounded/computer.svg';
+
 
 const getLink: (arg: any) => string = (postInfo) => {
   if(postInfo.source === 'bundle'){
@@ -85,7 +87,7 @@ export const PostInfoBanner: React.FC<any & {onNavigate: () => void}> = (props) 
 				  ? <Photo path={`postPhotos/${postInfo.id}-${postInfo.photos[0]}.png`} />
 				  : <img
 				      alt={intl.formatMessage({id: 'components.postInfoBanner.postPhoto.alt'})}
-				      src={postInfo.type === 'event' ? logo : cardOutline} />}
+				      src={postInfo.location.lat !== -999 ? logo : computerOutline} />}
       </IonThumbnail>
     </IonItem>
   </Link>;
