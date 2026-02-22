@@ -151,7 +151,9 @@ export const Map: React.FC = () => {
   const featuresLayer = useMemo(() => {
     const geojson = {
       type: 'FeatureCollection',
-      features: Object.values(posts || []).map((post: any) => {
+      features: Object.values(posts || [])
+		      .filter((p: any) => p.location.lat !== -999 && p.location.lng !== -999)
+		      .map((post: any) => {
 	return {
 	  type: 'Feature',
 	  geometry: {
