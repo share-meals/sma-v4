@@ -4,8 +4,11 @@ import {
 } from 'firebase/storage';
 import {
   IonButton,
+  IonButtons,
   IonContent,
+  IonHeader,
   IonIcon,
+  IonToolbar,
   IonModal,
 } from '@ionic/react';
 import {storage} from '@/components/Firebase';
@@ -35,22 +38,27 @@ export const Photo: React.FC<PhotoProps> = ({
   return <div className='photo'>
     {url && <>
       <img
-	src={url}
-	onClick={() => {setShowPhoto(true);}}
+      src={url}
+      onClick={() => {setShowPhoto(true);}}
       />
       <IonModal
 	className='photo-modal'
 	isOpen={showPhoto}
 	onWillDismiss={() => {setShowPhoto(false);}}
       >
+	<IonHeader className='ion-no-border'>
+	  <IonToolbar>
+	    <IonButtons slot='end'>
+	      <IonButton color='primary' fill='solid' onClick={() => {setShowPhoto(false);}}>
+		<IonIcon icon={CloseIcon} />
+	      </IonButton>
+	    </IonButtons>
+	  </IonToolbar>
+	</IonHeader>
 	<IonContent>
-	  <IonButton onClick={() => {setShowPhoto(false);}}>
-	    <IonIcon icon={CloseIcon} />
-	  </IonButton>
 	  <img src={url} />
 	</IonContent>
       </IonModal>
     </>}
   </div>
-  
 }
