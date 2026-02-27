@@ -84,19 +84,19 @@ export const CollapsibleMap: React.FC<Location> = ({
 
   const controls = <>
     <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    right: '1rem',
-    top: '1rem',
-    zIndex: 999
-  }}>
-    <LocateMeControl setCurrentLocation={changeCenter} />
-    <IonButton
-      aria-label={intl.formatMessage({id: 'components.collapsibleMap.centerOnPost.button.ariaLabel'})}
-      className='square' onClick={() => {changeCenter(postCenter);}}>
-      <IonIcon aria-hidden='true' slot='icon-only' src={PostLocationIcon} />
-    </IonButton>
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'absolute',
+      right: '1rem',
+      top: '1rem',
+      zIndex: 999
+    }}>
+      <LocateMeControl setCurrentLocation={changeCenter} />
+      <IonButton
+	aria-label={intl.formatMessage({id: 'components.collapsibleMap.centerOnPost.button.ariaLabel'})}
+	className='square' onClick={() => {changeCenter(postCenter);}}>
+	<IonIcon aria-hidden='true' slot='icon-only' src={PostLocationIcon} />
+      </IonButton>
     </div>
     <ZoomControls increment={1}
 		  zoomOutControlProps={{
@@ -107,35 +107,41 @@ export const CollapsibleMap: React.FC<Location> = ({
 		  }}
     />
   </>;
-  ////////////////////////
-  // TODO: add room to address
+  console.log(name);
   return <>
-      <p>
-	{name} {room}
-	{address}
-	<br />
-	<a
-	  className='text-button'
-	  data-testid='components.collapsibleMap.showMap.link'
-	  onClick={() => {setShowMap(!showMap);}}>
-	  {showMap
-	  ? <FormattedMessage id='pages.viewPost.hideMap' />
-	  : <FormattedMessage id='pages.viewPost.showMap' />}
-	</a>
-      </p>
-      {showMap && <div
-	data-testid='components.collapsibleMap.map'
-		    style={{height: '20rem'}}>
-	<Map
-	  center={center}
-	  controls={controls}
-	  layers={[
-	    currentLocationLayer,
-	    layer,
-	  ]}
-	  zoom={{level: 14}}
-	/>
-      </div>}
+    <p>
+      {name
+      && <>
+	{name}<br />
+      </>}
+      {room
+      && <>
+	<FormattedMessage id='common.label.room' /> {room}<br />
+      </>}
+      {address}
+      <br />
+      <a
+	className='text-button'
+	data-testid='components.collapsibleMap.showMap.link'
+	onClick={() => {setShowMap(!showMap);}}>
+	{showMap
+	? <FormattedMessage id='pages.viewPost.hideMap' />
+	: <FormattedMessage id='pages.viewPost.showMap' />}
+      </a>
+    </p>
+    {showMap && <div
+		  data-testid='components.collapsibleMap.map'
+		  style={{height: '20rem'}}>
+      <Map
+	center={center}
+	controls={controls}
+	layers={[
+	  currentLocationLayer,
+	  layer,
+	]}
+	zoom={{level: 14}}
+      />
+    </div>}
 
   </>
 };
